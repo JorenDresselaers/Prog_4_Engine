@@ -4,9 +4,9 @@
 #include "Renderer.h"
 
 
-void dae::GameObject::SetParent(GameObject* parent)
+void dae::GameObject::SetParent(GameObject* newParent)
 {
-	m_Parent = parent;
+	m_Parent = newParent;
 }
 
 dae::GameObject* dae::GameObject::GetParent() const
@@ -56,7 +56,7 @@ void dae::GameObject::RemoveChild(int index)
 	m_Children.erase(m_Children.begin() + index-1);
 }
 
-void dae::GameObject::AddChild(std::shared_ptr<dae::GameObject> go)
+void dae::GameObject::AddChild(std::shared_ptr<dae::GameObject> newChild)
 {
-	m_Children.push_back(go);
+	m_Children.push_back(newChild);
 }

@@ -7,22 +7,20 @@ namespace dae
 {
 	class Texture2D;
 
-	// todo: this should become final.
 	class GameObject final
 	{
 	public:
-		void Update(/*float deltaTime */); // this would have float deltaTime
-										   // but I didn't get it done on time
+		void Update(/*float deltaTime */);
 		void Render() const;
 
 		//void SetTexture(const std::string& filename);
 		void SetPosition(float x, float y);
 
-		//template <typename T> void AddComponent(T*);
-		//template <typename T> T* GetComponent() const;
-		//template <typename T> void RemoveComponent();
+		template <typename T> void AddComponent();
+		template <typename T> T* GetComponent() const;
+		template <typename T> void RemoveComponent();
 
-		void SetParent(GameObject* parent);
+		void SetParent(GameObject* newParent);
 		GameObject* GetParent() const;
 
 		GameObject();
@@ -44,23 +42,43 @@ namespace dae
 		size_t GetChildCount() const;
 		std::shared_ptr<dae::GameObject> GetChildAt(int index) const;
 		void RemoveChild(int index);
-		void AddChild(std::shared_ptr<dae::GameObject> go);
+		void AddChild(std::shared_ptr<dae::GameObject> newChild);
 	};
 
-	//template<typename T>
-	//inline void GameObject::AddComponent(T*)
-	//{
-	//	m_Components.push_back(Component(T*));
-	//}
-	//
-	//template<typename T>
-	//inline T* GameObject::GetComponent() const
-	//{
-	//	return nullptr;
-	//}
-	//
-	//template<typename T>
-	//inline void GameObject::RemoveComponent()
-	//{
-	//}
+	template<typename T>
+	inline void GameObject::AddComponent()
+	{
+		auto newComponent = std::make_shared<T>();
+		m_Components.push_back((newComponent));
+	}
+	
+	template<typename T>
+	inline T* GameObject::GetComponent() const
+	{
+		//std::shared_ptr<T> ComponentToGet;
+		//for (int i{ 0 }; i < m_Components.size(); ++i)
+		//{
+		//	if (typeid(m_Components.at(i)) == typeid(ComponentToGet))
+		//	{ 
+		//		//ComponentToGet = m_Components.at(i);
+		//	}
+		//}
+		//return dynamic_cast<T*>(ComponentToGet.get());
+		return dynamic_cast<T*>(m_Components.at(0).get());
+	}
+	
+	template<typename T>
+	inline void GameObject::RemoveComponent()
+	{
+		//T* ComponentToRemove = nullptr;
+		//for (int i{ 0 }; i < m_Components.size(); ++i)
+		//{
+		//	if (typeid(m_Components.at(i).get()) == typeid(ComponentToRemove))
+		//	{
+		//		delete m_Components.at(i);
+		//		std::erase(m_Components.at(i));
+		//		break;
+		//	}
+		//}
+	}
 }

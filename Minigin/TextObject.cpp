@@ -5,9 +5,11 @@
 #include "Font.h"
 #include "Texture2D.h"
 
-dae::TextObject::TextObject(const std::string& text, const std::shared_ptr<Font>& font) 
+dae::TextObject::TextObject(const std::string& text, const std::shared_ptr<Font>& font)
 	: m_NeedsUpdate(true), m_Text(text), m_Font(font), m_TextTexture(nullptr)
-{ }
+{
+	m_Transform.SetPosition(0.f, 0.f, 0.f);
+}
 
 dae::TextObject::~TextObject()
 {

@@ -11,6 +11,7 @@
 
 #include <chrono>
 #include "RenderComponent.h"
+#include "TextComponent.h"
 
 using namespace std;
 
@@ -57,11 +58,14 @@ void dae::Minigin::Initialize()
  */
 void dae::Minigin::LoadGame() const
 {
-	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
+	auto& newScene = SceneManager::GetInstance().CreateScene("Demo");
 
-	auto go = std::make_shared<GameObject>();
-	//go->SetTexture("background.jpg");
-	scene.Add(go);
+	auto newObject = std::make_shared<GameObject>();
+	//newObject->SetTexture("background.jpg");
+	newObject.get()->AddComponent<TextComponent>();
+	//newObject.get()->GetComponent<TextComponent>()->SetPosition(50, 50);
+	//newObject.get()->GetComponent<TextComponent>()->SetText("Hello world!");
+	newScene.Add(newObject);
 	//
 	//go = std::make_shared<GameObject>();
 	//go->SetTexture("logo.png");
@@ -109,6 +113,5 @@ void dae::Minigin::Run()
 			- chrono::high_resolution_clock::now();
 		this_thread::sleep_for(sleepTime);
 	}
-
 	Cleanup();
 }
