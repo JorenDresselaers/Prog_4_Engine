@@ -1,12 +1,20 @@
 #include "MiniginPCH.h"
 #include "RenderComponent.h"
+#include "ResourceManager.h"
+#include "Renderer.h"
 
-void dae::RenderComponent::SetTexture(Texture2D* newTexture)
+dae::RenderComponent::RenderComponent()
 {
-	m_Texture = newTexture;
+	m_Name = "RenderComponent";
 }
 
-//NYI
+void dae::RenderComponent::SetTexture(std::shared_ptr<Texture2D> newTexture)
+{
+	m_Texture = newTexture.get();
+	m_pTexture = newTexture;
+}
+
 void dae::RenderComponent::Render() const
 {
+	Renderer::GetInstance().RenderTexture(*m_Texture, 0, 0);
 }

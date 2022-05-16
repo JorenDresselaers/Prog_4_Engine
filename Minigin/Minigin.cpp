@@ -62,9 +62,12 @@ void dae::Minigin::LoadGame() const
 
 	auto newObject = std::make_shared<GameObject>();
 	//newObject->SetTexture("background.jpg");
-	newObject.get()->AddComponent<TextComponent>();
+	//newObject.get()->AddComponent<TextComponent>();
 	//newObject.get()->GetComponent<TextComponent>()->SetPosition(50, 50);
 	//newObject.get()->GetComponent<TextComponent>()->SetText("Hello world!");
+	auto background = ResourceManager::GetInstance().LoadTexture("background.jpg");
+	newObject->AddComponent<RenderComponent>()->SetTexture(background);
+	//newObject->AddComponent<TextComponent>();
 	newScene.Add(newObject);
 	//
 	//go = std::make_shared<GameObject>();
@@ -101,11 +104,27 @@ void dae::Minigin::Run()
 
 	// todo: this update loop could use some work.
 	bool doContinue = true;
+	auto lastTime = std::chrono::high_resolution_clock::now();
+	float lag = 0.0f;
+	//float fixedTimeStep{.5f};
 	while (doContinue)
 	{
 		const auto start = chrono::high_resolution_clock::now();
 
+
+		const auto currentTime = std::chrono::high_resolution_clock::now();
+		float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
+		lastTime = currentTime;
+		lag += deltaTime;
+
 		doContinue = input.ProcessInput();
+
+		//while (lag >= fixedTimeStep)
+		//{
+		//	FixedUpdate(fixedTimeStep);
+		//	lag -= fixedTimeStep;
+		//}
+
 		sceneManager.Update();
 		renderer.Render();
 

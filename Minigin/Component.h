@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 class Component
 {
@@ -8,8 +9,9 @@ public:
 
 	virtual void Update(/*float deltaTime */);
 	virtual void Render() const;
+	virtual std::string GetName() const;
 
-private:
-
+protected:
+	std::string m_Name;
 };
 

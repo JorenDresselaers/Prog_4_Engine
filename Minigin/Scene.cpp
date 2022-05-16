@@ -5,7 +5,9 @@ using namespace dae;
 
 unsigned int Scene::m_IdCounter = 0;
 
-Scene::Scene(const std::string& name) : m_Name(name) {}
+Scene::Scene(const std::string& name) 
+	: m_Name(name) 
+{}
 
 Scene::~Scene() = default;
 
@@ -16,9 +18,12 @@ void Scene::Add(const std::shared_ptr<GameObject>& object)
 
 void Scene::Update()
 {
-	for(auto& object : m_Objects)
+	if (m_Objects.size() > 0)
 	{
-		object.get()->Update();
+		for (auto& object : m_Objects)
+		{
+			object->Update();
+		}
 	}
 }
 
@@ -26,7 +31,7 @@ void Scene::Render() const
 {
 	for (const auto& object : m_Objects)
 	{
-		object.get()->Render();
+		object->Render();
 	}
 }
 
