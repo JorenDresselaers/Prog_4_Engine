@@ -19,9 +19,9 @@ void dae::TextComponent::Render() const
 	m_Text->Render();
 }
 
-void dae::TextComponent::Update()
+void dae::TextComponent::Update(float deltaTime)
 {
-	m_Text->Update();
+	m_Text->Update(deltaTime);
 }
 
 void dae::TextComponent::SetText(std::string newText)

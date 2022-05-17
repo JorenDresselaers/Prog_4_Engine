@@ -13,11 +13,10 @@ namespace dae
 	class GameObject final
 	{
 	public:
-		void Update(/*float deltaTime */);
+		void Update(float deltaTime);
 		void Render() const;
 
-		//void SetTexture(const std::string& filename);
-		void SetPosition(float x, float y);
+		//void SetPosition(float x, float y);
 
 		template <typename T> std::shared_ptr<T> AddComponent();
 		template <typename T> std::shared_ptr<T>  GetComponent() const;
@@ -34,7 +33,7 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 
 	private:
-		Transform m_Transform;
+		//Transform m_Transform;
 		// todo: mmm, every gameobject has a texture? Is that correct?
 		//std::shared_ptr<Texture2D> m_Texture{};
 		std::vector <std::shared_ptr<Component>> m_Components;

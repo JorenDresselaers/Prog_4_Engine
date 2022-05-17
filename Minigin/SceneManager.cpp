@@ -2,9 +2,9 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
-void dae::SceneManager::Update()
+void dae::SceneManager::Update(float deltaTime)
 {
-	m_CurrentScene->Update();
+	m_CurrentScene->Update(deltaTime);
 }
 
 void dae::SceneManager::Render()

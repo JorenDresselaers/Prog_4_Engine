@@ -15,8 +15,10 @@ dae::TextObject::~TextObject()
 {
 }
 
-void dae::TextObject::Update(/*float deltaTime */)
+void dae::TextObject::Update(float deltaTime)
 {
+	(void)deltaTime; //variable unused
+
 	if (m_NeedsUpdate)
 	{
 		const SDL_Color color = { 255,255,255 }; // only white text is supported now

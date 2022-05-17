@@ -12,6 +12,7 @@
 #include <chrono>
 #include "RenderComponent.h"
 #include "TextComponent.h"
+#include "FPS.h"
 
 using namespace std;
 
@@ -63,23 +64,24 @@ void dae::Minigin::LoadGame() const
 	auto background = std::make_shared<GameObject>();
 	auto logo = std::make_shared<GameObject>();
 	auto text = std::make_shared<GameObject>();
-	//newObject->SetTexture("background.jpg");
-	//newObject.get()->AddComponent<TextComponent>();
-	//newObject.get()->GetComponent<TextComponent>()->SetPosition(50, 50);
-	//newObject.get()->GetComponent<TextComponent>()->SetText("Hello world!");
+	auto fps = std::make_shared<GameObject>();
+
 	auto backgroundImage = ResourceManager::GetInstance().LoadTexture("background.jpg");
 	auto logoImage = ResourceManager::GetInstance().LoadTexture("logo.png");
 
 	text->AddComponent<TextComponent>();
-	text->GetComponent<TextComponent>()->SetPosition(100, 100);
+	text->GetComponent<TextComponent>()->SetPosition(50, 100);
 	text->GetComponent<TextComponent>()->SetText("Test!");
 
 	background->AddComponent<RenderComponent>()->SetTexture(backgroundImage);
 	logo->AddComponent<RenderComponent>()->SetTexture(logoImage);
+
+	fps->AddComponent<FPS>()->SetPosition(100, 100);
 	
 	newScene.Add(background);
 	newScene.Add(logo);
 	newScene.Add(text);
+	newScene.Add(fps);
 
 	//go = std::make_shared<GameObject>();
 	//go->SetTexture("logo.png");
@@ -122,7 +124,6 @@ void dae::Minigin::Run()
 	{
 		const auto start = chrono::high_resolution_clock::now();
 
-
 		const auto currentTime = std::chrono::high_resolution_clock::now();
 		float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
 		lastTime = currentTime;
@@ -136,7 +137,7 @@ void dae::Minigin::Run()
 		//	lag -= fixedTimeStep;
 		//}
 
-		sceneManager.Update();
+		sceneManager.Update(deltaTime);
 		renderer.Render();
 
 		const auto sleepTime = start + chrono::milliseconds(MsPerFrame)

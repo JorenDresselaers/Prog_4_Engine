@@ -7,7 +7,7 @@ public:
 	Component();
 	virtual ~Component();
 
-	virtual void Update(/*float deltaTime */);
+	virtual void Update(float deltaTime);
 	virtual void Render() const;
 	virtual std::string GetName() const;
 

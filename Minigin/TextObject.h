@@ -10,7 +10,7 @@ namespace dae
 	class TextObject final : public Component
 	{
 	public:
-		void Update(/*float deltaTime */) override;
+		void Update(float deltaTime) override;
 		void Render() const override;
 
 		void SetText(const std::string& text);

@@ -13,7 +13,7 @@ namespace dae
 		~TextComponent();
 
 		void Render() const;
-		void Update();
+		void Update(float deltaTime);
 		void SetText(std::string newText);
 		void SetPosition(float x, float y);
 	private:

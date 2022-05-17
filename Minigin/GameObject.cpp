@@ -21,11 +21,11 @@ dae::GameObject::GameObject()
 
 dae::GameObject::~GameObject() = default;
 
-void dae::GameObject::Update(/*float deltaTime */)
+void dae::GameObject::Update(float deltaTime)
 {
 	for (auto& currentComponent : m_Components)
 	{
-		currentComponent->Update();
+		currentComponent->Update(deltaTime);
 	}
 }
 
@@ -42,10 +42,10 @@ void dae::GameObject::Render() const
 //	m_Texture = ResourceManager::GetInstance().LoadTexture(filename);
 //}
 
-void dae::GameObject::SetPosition(float x, float y)
-{
-	m_Transform.SetPosition(x, y, 0.0f);
-}
+//void dae::GameObject::SetPosition(float x, float y)
+//{
+//	m_Transform.SetPosition(x, y, 0.0f);
+//}
 
 size_t dae::GameObject::GetChildCount() const
 {
