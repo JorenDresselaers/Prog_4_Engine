@@ -60,16 +60,27 @@ void dae::Minigin::LoadGame() const
 {
 	auto& newScene = SceneManager::GetInstance().CreateScene("Demo");
 
-	auto newObject = std::make_shared<GameObject>();
+	auto background = std::make_shared<GameObject>();
+	auto logo = std::make_shared<GameObject>();
+	auto text = std::make_shared<GameObject>();
 	//newObject->SetTexture("background.jpg");
 	//newObject.get()->AddComponent<TextComponent>();
 	//newObject.get()->GetComponent<TextComponent>()->SetPosition(50, 50);
 	//newObject.get()->GetComponent<TextComponent>()->SetText("Hello world!");
-	auto background = ResourceManager::GetInstance().LoadTexture("background.jpg");
-	newObject->AddComponent<RenderComponent>()->SetTexture(background);
-	//newObject->AddComponent<TextComponent>();
-	newScene.Add(newObject);
-	//
+	auto backgroundImage = ResourceManager::GetInstance().LoadTexture("background.jpg");
+	auto logoImage = ResourceManager::GetInstance().LoadTexture("logo.png");
+
+	text->AddComponent<TextComponent>();
+	text->GetComponent<TextComponent>()->SetPosition(100, 100);
+	text->GetComponent<TextComponent>()->SetText("Test!");
+
+	background->AddComponent<RenderComponent>()->SetTexture(backgroundImage);
+	logo->AddComponent<RenderComponent>()->SetTexture(logoImage);
+	
+	newScene.Add(background);
+	newScene.Add(logo);
+	newScene.Add(text);
+
 	//go = std::make_shared<GameObject>();
 	//go->SetTexture("logo.png");
 	//go->SetPosition(216, 180);

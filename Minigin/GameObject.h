@@ -20,7 +20,7 @@ namespace dae
 		void SetPosition(float x, float y);
 
 		template <typename T> std::shared_ptr<T> AddComponent();
-		template <typename T> T* GetComponent() const;
+		template <typename T> std::shared_ptr<T>  GetComponent() const;
 		template <typename T> void RemoveComponent();
 
 		void SetParent(GameObject* newParent);
@@ -69,9 +69,16 @@ namespace dae
 	}
 	
 	template<typename T>
-	inline T* GameObject::GetComponent() const
+	inline std::shared_ptr<T>  GameObject::GetComponent() const
 	{
-		T* ComponentToGet = nullptr;
+		std::shared_ptr<T> ComponentToGet = nullptr;
+
+		for (auto currentComponent : m_Components)
+		{
+			std::shared_ptr<T> castedComponent{ dynamic_pointer_cast<T>(currentComponent) };
+			if (castedComponent) ComponentToGet = castedComponent;
+		}
+
 		//for (int i{ 0 }; i < m_Components.size(); ++i)
 		//{
 		//	if (typeid(m_Components.at(i)) == typeid(ComponentToGet))
@@ -81,16 +88,6 @@ namespace dae
 		//}
 		//return dynamic_cast<T*>(ComponentToGet.get());
 		//return dynamic_cast<T*>(m_Components.at(0).get());
-
-
-		for (int i{ 0 }; i < m_Components.size(); ++i)
-		{
-			if (typeid(m_Components.at(i).get()) == typeid(ComponentToGet))
-			{ 
-				//ComponentToGet = dynamic_cast<T*>(m_Components.at(i).get());
-			}
-		}
-
 
 		return ComponentToGet;
 	}

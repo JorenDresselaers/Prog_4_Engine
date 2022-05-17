@@ -2,6 +2,7 @@
 #include "TextObject.h"
 #include <string.h>
 #include "Component.h"
+#include "Font.h"
 
 namespace dae
 {
@@ -17,5 +18,6 @@ namespace dae
 		void SetPosition(float x, float y);
 	private:
 		TextObject* m_Text;
+		std::shared_ptr<Font> m_Font;
 	};
 }

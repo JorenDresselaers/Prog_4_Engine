@@ -1,9 +1,12 @@
 #include "MiniginPCH.h"
 #include "TextComponent.h"
 #include "Font.h"
+#include "ResourceManager.h"
 
 dae::TextComponent::TextComponent()
 {
+	if (!m_Font) m_Font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 16);
+	m_Text = new TextObject("ERROR", m_Font);
 }
 
 dae::TextComponent::~TextComponent()
