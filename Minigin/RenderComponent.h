@@ -10,7 +10,7 @@ namespace dae {
 		~RenderComponent() = default;
 
 		void SetTexture(std::shared_ptr<Texture2D> newTexture);
-		void Render() const;
+		void Render() const override;
 	private:
 		Texture2D* m_Texture = nullptr;
 		std::shared_ptr<Texture2D> m_pTexture;

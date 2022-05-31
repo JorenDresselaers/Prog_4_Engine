@@ -13,6 +13,7 @@
 #include "RenderComponent.h"
 #include "TextComponent.h"
 #include "FPS.h"
+#include "LivesComponent.h"
 
 using namespace std;
 
@@ -54,7 +55,7 @@ void dae::Minigin::Initialize()
 	Renderer::GetInstance().Init(m_Window);
 }
 
-/**
+/*
  * Code constructing the scene world starts here
  */
 void dae::Minigin::LoadGame() const
@@ -83,15 +84,14 @@ void dae::Minigin::LoadGame() const
 	newScene.Add(text);
 	newScene.Add(fps);
 
-	//go = std::make_shared<GameObject>();
-	//go->SetTexture("logo.png");
-	//go->SetPosition(216, 180);
-	//scene.Add(go);
-	//
-	//auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	//auto to = std::make_shared<TextObject>("Programming 4 Assignment", font);
-	//to->SetPosition(80, 20);
-	//scene.Add(to);
+	//Actual game stuff
+
+	auto pepper = std::make_shared<GameObject>();
+	pepper->AddComponent<TextComponent>()->SetText("This is a pepper");
+	pepper->GetComponent<TextComponent>()->SetPosition(200, 200);
+	pepper->AddComponent<LivesComponent>()->SetLives(3);
+
+	newScene.Add(pepper);
 }
 
 void dae::Minigin::Cleanup()
@@ -131,11 +131,11 @@ void dae::Minigin::Run()
 
 		doContinue = input.ProcessInput();
 
-		//while (lag >= fixedTimeStep)
-		//{
-		//	FixedUpdate(fixedTimeStep);
-		//	lag -= fixedTimeStep;
-		//}
+		while (lag >= MsPerFrame)
+		{
+			// fixedupdate(fixedtimestep);
+			lag -= MsPerFrame;
+		}
 
 		sceneManager.Update(deltaTime);
 		renderer.Render();

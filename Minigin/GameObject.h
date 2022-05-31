@@ -94,15 +94,15 @@ namespace dae
 	template<typename T>
 	inline void GameObject::RemoveComponent()
 	{
-		//T* ComponentToRemove = nullptr;
-		//for (int i{ 0 }; i < m_Components.size(); ++i)
-		//{
-		//	if (typeid(m_Components.at(i).get()) == typeid(ComponentToRemove))
-		//	{
-		//		delete m_Components.at(i);
-		//		std::erase(m_Components.at(i));
-		//		break;
-		//	}
-		//}
+		std::shared_ptr<T> componentToRemove = nullptr;
+
+		for (auto currentComponent : m_Components)
+		{
+			std::shared_ptr<T> castedComponent{ dynamic_pointer_cast<T>(currentComponent) };
+			if (castedComponent) componentToRemove = castedComponent;
+		}
+
+		m_Components.erase(std::remove(m_Components.begin(), m_Components.end(), componentToRemove));
+		delete componentToRemove;
 	}
 }

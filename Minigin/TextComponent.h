@@ -12,8 +12,8 @@ namespace dae
 		TextComponent();
 		~TextComponent();
 
-		void Render() const;
-		void Update(float deltaTime);
+		void Render() const override;
+		void Update(float deltaTime) override;
 		void SetText(std::string newText);
 		void SetPosition(float x, float y);
 	private:
