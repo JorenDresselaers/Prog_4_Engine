@@ -16,5 +16,8 @@ void dae::RenderComponent::SetTexture(std::shared_ptr<Texture2D> newTexture)
 
 void dae::RenderComponent::Render() const
 {
-	Renderer::GetInstance().RenderTexture(*m_Texture, 0, 0);
+	if (m_Texture)
+	{
+		Renderer::GetInstance().RenderTexture(*m_Texture, 0, 0);
+	}
 }

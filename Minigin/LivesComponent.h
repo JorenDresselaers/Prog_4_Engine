@@ -1,20 +1,22 @@
 #pragma once
 #include "Component.h"
 
-class LivesComponent : Component
+namespace dae
 {
-public:
-	LivesComponent(int currentLives);
-	~LivesComponent() = default;
+	class LivesComponent : Component
+	{
+	public:
+		LivesComponent();
+		~LivesComponent() = default;
 
-	void Update(float deltaTime) override;
+		void Update(float deltaTime) override;
 
-	void GainLife();
-	void LoseLife();
-	void SetLives(int newLives);
+		void GainLife();
+		void LoseLife();
+		void SetLives(int newLives);
 
-private:
-	int m_Lives;
+	private:
+		int m_Lives;
 
-};
-
+	};
+}

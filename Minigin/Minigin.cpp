@@ -89,7 +89,7 @@ void dae::Minigin::LoadGame() const
 	auto pepper = std::make_shared<GameObject>();
 	pepper->AddComponent<TextComponent>()->SetText("This is a pepper");
 	pepper->GetComponent<TextComponent>()->SetPosition(200, 200);
-	pepper->AddComponent<LivesComponent>()->SetLives(3);
+	//pepper->AddComponent<LivesComponent>()->SetLives(3);
 
 	newScene.Add(pepper);
 }

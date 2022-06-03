@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <typeinfo>
 #include "RenderComponent.h"
+#include "LivesComponent.h"
 
 namespace dae
 {
@@ -54,17 +55,6 @@ namespace dae
 		auto newComponent = std::make_shared<T>();
 		m_Components.emplace_back(newComponent);
 		return newComponent;
-
-		//auto test = std::make_shared<RenderComponent>
-
-		//
-		//T* componentToReturn = nullptr;
-		//componentToReturn = newComponent.get();
-		//
-		//return componentToReturn;
-
-		//auto newComponent = std::make_shared<T>;
-		//m_Components.insert("Component", newComponent);
 	}
 	
 	template<typename T>
@@ -77,16 +67,6 @@ namespace dae
 			std::shared_ptr<T> castedComponent{ dynamic_pointer_cast<T>(currentComponent) };
 			if (castedComponent) ComponentToGet = castedComponent;
 		}
-
-		//for (int i{ 0 }; i < m_Components.size(); ++i)
-		//{
-		//	if (typeid(m_Components.at(i)) == typeid(ComponentToGet))
-		//	{ 
-		//		ComponentToGet = m_Components.at(i);
-		//	}
-		//}
-		//return dynamic_cast<T*>(ComponentToGet.get());
-		//return dynamic_cast<T*>(m_Components.at(0).get());
 
 		return ComponentToGet;
 	}

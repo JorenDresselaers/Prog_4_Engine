@@ -19,6 +19,9 @@
     <Filter Include="Header Files\Components">
       <UniqueIdentifier>{05334b47-5758-41d8-90bc-6ae82f06a8c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Audio">
+      <UniqueIdentifier>{99132b7b-4ea7-4fcc-a51b-1251b55ea23d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MiniginPCH.h">
@@ -81,6 +84,12 @@
     <ClInclude Include="LivesComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
+    <ClInclude Include="AudioManager.h">
+      <Filter>Source Files\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\_School\2021-2022\Semester_2\Programming 4\_EXAM\SDL2_mixer-2.0.4\include\SDL_mixer.h">
+      <Filter>Source Files\Audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniginPCH.cpp">
@@ -136,6 +145,9 @@
     </ClCompile>
     <ClCompile Include="LivesComponent.cpp">
       <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioManager.cpp">
+      <Filter>Source Files\Audio</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
