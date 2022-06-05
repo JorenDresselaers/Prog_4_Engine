@@ -84,7 +84,7 @@ void dae::Minigin::LoadGame() const
 	newScene.Add(logo);
 	newScene.Add(text);
 	newScene.Add(fps);
-
+	
 	//Actual game stuff
 
 	auto pepper = std::make_shared<GameObject>();
@@ -98,6 +98,16 @@ void dae::Minigin::LoadGame() const
 	AudioManager::GetInstance().PlaySound("Fishfight.wav", 100);
 	AudioManager::GetInstance().PlaySound("Greeting1.wav", 100);
 	AudioManager::GetInstance().PlaySound("Greeting2.wav", 100);
+}
+
+bool dae::Minigin::SetGame(Game* newGame)
+{
+	if (!m_Game)
+	{
+		m_Game = newGame;
+		return true;
+	}
+	return false;
 }
 
 void dae::Minigin::Cleanup()
