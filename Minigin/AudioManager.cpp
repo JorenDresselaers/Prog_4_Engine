@@ -13,7 +13,7 @@ dae::AudioManager::~AudioManager()
 	Mix_Quit();
 }
 
-void dae::AudioManager::PlaySound(const std::string& filename, int volume)
+void dae::AudioManager::Play(const std::string& filename, int volume)
 {
 	m_EventQueue.push(std::pair<std::string, int>(m_DataPath + filename, volume));
 

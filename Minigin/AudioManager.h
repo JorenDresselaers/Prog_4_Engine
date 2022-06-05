@@ -13,7 +13,7 @@ namespace dae
 	public:
 		AudioManager();
 		virtual ~AudioManager();
-		void PlaySound(const std::string& filename, int volume);
+		void Play(const std::string& filename, int volume);
 		void Init(std::string path);
 
 		//void PauseSound();

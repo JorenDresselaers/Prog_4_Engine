@@ -6,6 +6,8 @@
 #include <typeinfo>
 #include "RenderComponent.h"
 #include "LivesComponent.h"
+#include <thread>
+#include <memory>
 
 namespace dae
 {
@@ -64,7 +66,7 @@ namespace dae
 
 		for (auto currentComponent : m_Components)
 		{
-			std::shared_ptr<T> castedComponent{ dynamic_pointer_cast<T>(currentComponent) };
+			std::shared_ptr<T> castedComponent{ std::dynamic_pointer_cast<T>(currentComponent) };
 			if (castedComponent) ComponentToGet = castedComponent;
 		}
 
@@ -78,7 +80,7 @@ namespace dae
 
 		for (auto currentComponent : m_Components)
 		{
-			std::shared_ptr<T> castedComponent{ dynamic_pointer_cast<T>(currentComponent) };
+			std::shared_ptr<T> castedComponent{ std::dynamic_pointer_cast<T>(currentComponent) };
 			if (castedComponent) componentToRemove = castedComponent;
 		}
 

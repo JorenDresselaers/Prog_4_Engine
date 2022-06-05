@@ -16,5 +16,6 @@ int main(int, char* []) {
 	BurgerTimeGame* newGame = new BurgerTimeGame();
 	engine.SetGame(newGame);
 	engine.Run();
+	delete newGame;
 	return 0;
 }

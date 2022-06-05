@@ -1,5 +1,10 @@
 #pragma once
 #include "Singleton.h"
+#include "SDL_pixels.h"
+
+struct SDL_Renderer;
+struct SDL_Window;
+struct SDL_Color;
 
 namespace dae
 {

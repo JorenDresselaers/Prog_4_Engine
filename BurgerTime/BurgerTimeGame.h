@@ -7,6 +7,8 @@ public:
 	BurgerTimeGame();
 	~BurgerTimeGame();
 	void LoadGame() override;
+	void Run(float deltaTime);
 private:
+	GameObject* m_pPepper;
 };
 

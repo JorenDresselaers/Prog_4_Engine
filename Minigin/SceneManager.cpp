@@ -1,18 +1,21 @@
 #include "MiniginPCH.h"
-#include "SceneManager.h"
+
 #include "Scene.h"
+#include "SceneManager.h"
 
-void dae::SceneManager::Update(float deltaTime)
+using namespace dae;
+
+void SceneManager::Update(float deltaTime)
 {
-	m_CurrentScene->Update(deltaTime);
+	if(m_CurrentScene) m_CurrentScene->Update(deltaTime);
 }
 
-void dae::SceneManager::Render()
+void SceneManager::Render()
 {
-	m_CurrentScene->Render();
+	if (m_CurrentScene) m_CurrentScene->Render();
 }
 
-dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
+dae::Scene& SceneManager::CreateScene(const std::string& name)
 {
 	const auto& scene = std::shared_ptr<Scene>(new Scene(name));
 	m_Scenes.push_back(scene);

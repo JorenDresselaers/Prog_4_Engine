@@ -1,13 +1,15 @@
 #pragma once
 #include "SceneManager.h"
 #include "GameObject.h"
+#include <vector>
 
 namespace dae
 {
 	class SceneObject;
 	class Scene
 	{
-		friend Scene& SceneManager::CreateScene(const std::string& name);
+		//friend Scene& SceneManager::CreateScene(const std::string& name);
+		friend class SceneManager;
 	public:
 		void Add(const std::shared_ptr<GameObject>& object);
 
