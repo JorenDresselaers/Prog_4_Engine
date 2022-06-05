@@ -87,9 +87,6 @@
     <ClInclude Include="AudioManager.h">
       <Filter>Source Files\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\_School\2021-2022\Semester_2\Programming 4\_EXAM\SDL2_mixer-2.0.4\include\SDL_mixer.h">
-      <Filter>Source Files\Audio</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniginPCH.cpp">

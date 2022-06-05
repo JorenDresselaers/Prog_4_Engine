@@ -5,6 +5,7 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
+#include "AudioManager.h"
 #include "TextObject.h"
 #include "GameObject.h"
 #include "Scene.h"
@@ -92,6 +93,11 @@ void dae::Minigin::LoadGame() const
 	//pepper->AddComponent<LivesComponent>()->SetLives(3);
 
 	newScene.Add(pepper);
+
+	AudioManager::GetInstance().PlaySound("Farewell.wav", 100);
+	AudioManager::GetInstance().PlaySound("Fishfight.wav", 100);
+	AudioManager::GetInstance().PlaySound("Greeting1.wav", 100);
+	AudioManager::GetInstance().PlaySound("Greeting2.wav", 100);
 }
 
 void dae::Minigin::Cleanup()
@@ -108,12 +114,14 @@ void dae::Minigin::Run()
 
 	// tell the resource manager where he can find the game data
 	ResourceManager::GetInstance().Init("../Data/");
+	AudioManager::GetInstance().Init("../Data/");
 
 	LoadGame();
 
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
+	auto& sound = AudioManager::GetInstance();
 
 	// todo: this update loop could use some work.
 	bool doContinue = true;
@@ -139,6 +147,7 @@ void dae::Minigin::Run()
 
 		sceneManager.Update(deltaTime);
 		renderer.Render();
+		sound.ProcessEventQueue();
 
 		const auto sleepTime = start + chrono::milliseconds(MsPerFrame)
 			- chrono::high_resolution_clock::now();
