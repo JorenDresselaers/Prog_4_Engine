@@ -45,7 +45,7 @@ void dae::AudioManager::ProcessEventQueue()
 {
 	if (!m_EventQueue.empty())
 	{
-		for (int i{ 0 }; i < m_EventQueue.size(); ++i)
+		for (size_t i{ 0 }; i < m_EventQueue.size(); ++i)
 		{
 			std::string actualPath{ m_EventQueue.front().first.c_str() };
 			Mix_Chunk* newMusic = Mix_LoadWAV(actualPath.c_str());

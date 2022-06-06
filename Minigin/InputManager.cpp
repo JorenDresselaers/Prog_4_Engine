@@ -11,6 +11,10 @@ struct dae::InputManager::Impl
         , MovingRight{false}
         , MovingDown{false}
         , MovingUp{false}
+        , MovingLeftTwo{false}
+        , MovingRightTwo{false}
+        , MovingDownTwo{false}
+        , MovingUpTwo{false}
     {}
 
     ~Impl()
@@ -23,11 +27,6 @@ struct dae::InputManager::Impl
 
     bool ProcessInput()
     {
-        //MovingDown = false;
-        //MovingUp = false;
-        //MovingRight = false;
-        //MovingLeft = false;
-
         DWORD dwResult;
         XINPUT_STATE state;
         ZeroMemory(&state, sizeof(XINPUT_STATE));
@@ -71,14 +70,23 @@ struct dae::InputManager::Impl
                 case SDLK_DOWN:
                     MovingDown = true;
                     break;
+
+                case SDLK_w:
+                    MovingUpTwo = true;
+                    break;
+                case SDLK_s:
+                    MovingDownTwo = true;
+                    break;
+                case SDLK_a:
+                    MovingLeftTwo = true;
+                    break;
+                case SDLK_d:
+                    MovingRightTwo = true;
+                    break;
+
                 }
-
-                //if (e.key.keysym.sym == SDLK_LEFT) player->MoveLeft();
-                //if (e.key.keysym.sym == SDLK_RIGHT) player->MoveRight();
-                //if (e.key.keysym.sym == SDLK_DOWN) player->MoveDown();
-                //if (e.key.keysym.sym == SDLK_UP) player->MoveUp();
-
             }
+
             if (e.type == SDL_KEYUP)
             {
                 switch (e.key.keysym.sym)
@@ -98,6 +106,19 @@ struct dae::InputManager::Impl
                 case SDLK_DOWN:
                     MovingDown = false;
                     break;
+
+                case SDLK_w:
+                    MovingUpTwo = false;
+                    break;
+                case SDLK_s:
+                    MovingDownTwo = false;
+                    break;
+                case SDLK_a:
+                    MovingLeftTwo = false;
+                    break;
+                case SDLK_d:
+                    MovingRightTwo = false;
+                    break;
                 }
             }
 
@@ -107,10 +128,21 @@ struct dae::InputManager::Impl
             }
         }
 
-        if (MovingLeft) player->MoveLeft();
-        if (MovingRight) player->MoveRight();
-        if (MovingDown) player->MoveDown();
-        if (MovingUp) player->MoveUp();
+        if (player)
+        {
+            if (MovingLeft) player->MoveLeft();
+            if (MovingRight) player->MoveRight();
+            if (MovingDown) player->MoveDown();
+            if (MovingUp) player->MoveUp();
+        }
+
+        if (playerTwo)
+        {
+            if (MovingLeftTwo) playerTwo->MoveLeft();
+            if (MovingRightTwo) playerTwo->MoveRight();
+            if (MovingDownTwo) playerTwo->MoveDown();
+            if (MovingUpTwo) playerTwo->MoveUp();
+        }
 
         return true;
     }
@@ -303,6 +335,10 @@ struct dae::InputManager::Impl
     bool MovingRight;
     bool MovingUp;
     bool MovingDown;
+    bool MovingLeftTwo;
+    bool MovingRightTwo;
+    bool MovingUpTwo;
+    bool MovingDownTwo;
 
     Command* ButtonA = new Fire();
     Command* ButtonB = new Jump();
@@ -310,6 +346,7 @@ struct dae::InputManager::Impl
     Command* ButtonY = new Die();
 
     std::shared_ptr<PlayerComponent> player;
+    std::shared_ptr<PlayerComponent> playerTwo;
 };
 
 dae::InputManager::InputManager()
@@ -333,25 +370,11 @@ void dae::InputManager::SetPlayer(std::shared_ptr<PlayerComponent> player)
 
 }
 
+void dae::InputManager::SetPlayerTwo(std::shared_ptr<PlayerComponent> player)
+{
+    pimpl->playerTwo = player;
+}
+
 dae::InputManager::~InputManager()
 {
 }
-
-
-
-//bool dae::InputManager::IsPressed(ControllerButton button) const
-//{
-//	switch (button)
-//	{
-//	case ControllerButton::ButtonA:
-//		return m_CurrentState.Gamepad.wButtons & XINPUT_GAMEPAD_A;
-//	case ControllerButton::ButtonB:
-//		return m_CurrentState.Gamepad.wButtons & XINPUT_GAMEPAD_B;
-//	case ControllerButton::ButtonX:
-//		return m_CurrentState.Gamepad.wButtons & XINPUT_GAMEPAD_X;
-//	case ControllerButton::ButtonY:
-//		return m_CurrentState.Gamepad.wButtons & XINPUT_GAMEPAD_Y;
-//	default: return false;
-//	}
-//}
-

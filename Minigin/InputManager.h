@@ -36,6 +36,7 @@ namespace dae
 		bool ProcessInput();
 		bool IsPressed(ControllerButton button);
 		void SetPlayer(std::shared_ptr<PlayerComponent> player);
+		void SetPlayerTwo(std::shared_ptr<PlayerComponent> player);
 	private:
 		XINPUT_STATE m_CurrentState{};
 		struct Impl;

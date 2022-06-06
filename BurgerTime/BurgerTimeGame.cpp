@@ -60,13 +60,16 @@ void BurgerTimeGame::LoadGame()
 	auto pepper = std::make_shared<GameObject>();
 	pepper->AddComponent<TextComponent>()->SetText("This is a pepper");
 	pepper->GetComponent<TextComponent>()->SetPosition(200, 200);
-	//pepper->AddComponent<RenderComponent>()->SetTexture(pepperImage);
 	pepper->AddComponent<PlayerComponent>();
-	//pepper->AddComponent<LivesComponent>()->SetLives(3);
+
+	auto pepperTwo = std::make_shared<GameObject>();
+	pepperTwo->AddComponent<PlayerComponent>()->SetPosition(200,200);
 	
 	InputManager::GetInstance().SetPlayer(pepper->GetComponent<PlayerComponent>());
+	InputManager::GetInstance().SetPlayerTwo(pepperTwo->GetComponent<PlayerComponent>());
 
 	newScene.Add(pepper);
+	newScene.Add(pepperTwo);
 	
 	//AudioManager::GetInstance().Play("Farewell.wav", 100);
 	//AudioManager::GetInstance().Play("Fishfight.wav", 100);
