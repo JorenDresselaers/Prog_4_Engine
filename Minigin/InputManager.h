@@ -2,6 +2,8 @@
 #include <XInput.h>
 #include "Singleton.h"
 #include "Command.h"
+#include "PlayerComponent.h"
+
 
 namespace dae
 {
@@ -33,6 +35,7 @@ namespace dae
 
 		bool ProcessInput();
 		bool IsPressed(ControllerButton button);
+		void SetPlayer(std::shared_ptr<PlayerComponent> player);
 	private:
 		XINPUT_STATE m_CurrentState{};
 		struct Impl;

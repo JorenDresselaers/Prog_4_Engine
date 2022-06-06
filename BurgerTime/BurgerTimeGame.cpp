@@ -16,6 +16,7 @@
 #include "TextComponent.h"
 #include "FPS.h"
 #include "LivesComponent.h"
+#include "PlayerComponent.h"
 
 using namespace dae;
 
@@ -38,6 +39,7 @@ void BurgerTimeGame::LoadGame()
 	
 	auto backgroundImage = ResourceManager::GetInstance().LoadTexture("background.jpg");
 	auto logoImage = ResourceManager::GetInstance().LoadTexture("logo.png");
+	auto pepperImage = ResourceManager::GetInstance().LoadTexture("Pepper_PH.png");
 	
 	text->AddComponent<TextComponent>();
 	text->GetComponent<TextComponent>()->SetPosition(50, 100);
@@ -58,18 +60,17 @@ void BurgerTimeGame::LoadGame()
 	auto pepper = std::make_shared<GameObject>();
 	pepper->AddComponent<TextComponent>()->SetText("This is a pepper");
 	pepper->GetComponent<TextComponent>()->SetPosition(200, 200);
+	//pepper->AddComponent<RenderComponent>()->SetTexture(pepperImage);
+	pepper->AddComponent<PlayerComponent>();
 	//pepper->AddComponent<LivesComponent>()->SetLives(3);
 	
+	InputManager::GetInstance().SetPlayer(pepper->GetComponent<PlayerComponent>());
+
 	newScene.Add(pepper);
 	
 	//AudioManager::GetInstance().Play("Farewell.wav", 100);
-	AudioManager::GetInstance().Play("Fishfight.wav", 100);
+	//AudioManager::GetInstance().Play("Fishfight.wav", 100);
 	//AudioManager::GetInstance().Play("Greeting1.wav", 100);
 	//AudioManager::GetInstance().Play("Greeting2.wav", 100);
-
-}
-
-void BurgerTimeGame::Run(float deltaTime)
-{
 
 }

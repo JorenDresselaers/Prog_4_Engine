@@ -157,8 +157,6 @@ void dae::Minigin::Run()
 			lag -= MsPerFrame;
 		}
 
-		if (m_Game) m_Game->Run(deltaTime);
-
 		sceneManager.Update(deltaTime);
 		renderer.Render();
 		sound.ProcessEventQueue();

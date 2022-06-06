@@ -1,11 +1,16 @@
 #include "MiniginPCH.h"
 #include "InputManager.h"
+#include "AudioManager.h"
 
 struct dae::InputManager::Impl
 {
     Impl()
         : ButtonState{ false }
         , ButtonPreviousState{ false }
+        , MovingLeft{false}
+        , MovingRight{false}
+        , MovingDown{false}
+        , MovingUp{false}
     {}
 
     ~Impl()
@@ -18,8 +23,10 @@ struct dae::InputManager::Impl
 
     bool ProcessInput()
     {
-        // todo: read the input
-        //std::cout << ButtonState[0];
+        //MovingDown = false;
+        //MovingUp = false;
+        //MovingRight = false;
+        //MovingLeft = false;
 
         DWORD dwResult;
         XINPUT_STATE state;
@@ -39,17 +46,72 @@ struct dae::InputManager::Impl
         }
 
         SDL_Event e;
-        while (SDL_PollEvent(&e)) {
-            if (e.type == SDL_QUIT) {
+        while (SDL_PollEvent(&e)) 
+        {
+            if (e.type == SDL_QUIT) 
+            {
                 return false;
             }
-            if (e.type == SDL_KEYDOWN) {
+            if (e.type == SDL_KEYDOWN) 
+            {
+                switch (e.key.keysym.sym)
+                {
+                case SDLK_LEFT:
+                    MovingLeft = true;
+                    break;
+                
+                case SDLK_RIGHT:
+                    MovingRight = true;
+                    break;
+                
+                case SDLK_UP:
+                    MovingUp = true;
+                    break;
+                
+                case SDLK_DOWN:
+                    MovingDown = true;
+                    break;
+                }
+
+                //if (e.key.keysym.sym == SDLK_LEFT) player->MoveLeft();
+                //if (e.key.keysym.sym == SDLK_RIGHT) player->MoveRight();
+                //if (e.key.keysym.sym == SDLK_DOWN) player->MoveDown();
+                //if (e.key.keysym.sym == SDLK_UP) player->MoveUp();
 
             }
-            if (e.type == SDL_MOUSEBUTTONDOWN) {
+            if (e.type == SDL_KEYUP)
+            {
+                switch (e.key.keysym.sym)
+                {
+                case SDLK_LEFT:
+                    MovingLeft = false;
+                    break;
 
+                case SDLK_RIGHT:
+                    MovingRight = false;
+                    break;
+
+                case SDLK_UP:
+                    MovingUp = false;
+                    break;
+
+                case SDLK_DOWN:
+                    MovingDown = false;
+                    break;
+                }
+            }
+
+            if (e.type == SDL_MOUSEBUTTONDOWN) 
+            {
+                AudioManager::GetInstance().Play("Fishfight.wav", 100);
             }
         }
+
+        if (MovingLeft) player->MoveLeft();
+        if (MovingRight) player->MoveRight();
+        if (MovingDown) player->MoveDown();
+        if (MovingUp) player->MoveUp();
+
         return true;
     }
 
@@ -63,18 +125,18 @@ struct dae::InputManager::Impl
         XINPUT_STATE state;
         ZeroMemory(&state, sizeof(XINPUT_STATE));
 
-        SDL_Event e;
-        while (SDL_PollEvent(&e)) {
-            if (e.type == SDL_QUIT) {
-                boolToReturn = false;
-            }
-            if (e.type == SDL_KEYDOWN) {
-
-            }
-            if (e.type == SDL_MOUSEBUTTONDOWN) {
-
-            }
-        }
+        //SDL_Event e;
+        //while (SDL_PollEvent(&e)) {
+        //    if (e.type == SDL_QUIT) {
+        //        boolToReturn = false;
+        //    }
+        //    if (e.type == SDL_KEYDOWN) {
+        //
+        //    }
+        //    if (e.type == SDL_MOUSEBUTTONDOWN) {
+        //
+        //    }
+        //}
 
         dwResult = XInputGetState(0, &state);
         if (dwResult == ERROR_SUCCESS)
@@ -237,10 +299,17 @@ struct dae::InputManager::Impl
     bool ButtonState[m_NumberOfButtons];
     bool ButtonPreviousState[m_NumberOfButtons];
 
+    bool MovingLeft;
+    bool MovingRight;
+    bool MovingUp;
+    bool MovingDown;
+
     Command* ButtonA = new Fire();
     Command* ButtonB = new Jump();
     Command* ButtonX = new Crouch();
     Command* ButtonY = new Die();
+
+    std::shared_ptr<PlayerComponent> player;
 };
 
 dae::InputManager::InputManager()
@@ -253,32 +322,15 @@ bool dae::InputManager::ProcessInput()
     return pimpl->ProcessInput();
 }
 
-/*
-bool dae::InputManager::ProcessInput()
-{
-    ZeroMemory(&m_CurrentState, sizeof(XINPUT_STATE));
-    XInputGetState(0, &m_CurrentState);
-
-    SDL_Event e;
-    while (SDL_PollEvent(&e)) {
-        if (e.type == SDL_QUIT) {
-            return false;
-        }
-        if (e.type == SDL_KEYDOWN) {
-
-        }
-        if (e.type == SDL_MOUSEBUTTONDOWN) {
-
-        }
-    }
-
-    return true;
-}
-*/
-
 bool dae::InputManager::IsPressed(ControllerButton button)
 {
     return pimpl->IsPressed(button);
+}
+
+void dae::InputManager::SetPlayer(std::shared_ptr<PlayerComponent> player)
+{
+    pimpl->player = player;
+
 }
 
 dae::InputManager::~InputManager()

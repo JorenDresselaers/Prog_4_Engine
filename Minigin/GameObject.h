@@ -6,6 +6,7 @@
 #include <typeinfo>
 #include "RenderComponent.h"
 #include "LivesComponent.h"
+#include "PlayerComponent.h"
 #include <thread>
 #include <memory>
 

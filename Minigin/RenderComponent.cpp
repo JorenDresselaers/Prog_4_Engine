@@ -4,6 +4,8 @@
 #include "Renderer.h"
 
 dae::RenderComponent::RenderComponent()
+	: m_X{ 0 }
+	, m_Y{ 0 }
 {
 	m_Name = "RenderComponent";
 }
@@ -18,6 +20,12 @@ void dae::RenderComponent::Render() const
 {
 	if (m_Texture)
 	{
-		Renderer::GetInstance().RenderTexture(*m_Texture, 0, 0);
+		Renderer::GetInstance().RenderTexture(*m_Texture, m_X, m_Y);
 	}
+}
+
+void dae::RenderComponent::SetPosition(float x, float y)
+{
+	m_X = x;
+	m_Y = y;
 }
