@@ -6,6 +6,7 @@
 
 void dae::GameObject::SetParent(GameObject* newParent)
 {
+	//m_Parent->RemoveChild(this);
 	m_Parent = newParent;
 }
 

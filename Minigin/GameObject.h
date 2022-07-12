@@ -23,7 +23,7 @@ namespace dae
 		//void SetPosition(float x, float y);
 
 		template <typename T> std::shared_ptr<T> AddComponent();
-		template <typename T> std::shared_ptr<T>  GetComponent() const;
+		template <typename T> std::shared_ptr<T> GetComponent() const;
 		template <typename T> void RemoveComponent();
 
 		void SetParent(GameObject* newParent);
