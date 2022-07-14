@@ -25,7 +25,7 @@ namespace dae
 		std::queue<std::pair<std::string, int>> m_EventQueue;
 		//std::atomic<bool> m_IsRunning;
 		std::thread m_Thread;
-		//std::mutex m_Mutex;
+		std::mutex m_Mutex;
 
 		Mix_Music* testSound;
 		std::string m_DataPath;

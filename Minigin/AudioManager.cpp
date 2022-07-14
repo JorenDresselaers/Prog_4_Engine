@@ -47,23 +47,37 @@ void dae::AudioManager::ProcessEventQueue()
 	{
 		for (size_t i{ 0 }; i < m_EventQueue.size(); ++i)
 		{
-			std::string actualPath{ m_EventQueue.front().first.c_str() };
-			Mix_Chunk* newMusic = Mix_LoadWAV(actualPath.c_str());
-			newMusic->volume = Uint8(m_EventQueue.front().second);
-			if (newMusic) m_EventQueue.pop();
+			//std::string actualPath{ m_EventQueue.front().first.c_str() };
+			//Mix_Chunk* newMusic = Mix_LoadWAV(actualPath.c_str());
+			//newMusic->volume = Uint8(m_EventQueue.front().second);
+			//if (newMusic) m_EventQueue.pop();
+			//
+			//Mix_PlayChannel(-1, newMusic, 0);
 
-			Mix_PlayChannel(-1, newMusic, 0);
+
+			std::thread musicThread([this]()
+				{
+					//std::cout << "\nStarting new sound thread";
+					m_Mutex.lock(); //locking m_EventQueue for threading
+
+					Mix_Chunk* newMusic = Mix_LoadWAV(m_EventQueue.front().first.c_str());
+					int volume = m_EventQueue.front().second;
+					if (newMusic)
+					{
+						m_EventQueue.pop();
+						newMusic->volume = Uint8(volume);
+
+						m_Mutex.unlock();
+						Mix_PlayChannel(-1, newMusic, 0);
+					}
+					else
+					{
+						m_Mutex.unlock();
+					}
+					//std::cout << "\nEnding new sound thread";
+				});
+			musicThread.join();
 		}
-
-		//std::thread musicThread([this]()
-		//	{
-		//		m_Mutex.lock();
-		//		Mix_Chunk* newMusic = Mix_LoadWAV(m_EventQueue.front().first.c_str());
-		//		int volume = m_EventQueue.front().second;
-		//		if (newMusic) m_EventQueue.pop();
-		//		m_Mutex.unlock();
-		//		Mix_PlayChannel(-1, newMusic, Uint8(volume));
-		//	});
 	}
 }
 

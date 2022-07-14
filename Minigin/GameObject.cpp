@@ -6,7 +6,7 @@
 
 void dae::GameObject::SetParent(GameObject* newParent)
 {
-	//m_Parent->RemoveChild(this);
+	//m_Parent->RemoveChild(0);
 	m_Parent = newParent;
 }
 
@@ -56,6 +56,19 @@ size_t dae::GameObject::GetChildCount() const
 std::shared_ptr<dae::GameObject> dae::GameObject::GetChildAt(int index) const
 {
 	return m_Children.at(index);
+}
+
+int dae::GameObject::GetChildIndex(std::shared_ptr<dae::GameObject> childToGet) const
+{
+	auto index = std::find(m_Children.begin(), m_Children.end(), childToGet);
+	int indexToReturn{ -1 };
+
+	if (index != m_Children.end())
+	{
+		indexToReturn = int(index - m_Children.begin());
+	}
+
+	return indexToReturn;
 }
 
 void dae::GameObject::RemoveChild(int index)

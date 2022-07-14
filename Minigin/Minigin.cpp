@@ -127,7 +127,6 @@ void dae::Minigin::Run()
 	ResourceManager::GetInstance().Init("../Data/");
 	AudioManager::GetInstance().Init("../Data/");
 
-	//m_Game->LoadGame();
 	if(m_Game) m_Game->LoadGame();
 
 	auto& renderer = Renderer::GetInstance();
@@ -151,11 +150,11 @@ void dae::Minigin::Run()
 
 		doContinue = input.ProcessInput();
 
-		while (lag >= MsPerFrame)
-		{
-			// fixedupdate(fixedtimestep);
-			lag -= MsPerFrame;
-		}
+		//while (lag >= MsPerFrame)
+		//{
+		//	// fixedupdate(fixedtimestep);
+		//	lag -= MsPerFrame;
+		//}
 
 		sceneManager.Update(deltaTime);
 		renderer.Render();

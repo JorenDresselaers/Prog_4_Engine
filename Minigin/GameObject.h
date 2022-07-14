@@ -48,6 +48,7 @@ namespace dae
 
 		size_t GetChildCount() const;
 		std::shared_ptr<dae::GameObject> GetChildAt(int index) const;
+		int GetChildIndex(std::shared_ptr<dae::GameObject> childToGet) const;
 		void RemoveChild(int index);
 		void AddChild(std::shared_ptr<dae::GameObject> newChild);
 	};
