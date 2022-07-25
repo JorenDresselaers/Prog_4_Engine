@@ -164,11 +164,13 @@ struct dae::InputManager::Impl
         //    }
         //    if (e.type == SDL_KEYDOWN) {
         //
-        //    }
+        //    }rg
         //    if (e.type == SDL_MOUSEBUTTONDOWN) {
         //
         //    }
         //}
+
+
 
         dwResult = XInputGetState(0, &state);
         if (dwResult == ERROR_SUCCESS)

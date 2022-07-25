@@ -17,7 +17,7 @@ namespace dae
 		void Init(std::string path);
 
 		//void PauseSound();
-		//void StopSound();
+		void StopSound();
 		//void StopAllSounds();
 
 		void ProcessEventQueue();
@@ -29,6 +29,7 @@ namespace dae
 
 		Mix_Music* testSound;
 		std::string m_DataPath;
+		int m_CurrentThreadCount;
 
 		void ThreadPlaySound(const std::string& filename, int volume);
 	};
