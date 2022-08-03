@@ -38,6 +38,9 @@ private:
 	SDL_KeyCode m_KeyLeft;
 	SDL_KeyCode m_KeyRight;
 
+	int m_MouseX;
+	int m_MouseY;
+
 	float m_MovementSpeed;
 	dae::RenderComponent* m_RenderComponent;
 };

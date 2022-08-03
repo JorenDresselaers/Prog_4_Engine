@@ -30,13 +30,15 @@ BurgerTimeGame::~BurgerTimeGame()
 
 void BurgerTimeGame::LoadGame()
 {
+	std::cout << "\nLoading Burger Time";
+
 	auto& newScene = SceneManager::GetInstance().CreateScene("Demo");
 	
 	auto background = std::make_shared<GameObject>();
 	auto logo = std::make_shared<GameObject>();
 	auto text = std::make_shared<GameObject>();
 	auto fps = std::make_shared<GameObject>();
-	
+		
 	auto backgroundImage = ResourceManager::GetInstance().LoadTexture("background.jpg");
 	auto logoImage = ResourceManager::GetInstance().LoadTexture("logo.png");
 	auto pepperImage = ResourceManager::GetInstance().LoadTexture("Pepper_PH.png");
@@ -58,18 +60,18 @@ void BurgerTimeGame::LoadGame()
 	//Actual game stuff
 	
 	auto pepper = std::make_shared<GameObject>();
-	pepper->AddComponent<TextComponent>()->SetText("This is a pepper");
+	pepper->AddComponent<TextComponent>()->SetText("This is a tank");
 	pepper->GetComponent<TextComponent>()->SetPosition(200, 200);
 	pepper->AddComponent<PlayerComponent>();
 
-	auto pepperTwo = std::make_shared<GameObject>();
-	pepperTwo->AddComponent<PlayerComponent>()->SetPosition(200,200);
+	//auto pepperTwo = std::make_shared<GameObject>();
+	//pepperTwo->AddComponent<PlayerComponent>()->SetPosition(200,200);
 	
 	InputManager::GetInstance().SetPlayer(pepper->GetComponent<PlayerComponent>());
-	InputManager::GetInstance().SetPlayerTwo(pepperTwo->GetComponent<PlayerComponent>());
+	//InputManager::GetInstance().SetPlayerTwo(pepperTwo->GetComponent<PlayerComponent>());
 
 	newScene.Add(pepper);
-	newScene.Add(pepperTwo);
+	//newScene.Add(pepperTwo);
 	
 	//AudioManager::GetInstance().Play("Farewell.wav", 100);
 	//AudioManager::GetInstance().Play("Fishfight.wav", 100);

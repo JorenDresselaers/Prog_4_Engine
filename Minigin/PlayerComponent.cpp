@@ -1,6 +1,9 @@
 #include "MiniginPCH.h"
 #include "PlayerComponent.h"
 #include "ResourceManager.h"
+#include "BulletComponent.h"
+#include "GameObject.h"
+#include "SceneManager.h"
 
 PlayerComponent::PlayerComponent()
 	: m_XPos{ 0 }
@@ -10,9 +13,11 @@ PlayerComponent::PlayerComponent()
     , MovingRight{false}
     , MovingUp{false}
     , MovingDown{false}
+    , m_MouseX{}
+    , m_MouseY{}
 {
 	m_RenderComponent = new dae::RenderComponent{};
-	m_RenderComponent->SetTexture(dae::ResourceManager::GetInstance().LoadTexture("Pepper_PH.png"));
+	m_RenderComponent->SetTexture(dae::ResourceManager::GetInstance().LoadTexture("Tank.png"));
     SetKeys();
 }
 
@@ -27,6 +32,8 @@ void PlayerComponent::Update(float deltaTime)
     if (MovingRight) MoveRight();
     if (MovingDown) MoveDown();
     if (MovingUp) MoveUp();
+
+    SDL_GetMouseState(&m_MouseX, &m_MouseY);
 
 	m_RenderComponent->SetPosition(m_XPos, m_YPos);
 	m_RenderComponent->Update(deltaTime);
@@ -83,6 +90,21 @@ void PlayerComponent::ProcessInput(SDL_Event e)
         else if (keyPressed == m_KeyDown)
         {
             MovingDown = false;
+        }
+    }
+
+    if (e.type == SDL_MOUSEBUTTONDOWN)
+    {
+        if (m_MouseX && m_MouseY)
+        {
+            auto newBullet = std::make_shared<dae::GameObject>();
+            newBullet->AddComponent<BulletComponent>()->Initialize(float(m_MouseX), float(m_MouseY), 100, 10);
+
+            dae::SceneManager::GetInstance().GetCurrentScene().Add(newBullet);
+        }
+        else
+        {
+            std::cout << "\nMouse position not found";
         }
     }
 

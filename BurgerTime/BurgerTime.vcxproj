@@ -24,6 +24,7 @@
     <ProjectGuid>{9364dfb3-fbd9-4a38-b21e-345e565a282f}</ProjectGuid>
     <RootNamespace>BurgerTime</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>BurgerTime</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -163,9 +164,13 @@
   <ItemGroup>
     <ClCompile Include="BurgerTime.cpp" />
     <ClCompile Include="BurgerTimeGame.cpp" />
+    <ClCompile Include="GunComponent.cpp" />
+    <ClCompile Include="MapComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BurgerTimeGame.h" />
+    <ClInclude Include="GunComponent.h" />
+    <ClInclude Include="MapComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

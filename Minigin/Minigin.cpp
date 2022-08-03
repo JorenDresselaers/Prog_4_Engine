@@ -113,6 +113,7 @@ bool dae::Minigin::SetGame(Game* newGame)
 
 void dae::Minigin::Cleanup()
 {
+	//delete m_Game;
 	Renderer::GetInstance().Destroy();
 	SDL_DestroyWindow(m_Window);
 	m_Window = nullptr;
@@ -126,8 +127,11 @@ void dae::Minigin::Run()
 	// tell the resource manager where he can find the game data
 	ResourceManager::GetInstance().Init("../Data/");
 	AudioManager::GetInstance().Init("../Data/");
-
-	if(m_Game) m_Game->LoadGame();
+	
+	if (m_Game)
+	{
+		m_Game->LoadGame();
+	}
 
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
@@ -139,6 +143,7 @@ void dae::Minigin::Run()
 	auto lastTime = std::chrono::high_resolution_clock::now();
 	float lag = 0.0f;
 	//float fixedTimeStep{.5f};
+	std::cout << "\nStarting Game Loop";
 	while (doContinue)
 	{
 		const auto start = chrono::high_resolution_clock::now();

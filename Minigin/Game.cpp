@@ -3,4 +3,5 @@
 
 void Game::LoadGame()
 {
+	std::cout << "\nThis game is empty";
 }

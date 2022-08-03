@@ -1,6 +1,7 @@
 #pragma once
 #include "Texture2D.h"
 #include "Component.h"
+#include <memory>
 
 namespace dae {
 	class RenderComponent final : public Component

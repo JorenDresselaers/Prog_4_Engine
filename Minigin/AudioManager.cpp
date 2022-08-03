@@ -44,7 +44,7 @@ void dae::AudioManager::Init(std::string path)
 
 void dae::AudioManager::ProcessEventQueue()
 {
-	if (!m_EventQueue.empty() && m_CurrentThreadCount < m_EventQueue.size())
+	if (!m_EventQueue.empty() && (unsigned int)m_CurrentThreadCount < m_EventQueue.size())
 	{
 		//std::cout << "\n\nProcessing sound:\nQueue size = " << m_EventQueue.size();
 		//std::cout << "\nAmount of threads running = " << m_CurrentThreadCount;

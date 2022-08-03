@@ -22,3 +22,21 @@ dae::Scene& SceneManager::CreateScene(const std::string& name)
 	m_CurrentScene = scene;
 	return *scene;
 }
+
+bool dae::SceneManager::SetScene(const std::string& name)
+{
+	for (auto currentScene : m_Scenes)
+	{
+		if (currentScene->m_Name == name)
+		{
+			m_CurrentScene = currentScene;
+			return true;
+		}
+	}
+	return false;
+}
+
+dae::Scene& dae::SceneManager::GetCurrentScene()
+{
+	return *m_CurrentScene;
+}

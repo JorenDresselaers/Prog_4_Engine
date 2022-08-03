@@ -7,14 +7,6 @@ struct dae::InputManager::Impl
     Impl()
         : ButtonState{ false }
         , ButtonPreviousState{ false }
-        //, MovingLeft{false}
-        //, MovingRight{false}
-        //, MovingDown{false}
-        //, MovingUp{false}
-        //, MovingLeftTwo{false}
-        //, MovingRightTwo{false}
-        //, MovingDownTwo{false}
-        //, MovingUpTwo{false}
     {}
 
     ~Impl()
@@ -51,100 +43,15 @@ struct dae::InputManager::Impl
             {
                 return false;
             }
-            player->ProcessInput(e);
 
-            //if (e.type == SDL_KEYDOWN) 
-            //{
-            //    switch (e.key.keysym.sym)
-            //    {
-            //    case SDLK_LEFT:
-            //        MovingLeft = true;
-            //        break;
-            //    
-            //    case SDLK_RIGHT:
-            //        MovingRight = true;
-            //        break;
-            //    
-            //    case SDLK_UP:
-            //        MovingUp = true;
-            //        break;
-            //    
-            //    case SDLK_DOWN:
-            //        MovingDown = true;
-            //        break;
-
-            //    case SDLK_w:
-            //        MovingUpTwo = true;
-            //        break;
-            //    case SDLK_s:
-            //        MovingDownTwo = true;
-            //        break;
-            //    case SDLK_a:
-            //        MovingLeftTwo = true;
-            //        break;
-            //    case SDLK_d:
-            //        MovingRightTwo = true;
-            //        break;
-
-            //    }
-            //}
-
-            //if (e.type == SDL_KEYUP)
-            //{
-            //    switch (e.key.keysym.sym)
-            //    {
-            //    case SDLK_LEFT:
-            //        MovingLeft = false;
-            //        break;
-
-            //    case SDLK_RIGHT:
-            //        MovingRight = false;
-            //        break;
-
-            //    case SDLK_UP:
-            //        MovingUp = false;
-            //        break;
-
-            //    case SDLK_DOWN:
-            //        MovingDown = false;
-            //        break;
-
-            //    case SDLK_w:
-            //        MovingUpTwo = false;
-            //        break;
-            //    case SDLK_s:
-            //        MovingDownTwo = false;
-            //        break;
-            //    case SDLK_a:
-            //        MovingLeftTwo = false;
-            //        break;
-            //    case SDLK_d:
-            //        MovingRightTwo = false;
-            //        break;
-            //    }
-            //}
+            if(player) player->ProcessInput(e);
+            if(playerTwo) playerTwo->ProcessInput(e);
 
             if (e.type == SDL_MOUSEBUTTONDOWN) 
             {
-                AudioManager::GetInstance().Play("Fishfight.wav", 100);
+                //AudioManager::GetInstance().Play("Fishfight.wav", 100);
             }
         }
-
-        //if (player)
-        //{
-        //    if (MovingLeft) player->MoveLeft();
-        //    if (MovingRight) player->MoveRight();
-        //    if (MovingDown) player->MoveDown();
-        //    if (MovingUp) player->MoveUp();
-        //}
-        //
-        //if (playerTwo)
-        //{
-        //    if (MovingLeftTwo) playerTwo->MoveLeft();
-        //    if (MovingRightTwo) playerTwo->MoveRight();
-        //    if (MovingDownTwo) playerTwo->MoveDown();
-        //    if (MovingUpTwo) playerTwo->MoveUp();
-        //}
 
         return true;
     }
@@ -166,7 +73,7 @@ struct dae::InputManager::Impl
         //    }
         //    if (e.type == SDL_KEYDOWN) {
         //
-        //    }rg
+        //    }
         //    if (e.type == SDL_MOUSEBUTTONDOWN) {
         //
         //    }
@@ -334,15 +241,6 @@ struct dae::InputManager::Impl
     static const int m_NumberOfButtons{ 14 };
     bool ButtonState[m_NumberOfButtons];
     bool ButtonPreviousState[m_NumberOfButtons];
-
-    //bool MovingLeft;
-    //bool MovingRight;
-    //bool MovingUp;
-    //bool MovingDown;
-    //bool MovingLeftTwo;
-    //bool MovingRightTwo;
-    //bool MovingUpTwo;
-    //bool MovingDownTwo;
 
     Command* ButtonA = new Fire();
     Command* ButtonB = new Jump();

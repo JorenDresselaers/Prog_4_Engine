@@ -14,7 +14,7 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Components">
-      <UniqueIdentifier>{061db995-cb1a-455d-a70d-044ed1c9af49}</UniqueIdentifier>
+      <UniqueIdentifier>{280232f8-05fa-4c8d-bdc3-a6768d3b5671}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -24,10 +24,22 @@
     <ClCompile Include="BurgerTimeGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GunComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="MapComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BurgerTimeGame.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GunComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="MapComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

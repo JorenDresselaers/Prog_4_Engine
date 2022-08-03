@@ -12,6 +12,7 @@
 #	endif
 #endif //GLM_SWIZZLE
 #include <cstddef>
+#pragma warning( disable : 4201)
 
 namespace glm
 {
