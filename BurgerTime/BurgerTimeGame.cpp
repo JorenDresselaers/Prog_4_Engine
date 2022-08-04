@@ -32,7 +32,7 @@ void BurgerTimeGame::LoadGame()
 {
 	std::cout << "\nLoading Burger Time";
 
-	auto& newScene = SceneManager::GetInstance().CreateScene("Demo");
+	auto& newScene = SceneManager::GetInstance().CreateScene("Tron");
 	
 	auto background = std::make_shared<GameObject>();
 	auto logo = std::make_shared<GameObject>();
@@ -78,4 +78,8 @@ void BurgerTimeGame::LoadGame()
 	//AudioManager::GetInstance().Play("Greeting1.wav", 100);
 	//AudioManager::GetInstance().Play("Greeting2.wav", 100);
 
+}
+
+void BurgerTimeGame::LoadLevel()
+{
 }

@@ -12,6 +12,8 @@ public:
 	BurgerTimeGame();
 	~BurgerTimeGame();
 	void LoadGame() override;
+
+	void LoadLevel();
 private:
 	//GameObject* m_pPepper;
 };

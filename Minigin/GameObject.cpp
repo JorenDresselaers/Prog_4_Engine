@@ -2,6 +2,8 @@
 #include "GameObject.h"
 #include "ResourceManager.h"
 #include "Renderer.h"
+#include "CollisionComponent.h"
+#include "BulletComponent.h"
 
 
 void dae::GameObject::SetParent(GameObject* newParent)
@@ -28,6 +30,24 @@ void dae::GameObject::Update(float deltaTime)
 	{
 		currentComponent->Update(deltaTime);
 	}
+
+	if (GetComponent<CollisionComponent>() && GetComponent<BulletComponent>())
+	{
+		//std::cout << "\nMoving bullet collision";
+		GetComponent<CollisionComponent>()->SetPosition(
+			GetComponent<BulletComponent>()->GetX(),
+			GetComponent<BulletComponent>()->GetY()
+		);
+	}
+	
+	if (GetComponent<RenderComponent>() && GetComponent<BulletComponent>())
+	{
+		//std::cout << "\nMoving bullet Render";
+		GetComponent<RenderComponent>()->SetPosition(
+			GetComponent<BulletComponent>()->GetX(),
+			GetComponent<BulletComponent>()->GetY()
+		);
+	}
 }
 
 void dae::GameObject::Render() const
@@ -37,16 +57,6 @@ void dae::GameObject::Render() const
 		currentComponent->Render();
 	}
 }
-
-//void dae::GameObject::SetTexture(const std::string& filename)
-//{
-//	m_Texture = ResourceManager::GetInstance().LoadTexture(filename);
-//}
-
-//void dae::GameObject::SetPosition(float x, float y)
-//{
-//	m_Transform.SetPosition(x, y, 0.0f);
-//}
 
 size_t dae::GameObject::GetChildCount() const
 {

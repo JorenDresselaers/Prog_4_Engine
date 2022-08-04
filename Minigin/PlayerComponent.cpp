@@ -4,6 +4,8 @@
 #include "BulletComponent.h"
 #include "GameObject.h"
 #include "SceneManager.h"
+#include "WallComponent.h"
+#include "CollisionComponent.h"
 
 PlayerComponent::PlayerComponent()
 	: m_XPos{ 0 }
@@ -95,16 +97,56 @@ void PlayerComponent::ProcessInput(SDL_Event e)
 
     if (e.type == SDL_MOUSEBUTTONDOWN)
     {
-        if (m_MouseX && m_MouseY)
+        switch (e.button.button)
         {
-            auto newBullet = std::make_shared<dae::GameObject>();
-            newBullet->AddComponent<BulletComponent>()->Initialize(float(m_MouseX), float(m_MouseY), 100, 10);
+        case SDL_BUTTON_LEFT:
+            if (m_MouseX && m_MouseY)
+            {
+                auto newBullet = std::make_shared<dae::GameObject>();
 
-            dae::SceneManager::GetInstance().GetCurrentScene().Add(newBullet);
-        }
-        else
-        {
-            std::cout << "\nMouse position not found";
+                auto image = dae::ResourceManager::GetInstance().LoadTexture("bullet.png");
+
+                newBullet->AddComponent<BulletComponent>()->Initialize(m_XPos, m_YPos, float(m_MouseX), float(m_MouseY), 100, 100);
+                newBullet->AddComponent<dae::RenderComponent>()->SetTexture(image);
+
+                newBullet->AddComponent<CollisionComponent>()->Initialize(
+                    m_XPos + float(m_RenderComponent->GetWidth() / 2),
+                    m_YPos - float(m_RenderComponent->GetHeight() / 2),
+                    newBullet->GetComponent<dae::RenderComponent>()->GetWidth(),
+                    newBullet->GetComponent<dae::RenderComponent>()->GetHeight()
+                );
+
+                dae::SceneManager::GetInstance().GetCurrentScene().Add(newBullet);
+            }
+            else
+            {
+                std::cout << "\nMouse position not found";
+            }
+            break;
+        case SDL_BUTTON_RIGHT:
+            if (m_MouseX && m_MouseY)
+            {
+                auto newWall= std::make_shared<dae::GameObject>();
+
+                auto image = dae::ResourceManager::GetInstance().LoadTexture("wall.png");
+
+                newWall->AddComponent<dae::RenderComponent>()->SetTexture(image);
+                newWall->AddComponent<dae::RenderComponent>()->SetPosition(m_MouseX - float(m_RenderComponent->GetWidth() / 2), m_MouseY - float(m_RenderComponent->GetHeight() / 2));
+                //newWall->AddComponent<WallComponent>()->Initialize(m_MouseX - float(m_RenderComponent->GetWidth() / 2), m_MouseY - float(m_RenderComponent->GetHeight() / 2));
+                newWall->AddComponent<CollisionComponent>()->Initialize(
+                    m_MouseX - float(m_RenderComponent->GetWidth() / 2),
+                    m_MouseY - float(m_RenderComponent->GetHeight() / 2),
+                    newWall->GetComponent<dae::RenderComponent>()->GetWidth(),
+                    newWall->GetComponent<dae::RenderComponent>()->GetHeight()
+                );
+
+                dae::SceneManager::GetInstance().GetCurrentScene().Add(newWall);
+            }
+            else
+            {
+                std::cout << "\nMouse position not found";
+            }
+            break;
         }
     }
 
@@ -112,10 +154,14 @@ void PlayerComponent::ProcessInput(SDL_Event e)
 
 void PlayerComponent::SetKeys()
 {
-    m_KeyUp = SDLK_UP;
-    m_KeyDown = SDLK_DOWN;
-    m_KeyLeft = SDLK_LEFT;
-    m_KeyRight = SDLK_RIGHT;
+    //m_KeyUp = SDLK_UP;
+    //m_KeyDown = SDLK_DOWN;
+    //m_KeyLeft = SDLK_LEFT;
+    //m_KeyRight = SDLK_RIGHT;
+    m_KeyUp = SDLK_w;
+    m_KeyDown = SDLK_s;
+    m_KeyLeft = SDLK_a;
+    m_KeyRight = SDLK_d;
 }
 
 void PlayerComponent::SetKeys(SDL_KeyCode up, SDL_KeyCode down, SDL_KeyCode left, SDL_KeyCode right)

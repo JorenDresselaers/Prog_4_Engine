@@ -29,6 +29,8 @@ void GunComponent::Render() const
 
 void GunComponent::Shoot(float x, float y)
 {
+	(void)x;
+	(void)y;
 	auto newBullet = std::make_shared<GameObject>();
-	newBullet->AddComponent<BulletComponent>()->Initialize(x, y, 10, 10);
+	//newBullet->AddComponent<BulletComponent>()->Initialize(x, y, 10, 10);
 }
