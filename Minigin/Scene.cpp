@@ -3,6 +3,7 @@
 #include "BulletComponent.h"
 #include "CollisionComponent.h"
 #include "RenderComponent.h"
+#include "DeletionComponent.h"
 
 using namespace dae;
 
@@ -23,9 +24,19 @@ void Scene::Update(float deltaTime)
 {
 	if (m_Objects.size() > 0)
 	{
-		for (auto& object : m_Objects)
+		for (size_t object{}; object < m_Objects.size(); ++object)
+		//for (auto& object : m_Objects)
 		{
-			object->Update(deltaTime);
+			m_Objects.at(object)->Update(deltaTime);
+
+			if (m_Objects.at(object)->GetComponent<DeletionComponent>() != nullptr)
+			{
+				if (m_Objects.at(object)->GetComponent<DeletionComponent>()->GetCanDelete())
+				{
+					std::cout << "\nShould've deleted the thingy";
+					m_Objects.erase(std::remove(m_Objects.begin(), m_Objects.end(), m_Objects.at(object)), m_Objects.end());
+				}
+			}
 		}
 	}
 }

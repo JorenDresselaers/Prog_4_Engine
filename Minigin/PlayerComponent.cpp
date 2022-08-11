@@ -6,6 +6,7 @@
 #include "SceneManager.h"
 #include "WallComponent.h"
 #include "CollisionComponent.h"
+#include "DeletionComponent.h"
 
 PlayerComponent::PlayerComponent()
 	: m_XPos{ 0 }
@@ -116,6 +117,8 @@ void PlayerComponent::ProcessInput(SDL_Event e)
                     newBullet->GetComponent<dae::RenderComponent>()->GetHeight()
                 );
 
+                newBullet->AddComponent<DeletionComponent>()->SetCanDelete(true);
+
                 dae::SceneManager::GetInstance().GetCurrentScene().Add(newBullet);
             }
             else
@@ -139,7 +142,7 @@ void PlayerComponent::ProcessInput(SDL_Event e)
                     newWall->GetComponent<dae::RenderComponent>()->GetWidth(),
                     newWall->GetComponent<dae::RenderComponent>()->GetHeight()
                 );
-
+                
                 dae::SceneManager::GetInstance().GetCurrentScene().Add(newWall);
             }
             else

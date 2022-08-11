@@ -99,6 +99,9 @@
     <ClInclude Include="CollisionComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="DeletionComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniginPCH.cpp">
@@ -168,6 +171,9 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="CollisionComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="DeletionComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
