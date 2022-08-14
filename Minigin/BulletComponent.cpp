@@ -1,6 +1,9 @@
 #include "MiniginPCH.h"
 #include "BulletComponent.h"
+#include "GameObject.h"
 #include "ResourceManager.h"
+#include "CollisionComponent.h"
+#include "RenderComponent.h"
 
 BulletComponent::BulletComponent()
 	: m_XPos{ 0 }
@@ -24,9 +27,24 @@ BulletComponent::~BulletComponent()
 
 void BulletComponent::Update(float deltaTime, dae::GameObject* parentObject)
 {
-	(void)parentObject;
 	m_XPos += m_XSpeed*deltaTime;
 	m_YPos += m_YSpeed*deltaTime;
+
+	if (parentObject->GetComponent<CollisionComponent>())
+	{
+		parentObject->GetComponent<CollisionComponent>()->SetPosition(
+			m_XPos,
+			m_YPos
+		);
+	}
+
+	if (parentObject->GetComponent<dae::RenderComponent>())
+	{
+		parentObject->GetComponent<dae::RenderComponent>()->SetPosition(
+			m_XPos,
+			m_YPos
+		);
+	}
 
 	//m_RenderComponent->SetPosition(m_XPos, m_YPos);
 }

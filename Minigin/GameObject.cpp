@@ -30,24 +30,6 @@ void dae::GameObject::Update(float deltaTime)
 	{
 		currentComponent->Update(deltaTime, this);
 	}
-
-	if (GetComponent<CollisionComponent>() && GetComponent<BulletComponent>())
-	{
-		//std::cout << "\nMoving bullet collision";
-		GetComponent<CollisionComponent>()->SetPosition(
-			GetComponent<BulletComponent>()->GetX(),
-			GetComponent<BulletComponent>()->GetY()
-		);
-	}
-	
-	if (GetComponent<RenderComponent>() && GetComponent<BulletComponent>())
-	{
-		//std::cout << "\nMoving bullet Render";
-		GetComponent<RenderComponent>()->SetPosition(
-			GetComponent<BulletComponent>()->GetX(),
-			GetComponent<BulletComponent>()->GetY()
-		);
-	}
 }
 
 void dae::GameObject::Render() const

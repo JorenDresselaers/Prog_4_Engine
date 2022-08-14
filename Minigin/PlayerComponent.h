@@ -1,10 +1,10 @@
 #pragma once
 #include "Component.h"
 #include "Command.h"
-#include "RenderComponent.h"
 #include <SDL.h>
+#include "GameObject.h"
 
-class PlayerComponent : public Component
+class PlayerComponent final : public Component
 {
 public:
 	PlayerComponent();
@@ -42,6 +42,7 @@ private:
 	int m_MouseY;
 
 	float m_MovementSpeed;
-	dae::RenderComponent* m_RenderComponent;
+
+	dae::GameObject* m_ParentObject;
 };
 

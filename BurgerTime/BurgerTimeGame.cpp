@@ -58,19 +58,21 @@ void BurgerTimeGame::LoadGame()
 	newScene.Add(fps);
 	
 	//Actual game stuff
+	auto tankImage = dae::ResourceManager::GetInstance().LoadTexture("Tank.png");
 	
-	auto pepper = std::make_shared<GameObject>();
-	pepper->AddComponent<TextComponent>()->SetText("This is a tank");
-	pepper->GetComponent<TextComponent>()->SetPosition(200, 200);
-	pepper->AddComponent<PlayerComponent>();
+	auto tank = std::make_shared<GameObject>();
+	tank->AddComponent<TextComponent>()->SetText("This is a tank");
+	tank->GetComponent<TextComponent>()->SetPosition(200, 200);
+	tank->AddComponent<RenderComponent>()->SetTexture(tankImage);
+	tank->AddComponent<PlayerComponent>();
 
 	//auto pepperTwo = std::make_shared<GameObject>();
 	//pepperTwo->AddComponent<PlayerComponent>()->SetPosition(200,200);
 	
-	InputManager::GetInstance().SetPlayer(pepper->GetComponent<PlayerComponent>());
+	InputManager::GetInstance().SetPlayer(tank->GetComponent<PlayerComponent>());
 	//InputManager::GetInstance().SetPlayerTwo(pepperTwo->GetComponent<PlayerComponent>());
 
-	newScene.Add(pepper);
+	newScene.Add(tank);
 	//newScene.Add(pepperTwo);
 	
 	//AudioManager::GetInstance().Play("Farewell.wav", 100);

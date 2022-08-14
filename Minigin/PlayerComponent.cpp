@@ -6,7 +6,9 @@
 #include "SceneManager.h"
 #include "WallComponent.h"
 #include "CollisionComponent.h"
+#include "RenderComponent.h"
 #include "DeletionComponent.h"
+#include "TextComponent.h"
 
 PlayerComponent::PlayerComponent()
 	: m_XPos{ 0 }
@@ -18,20 +20,20 @@ PlayerComponent::PlayerComponent()
     , MovingDown{false}
     , m_MouseX{}
     , m_MouseY{}
+    , m_ParentObject{ nullptr }
 {
-	m_RenderComponent = new dae::RenderComponent{};
-	m_RenderComponent->SetTexture(dae::ResourceManager::GetInstance().LoadTexture("Tank.png"));
     SetKeys();
 }
 
 PlayerComponent::~PlayerComponent()
 {
-	delete m_RenderComponent;
+	//delete m_RenderComponent;
 }
 
 void PlayerComponent::Update(float deltaTime, dae::GameObject* parentObject)
 {
-    (void)parentObject;
+    (void)deltaTime;
+    if(m_ParentObject == nullptr) m_ParentObject = parentObject;
 
     if (MovingLeft) MoveLeft();
     if (MovingRight) MoveRight();
@@ -40,13 +42,13 @@ void PlayerComponent::Update(float deltaTime, dae::GameObject* parentObject)
 
     SDL_GetMouseState(&m_MouseX, &m_MouseY);
 
-	m_RenderComponent->SetPosition(m_XPos, m_YPos);
-	m_RenderComponent->Update(deltaTime, parentObject);
+	parentObject->GetComponent<dae::RenderComponent>()->SetPosition(m_XPos, m_YPos);
+	parentObject->GetComponent<dae::TextComponent>()->SetPosition(m_XPos, m_YPos-20);
 }
 
 void PlayerComponent::Render() const
 {
-	m_RenderComponent->Render();
+	//m_RenderComponent->Render();
 }
 
 std::string PlayerComponent::GetName() const
@@ -113,8 +115,8 @@ void PlayerComponent::ProcessInput(SDL_Event e)
                 newBullet->AddComponent<dae::RenderComponent>()->SetTexture(image);
 
                 newBullet->AddComponent<CollisionComponent>()->Initialize(
-                    m_XPos + float(m_RenderComponent->GetWidth() / 2),
-                    m_YPos - float(m_RenderComponent->GetHeight() / 2),
+                    m_XPos + float(m_ParentObject->GetComponent<dae::RenderComponent>()->GetWidth() / 2),
+                    m_YPos - float(m_ParentObject->GetComponent<dae::RenderComponent>()->GetHeight() / 2),
                     newBullet->GetComponent<dae::RenderComponent>()->GetWidth(),
                     newBullet->GetComponent<dae::RenderComponent>()->GetHeight(),
                     CollisionType::Bullet
@@ -138,7 +140,6 @@ void PlayerComponent::ProcessInput(SDL_Event e)
 
                 newWall->AddComponent<dae::RenderComponent>()->SetTexture(image);
                 newWall->AddComponent<dae::RenderComponent>()->SetPosition(float(m_MouseX), float(m_MouseY));
-                //newWall->AddComponent<WallComponent>()->Initialize(m_MouseX - float(m_RenderComponent->GetWidth() / 2), m_MouseY - float(m_RenderComponent->GetHeight() / 2));
                 newWall->AddComponent<CollisionComponent>()->Initialize(
                     float(m_MouseX),
                     float(m_MouseY),
