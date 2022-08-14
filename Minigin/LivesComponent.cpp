@@ -4,13 +4,14 @@
 namespace dae
 {
 	LivesComponent::LivesComponent()
+		: m_Lives{ 1 }
 	{
 	}
 
-	void LivesComponent::Update(float deltaTime)
-	{
-		(void)deltaTime;
-	}
+	//void LivesComponent::Update(float deltaTime)
+	//{
+	//	(void)deltaTime;
+	//}
 
 	void LivesComponent::GainLife()
 	{

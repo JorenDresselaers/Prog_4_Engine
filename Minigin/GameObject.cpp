@@ -28,7 +28,7 @@ void dae::GameObject::Update(float deltaTime)
 {
 	for (auto& currentComponent : m_Components)
 	{
-		currentComponent->Update(deltaTime);
+		currentComponent->Update(deltaTime, this);
 	}
 
 	if (GetComponent<CollisionComponent>() && GetComponent<BulletComponent>())

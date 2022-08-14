@@ -9,7 +9,7 @@ namespace dae
 		LivesComponent();
 		~LivesComponent() = default;
 
-		void Update(float deltaTime) override;
+		//void Update(float deltaTime) override;
 
 		void GainLife();
 		void LoseLife();

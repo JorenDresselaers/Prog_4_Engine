@@ -22,8 +22,9 @@ BulletComponent::~BulletComponent()
 	//m_RenderComponent = nullptr;
 }
 
-void BulletComponent::Update(float deltaTime)
+void BulletComponent::Update(float deltaTime, dae::GameObject* parentObject)
 {
+	(void)parentObject;
 	m_XPos += m_XSpeed*deltaTime;
 	m_YPos += m_YSpeed*deltaTime;
 

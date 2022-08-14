@@ -10,7 +10,7 @@ public:
 	PlayerComponent();
 	~PlayerComponent();
 
-	void Update(float deltaTime) override;
+	void Update(float deltaTime, dae::GameObject* parentObject) override;
 	void Render() const override;
 	std::string GetName() const override;
 

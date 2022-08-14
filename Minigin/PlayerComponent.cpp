@@ -29,8 +29,10 @@ PlayerComponent::~PlayerComponent()
 	delete m_RenderComponent;
 }
 
-void PlayerComponent::Update(float deltaTime)
+void PlayerComponent::Update(float deltaTime, dae::GameObject* parentObject)
 {
+    (void)parentObject;
+
     if (MovingLeft) MoveLeft();
     if (MovingRight) MoveRight();
     if (MovingDown) MoveDown();
@@ -39,7 +41,7 @@ void PlayerComponent::Update(float deltaTime)
     SDL_GetMouseState(&m_MouseX, &m_MouseY);
 
 	m_RenderComponent->SetPosition(m_XPos, m_YPos);
-	m_RenderComponent->Update(deltaTime);
+	m_RenderComponent->Update(deltaTime, parentObject);
 }
 
 void PlayerComponent::Render() const
@@ -114,10 +116,11 @@ void PlayerComponent::ProcessInput(SDL_Event e)
                     m_XPos + float(m_RenderComponent->GetWidth() / 2),
                     m_YPos - float(m_RenderComponent->GetHeight() / 2),
                     newBullet->GetComponent<dae::RenderComponent>()->GetWidth(),
-                    newBullet->GetComponent<dae::RenderComponent>()->GetHeight()
+                    newBullet->GetComponent<dae::RenderComponent>()->GetHeight(),
+                    CollisionType::Bullet
                 );
 
-                newBullet->AddComponent<DeletionComponent>()->SetCanDelete(true);
+                newBullet->AddComponent<DeletionComponent>();
 
                 dae::SceneManager::GetInstance().GetCurrentScene().Add(newBullet);
             }
@@ -134,13 +137,14 @@ void PlayerComponent::ProcessInput(SDL_Event e)
                 auto image = dae::ResourceManager::GetInstance().LoadTexture("wall.png");
 
                 newWall->AddComponent<dae::RenderComponent>()->SetTexture(image);
-                newWall->AddComponent<dae::RenderComponent>()->SetPosition(m_MouseX - float(m_RenderComponent->GetWidth() / 2), m_MouseY - float(m_RenderComponent->GetHeight() / 2));
+                newWall->AddComponent<dae::RenderComponent>()->SetPosition(float(m_MouseX), float(m_MouseY));
                 //newWall->AddComponent<WallComponent>()->Initialize(m_MouseX - float(m_RenderComponent->GetWidth() / 2), m_MouseY - float(m_RenderComponent->GetHeight() / 2));
                 newWall->AddComponent<CollisionComponent>()->Initialize(
-                    m_MouseX - float(m_RenderComponent->GetWidth() / 2),
-                    m_MouseY - float(m_RenderComponent->GetHeight() / 2),
+                    float(m_MouseX),
+                    float(m_MouseY),
                     newWall->GetComponent<dae::RenderComponent>()->GetWidth(),
-                    newWall->GetComponent<dae::RenderComponent>()->GetHeight()
+                    newWall->GetComponent<dae::RenderComponent>()->GetHeight(),
+                    CollisionType::Wall
                 );
                 
                 dae::SceneManager::GetInstance().GetCurrentScene().Add(newWall);

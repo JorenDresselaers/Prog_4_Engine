@@ -2,13 +2,19 @@
 #include "CollisionComponent.h"
 
 CollisionComponent::CollisionComponent()
+	: m_CollisionType{CollisionType::Null}
+	, m_X{ 0 }
+	, m_Y{ 0 }
+	, m_Width{ 0 }
+	, m_Height{ 0 }
+	, m_CollisionRange{ 100 }
 {
 }
 
-void CollisionComponent::Update(float deltaTime)
-{
-	(void)deltaTime;
-}
+//void CollisionComponent::Update(float deltaTime, dae::GameObject* parentObject)
+//{
+//	(void)deltaTime;
+//}
 
 void CollisionComponent::SetPosition(float x, float y)
 {
@@ -16,12 +22,13 @@ void CollisionComponent::SetPosition(float x, float y)
 	m_Y = y;
 }
 
-void CollisionComponent::Initialize(float x, float y, float width, float height)
+void CollisionComponent::Initialize(float x, float y, float width, float height, CollisionType type)
 {
 	m_X = x;
 	m_Y = y;
 	m_Width = width;
 	m_Height = height;
+	m_CollisionType = type;
 }
 
 bool CollisionComponent::isColliding(float x, float y, float width, float height)
@@ -52,4 +59,9 @@ bool CollisionComponent::isColliding(float x, float y)
 	}
 
 	return isColliding;
+}
+
+CollisionType CollisionComponent::GetType() const
+{
+	return m_CollisionType;
 }

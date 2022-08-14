@@ -24,7 +24,6 @@ public:
     MapComponent();
     ~MapComponent() = default;
 
-    void Update(float deltaTime) override;
     bool LoadMap(const std::string fileToLoad);
 
 private:

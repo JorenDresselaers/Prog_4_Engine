@@ -10,11 +10,6 @@ MapComponent::MapComponent()
 {
 }
 
-void MapComponent::Update(float deltaTime)
-{
-	(void)deltaTime;
-}
-
 bool MapComponent::LoadMap(const std::string fileToLoad)
 {
 	bool levelLoaded{ false };

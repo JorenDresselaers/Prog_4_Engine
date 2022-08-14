@@ -33,7 +33,6 @@ void Scene::Update(float deltaTime)
 			{
 				if (m_Objects.at(object)->GetComponent<DeletionComponent>()->GetCanDelete())
 				{
-					std::cout << "\nShould've deleted the thingy";
 					m_Objects.erase(std::remove(m_Objects.begin(), m_Objects.end(), m_Objects.at(object)), m_Objects.end());
 				}
 			}

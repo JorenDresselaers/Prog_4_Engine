@@ -10,7 +10,7 @@ public:
 	WallComponent();
 	~WallComponent();
 
-	void Update(float deltaTime) override;
+	void Update(float deltaTime, dae::GameObject* parentObject) override;
 	void Render() const override;
 
 	void Initialize(float xPos, float yPos);

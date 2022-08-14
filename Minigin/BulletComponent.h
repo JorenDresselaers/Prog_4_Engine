@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-#include "RenderComponent.h"
+//#include "RenderComponent.h"
 
 class BulletComponent final : public Component
 {
@@ -8,7 +8,7 @@ public:
 	BulletComponent();
 	~BulletComponent();
 
-	void Update(float deltaTime) override;
+	void Update(float deltaTime, dae::GameObject* parentObject) override;
 	void Render() const override;
 
 	void Initialize(float originX, float originY, float targetX, float targetY, float xspeed, float yspeed);

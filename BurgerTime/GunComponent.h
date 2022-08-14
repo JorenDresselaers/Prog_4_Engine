@@ -7,7 +7,7 @@ public:
 	GunComponent();
 	~GunComponent();
 
-	void Update(float deltaTime) override;
+	void Update(float deltaTime, dae::GameObject* parentObject) override;
 	void Render() const override;
 
 	void Shoot(float x, float y);

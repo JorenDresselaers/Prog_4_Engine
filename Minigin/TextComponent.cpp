@@ -19,9 +19,10 @@ void dae::TextComponent::Render() const
 	m_Text->Render();
 }
 
-void dae::TextComponent::Update(float deltaTime)
+void dae::TextComponent::Update(float deltaTime, dae::GameObject* parentObject)
 {
-	m_Text->Update(deltaTime);
+	(void)parentObject;
+	m_Text->Update(deltaTime, parentObject);
 }
 
 void dae::TextComponent::SetText(std::string newText)

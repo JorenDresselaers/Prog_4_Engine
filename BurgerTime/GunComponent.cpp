@@ -15,9 +15,10 @@ GunComponent::~GunComponent()
 {
 }
 
-void GunComponent::Update(float deltaTime)
+void GunComponent::Update(float deltaTime, dae::GameObject* parentObject)
 {
 	(void)deltaTime;
+	(void)parentObject;
 	int* x{};
 	int* y{};
 	SDL_GetMouseState(x, y);

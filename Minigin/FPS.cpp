@@ -21,8 +21,10 @@ void dae::FPS::Render() const
 	m_Text->Render();
 }
 
-void dae::FPS::Update(float deltaTime)
+void dae::FPS::Update(float deltaTime, dae::GameObject* parentObject)
 {
+	(void)parentObject;
+
 	++m_Frames;
 	m_TimePassed += deltaTime;
 	//m_Text->SetText("Toodles");
@@ -36,7 +38,7 @@ void dae::FPS::Update(float deltaTime)
 		m_Frames = 0;
 	}
 
-	m_Text->Update(deltaTime);
+	m_Text->Update(deltaTime, nullptr);
 }
 
 void dae::FPS::SetPosition(float x, float y)

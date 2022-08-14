@@ -15,9 +15,10 @@ dae::TextObject::~TextObject()
 {
 }
 
-void dae::TextObject::Update(float deltaTime)
+void dae::TextObject::Update(float deltaTime, dae::GameObject* parentObject)
 {
 	(void)deltaTime; //variable unused
+	(void)parentObject;
 
 	if (m_NeedsUpdate)
 	{

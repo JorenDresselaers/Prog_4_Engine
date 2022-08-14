@@ -13,7 +13,7 @@ namespace dae
 		~TextComponent();
 
 		void Render() const override;
-		void Update(float deltaTime) override;
+		void Update(float deltaTime, dae::GameObject* parentObject) override;
 		void SetText(std::string newText);
 		void SetPosition(float x, float y);
 	private:

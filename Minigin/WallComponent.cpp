@@ -16,9 +16,9 @@ WallComponent::~WallComponent()
 	m_RenderComponent = nullptr;
 }
 
-void WallComponent::Update(float deltaTime)
+void WallComponent::Update(float deltaTime, dae::GameObject* parentObject)
 {
-	m_RenderComponent->Update(deltaTime);
+	m_RenderComponent->Update(deltaTime, parentObject);
 }
 
 void WallComponent::Render() const
