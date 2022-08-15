@@ -1,4 +1,3 @@
-#include "MiniginPCH.h"
 #include "LivesComponent.h"
 
 namespace dae

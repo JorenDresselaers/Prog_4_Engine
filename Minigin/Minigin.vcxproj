@@ -228,21 +228,15 @@ xcopy $(SolutionDir)3rdParty\SDL2_mixer-2.0.4\lib\$(PlatformTarget)\*.dll $(Outp
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
-    <ClInclude Include="BulletComponent.h" />
-    <ClInclude Include="CollisionComponent.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="DeletionComponent.h" />
     <ClInclude Include="Font.h" />
-    <ClInclude Include="FPS.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="InputManager.h" />
-    <ClInclude Include="LivesComponent.h" />
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="MiniginPCH.h" />
-    <ClInclude Include="PlayerComponent.h" />
-    <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
@@ -256,16 +250,12 @@ xcopy $(SolutionDir)3rdParty\SDL2_mixer-2.0.4\lib\$(PlatformTarget)\*.dll $(Outp
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
-    <ClCompile Include="BulletComponent.cpp" />
-    <ClCompile Include="CollisionComponent.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="DeletionComponent.cpp" />
     <ClCompile Include="Font.cpp" />
-    <ClCompile Include="FPS.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="LivesComponent.cpp" />
     <ClCompile Include="Minigin.cpp" />
     <ClCompile Include="MiniginPCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -274,8 +264,6 @@ xcopy $(SolutionDir)3rdParty\SDL2_mixer-2.0.4\lib\$(PlatformTarget)\*.dll $(Outp
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MiniginPCH.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="PlayerComponent.cpp" />
-    <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />

@@ -6,6 +6,11 @@
 #pragma warning( disable : 26495)
 #pragma warning( disable : 26812)
 
+namespace dae
+{
+	class GameObject;
+}
+
 class BurgerTimeGame final : public Game
 {
 public:
@@ -13,8 +18,13 @@ public:
 	~BurgerTimeGame();
 	void LoadGame() override;
 
+	void ProcessKeyUp(const SDL_KeyboardEvent& e) override;
+	void ProcessKeyDown(const SDL_KeyboardEvent& e) override;
+	void ProcessMouseUp(const SDL_MouseButtonEvent& e) override;
+	void ProcessMouseDown(const SDL_MouseButtonEvent& e) override;
+
 	void LoadLevel();
 private:
-	//GameObject* m_pPepper;
+	dae::GameObject* m_pTank;
 };
 

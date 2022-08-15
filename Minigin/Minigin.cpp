@@ -11,10 +11,10 @@
 #include "Scene.h"
 
 #include <chrono>
-#include "RenderComponent.h"
-#include "TextComponent.h"
-#include "FPS.h"
-#include "LivesComponent.h"
+//#include "RenderComponent.h"
+//#include "TextComponent.h"
+//#include "FPS.h"
+//#include "LivesComponent.h"
 #include "Game.h"
 
 using namespace std;

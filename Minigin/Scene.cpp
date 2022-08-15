@@ -1,8 +1,5 @@
 #include "MiniginPCH.h"
 #include "Scene.h"
-#include "BulletComponent.h"
-#include "CollisionComponent.h"
-#include "RenderComponent.h"
 #include "DeletionComponent.h"
 
 using namespace dae;

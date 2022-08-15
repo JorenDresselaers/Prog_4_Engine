@@ -1,6 +1,6 @@
-#include "MiniginPCH.h"
 #include "FPS.h"
 #include <string>
+#include <iostream>
 
 dae::FPS::FPS()
 	: m_Text{ nullptr }

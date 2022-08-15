@@ -30,6 +30,24 @@
     <ClCompile Include="MapComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="BulletComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="FPS.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="LivesComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BurgerTimeGame.h">
@@ -39,6 +57,24 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="MapComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="FPS.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="LivesComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>

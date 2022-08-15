@@ -1,7 +1,7 @@
-#include "MiniginPCH.h"
 #include "RenderComponent.h"
 #include "ResourceManager.h"
 #include "Renderer.h"
+#include "SDL.h"
 
 dae::RenderComponent::RenderComponent()
 	: m_X{ 0 }

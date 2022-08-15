@@ -17,6 +17,11 @@ struct dae::InputManager::Impl
         delete ButtonY;
     }
 
+    void SetGame(Game* newGame)
+    {
+        game = newGame;
+    }
+
     bool ProcessInput()
     {
         DWORD dwResult;
@@ -36,20 +41,30 @@ struct dae::InputManager::Impl
             //std::cout << "\nNo controller connected :(";
         }
 
-        SDL_Event e;
+        SDL_Event e{};
         while (SDL_PollEvent(&e)) 
         {
-            if (e.type == SDL_QUIT) 
+            switch (e.type)
             {
+            case SDL_QUIT:
                 return false;
-            }
+                break;
 
-            if(player) player->ProcessInput(e);
-            if(playerTwo) playerTwo->ProcessInput(e);
+            case SDL_MOUSEBUTTONDOWN:
+                game->ProcessMouseDown(e.button);
+                break;
 
-            if (e.type == SDL_MOUSEBUTTONDOWN) 
-            {
-                //AudioManager::GetInstance().Play("Fishfight.wav", 100);
+            case SDL_MOUSEBUTTONUP:
+                game->ProcessMouseUp(e.button);
+                break;
+
+            case SDL_KEYDOWN:
+                game->ProcessKeyDown(e.key);
+                break;
+
+            case SDL_KEYUP:
+                game->ProcessKeyUp(e.key);
+                break;
             }
         }
 
@@ -247,8 +262,10 @@ struct dae::InputManager::Impl
     Command* ButtonX = new Crouch();
     Command* ButtonY = new Die();
 
-    std::shared_ptr<PlayerComponent> player;
-    std::shared_ptr<PlayerComponent> playerTwo;
+    Game* game;
+
+    //std::shared_ptr<PlayerComponent> player;
+    //std::shared_ptr<PlayerComponent> playerTwo;
 };
 
 dae::InputManager::InputManager()
@@ -266,15 +283,9 @@ bool dae::InputManager::IsPressed(ControllerButton button)
     return pimpl->IsPressed(button);
 }
 
-void dae::InputManager::SetPlayer(std::shared_ptr<PlayerComponent> player)
+void dae::InputManager::SetGame(Game* newGame)
 {
-    pimpl->player = player;
-
-}
-
-void dae::InputManager::SetPlayerTwo(std::shared_ptr<PlayerComponent> player)
-{
-    pimpl->playerTwo = player;
+    pimpl->SetGame(newGame);
 }
 
 dae::InputManager::~InputManager()

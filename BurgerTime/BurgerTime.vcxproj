@@ -162,15 +162,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BulletComponent.cpp" />
     <ClCompile Include="BurgerTime.cpp" />
     <ClCompile Include="BurgerTimeGame.cpp" />
+    <ClCompile Include="CollisionComponent.cpp" />
+    <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GunComponent.cpp" />
+    <ClCompile Include="LivesComponent.cpp" />
     <ClCompile Include="MapComponent.cpp" />
+    <ClCompile Include="PlayerComponent.cpp" />
+    <ClCompile Include="RenderComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BulletComponent.h" />
     <ClInclude Include="BurgerTimeGame.h" />
+    <ClInclude Include="CollisionComponent.h" />
+    <ClInclude Include="FPS.h" />
     <ClInclude Include="GunComponent.h" />
+    <ClInclude Include="LivesComponent.h" />
     <ClInclude Include="MapComponent.h" />
+    <ClInclude Include="PlayerComponent.h" />
+    <ClInclude Include="RenderComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

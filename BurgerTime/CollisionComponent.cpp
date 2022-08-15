@@ -1,4 +1,3 @@
-#include "MiniginPCH.h"
 #include "CollisionComponent.h"
 
 CollisionComponent::CollisionComponent()

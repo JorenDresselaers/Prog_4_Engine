@@ -2,9 +2,6 @@
 #include "GameObject.h"
 #include "ResourceManager.h"
 #include "Renderer.h"
-#include "CollisionComponent.h"
-#include "BulletComponent.h"
-
 
 void dae::GameObject::SetParent(GameObject* newParent)
 {

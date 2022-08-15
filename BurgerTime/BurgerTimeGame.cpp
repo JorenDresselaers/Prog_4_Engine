@@ -21,7 +21,9 @@
 using namespace dae;
 
 BurgerTimeGame::BurgerTimeGame()
+	: m_pTank{}
 {
+	InputManager::GetInstance().SetGame(this);
 }
 
 BurgerTimeGame::~BurgerTimeGame()
@@ -69,7 +71,7 @@ void BurgerTimeGame::LoadGame()
 	//auto pepperTwo = std::make_shared<GameObject>();
 	//pepperTwo->AddComponent<PlayerComponent>()->SetPosition(200,200);
 	
-	InputManager::GetInstance().SetPlayer(tank->GetComponent<PlayerComponent>());
+	//InputManager::GetInstance().SetPlayer(tank->GetComponent<PlayerComponent>());
 	//InputManager::GetInstance().SetPlayerTwo(pepperTwo->GetComponent<PlayerComponent>());
 
 	newScene.Add(tank);
@@ -79,7 +81,28 @@ void BurgerTimeGame::LoadGame()
 	//AudioManager::GetInstance().Play("Fishfight.wav", 100);
 	//AudioManager::GetInstance().Play("Greeting1.wav", 100);
 	//AudioManager::GetInstance().Play("Greeting2.wav", 100);
+	m_pTank = tank.get();
+}
 
+void BurgerTimeGame::ProcessKeyUp(const SDL_KeyboardEvent& e)
+{
+	m_pTank->GetComponent<PlayerComponent>()->ProcessKeyUp(e);
+}
+
+void BurgerTimeGame::ProcessKeyDown(const SDL_KeyboardEvent& e)
+{
+	m_pTank->GetComponent<PlayerComponent>()->ProcessKeyDown(e);
+}
+
+void BurgerTimeGame::ProcessMouseUp(const SDL_MouseButtonEvent& e)
+{
+	m_pTank->GetComponent<PlayerComponent>()->ProcessMouseUp(e);
+}
+
+void BurgerTimeGame::ProcessMouseDown(const SDL_MouseButtonEvent& e)
+{
+	std::cout << "\nMouse down in game";
+	m_pTank->GetComponent<PlayerComponent>()->ProcessMouseDown(e);
 }
 
 void BurgerTimeGame::LoadLevel()

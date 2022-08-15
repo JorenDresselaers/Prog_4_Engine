@@ -14,7 +14,13 @@ public:
 	void Render() const override;
 	std::string GetName() const override;
 
-	void ProcessInput(SDL_Event e);
+	//void ProcessInput(SDL_Event e);
+
+	void ProcessKeyUp(const SDL_KeyboardEvent& e);
+	void ProcessKeyDown(const SDL_KeyboardEvent& e);
+	void ProcessMouseUp(const SDL_MouseButtonEvent& e);
+	void ProcessMouseDown(const SDL_MouseButtonEvent& e);
+
 	void SetKeys();
 	void SetKeys(SDL_KeyCode up, SDL_KeyCode down, SDL_KeyCode left, SDL_KeyCode right);
 
@@ -38,8 +44,8 @@ private:
 	SDL_KeyCode m_KeyLeft;
 	SDL_KeyCode m_KeyRight;
 
-	int m_MouseX;
-	int m_MouseY;
+	//int m_MouseX;
+	//int m_MouseY;
 
 	float m_MovementSpeed;
 
