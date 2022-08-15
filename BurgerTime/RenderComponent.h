@@ -13,6 +13,7 @@ namespace dae {
 		void SetTexture(std::shared_ptr<Texture2D> newTexture);
 		void Render() const override;
 		void SetPosition(float x, float y);
+		void SetDimensions(float width, float height);
 
 		std::shared_ptr<Texture2D> GetTexture() const;
 		float GetWidth() const;

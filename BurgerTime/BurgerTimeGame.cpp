@@ -22,6 +22,7 @@ using namespace dae;
 
 BurgerTimeGame::BurgerTimeGame()
 	: m_pTank{}
+	, m_BlockSize{ 20 }
 {
 	InputManager::GetInstance().SetGame(this);
 }
@@ -35,6 +36,8 @@ void BurgerTimeGame::LoadGame()
 	std::cout << "\nLoading Burger Time";
 
 	auto& newScene = SceneManager::GetInstance().CreateScene("Tron");
+
+	LoadLevel();
 	
 	auto background = std::make_shared<GameObject>();
 	auto logo = std::make_shared<GameObject>();
@@ -54,10 +57,10 @@ void BurgerTimeGame::LoadGame()
 	
 	fps->AddComponent<FPS>()->SetPosition(100, 100);
 	
-	newScene.Add(background);
-	newScene.Add(logo);
-	newScene.Add(text);
-	newScene.Add(fps);
+	//newScene.Add(background);
+	//newScene.Add(logo);
+	//newScene.Add(text);
+	//newScene.Add(fps);
 	
 	//Actual game stuff
 	auto tankImage = dae::ResourceManager::GetInstance().LoadTexture("Tank.png");
@@ -68,14 +71,7 @@ void BurgerTimeGame::LoadGame()
 	tank->AddComponent<RenderComponent>()->SetTexture(tankImage);
 	tank->AddComponent<PlayerComponent>();
 
-	//auto pepperTwo = std::make_shared<GameObject>();
-	//pepperTwo->AddComponent<PlayerComponent>()->SetPosition(200,200);
-	
-	//InputManager::GetInstance().SetPlayer(tank->GetComponent<PlayerComponent>());
-	//InputManager::GetInstance().SetPlayerTwo(pepperTwo->GetComponent<PlayerComponent>());
-
 	newScene.Add(tank);
-	//newScene.Add(pepperTwo);
 	
 	//AudioManager::GetInstance().Play("Farewell.wav", 100);
 	//AudioManager::GetInstance().Play("Fishfight.wav", 100);
@@ -101,10 +97,12 @@ void BurgerTimeGame::ProcessMouseUp(const SDL_MouseButtonEvent& e)
 
 void BurgerTimeGame::ProcessMouseDown(const SDL_MouseButtonEvent& e)
 {
-	std::cout << "\nMouse down in game";
 	m_pTank->GetComponent<PlayerComponent>()->ProcessMouseDown(e);
 }
 
 void BurgerTimeGame::LoadLevel()
 {
+	m_LevelLoader.SetLevelSize(30, 28);
+	m_LevelLoader.SetBlockSize(m_BlockSize);
+	m_LevelLoader.LoadLevel("Level1.txt", "Tron");
 }

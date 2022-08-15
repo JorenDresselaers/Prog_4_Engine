@@ -1,5 +1,7 @@
 #pragma once
 #include "Game.h"
+#include "LevelLoader.h"
+
 
 //disabling a warning in the sdl library because of level 4 warning level
 #pragma warning( disable : 4201)
@@ -26,5 +28,7 @@ public:
 	void LoadLevel();
 private:
 	dae::GameObject* m_pTank;
+	LevelLoader m_LevelLoader;
+	int m_BlockSize ;
 };
 

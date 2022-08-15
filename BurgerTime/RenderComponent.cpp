@@ -27,7 +27,7 @@ void dae::RenderComponent::Render() const
 {
 	if (m_Texture)
 	{
-		Renderer::GetInstance().RenderTexture(*m_Texture, m_X, m_Y);
+		Renderer::GetInstance().RenderTexture(*m_Texture, m_X, m_Y, m_Width, m_Height);
 	}
 }
 
@@ -36,6 +36,12 @@ void dae::RenderComponent::SetPosition(float x, float y)
 	//std::cout << "\nNew position: " << x << ", " << y;
 	m_X = x;
 	m_Y = y;
+}
+
+void dae::RenderComponent::SetDimensions(float width, float height)
+{
+	m_Width = width;
+	m_Height = height;
 }
 
 std::shared_ptr<dae::Texture2D> dae::RenderComponent::GetTexture() const

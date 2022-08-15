@@ -11,7 +11,7 @@
 PlayerComponent::PlayerComponent()
 	: m_XPos{ 0 }
 	, m_YPos{ 0 }
-	, m_MovementSpeed{ 5 }
+	, m_MovementSpeed{ 2 }
     , MovingLeft{ false }
     , MovingRight{ false }
     , MovingUp{ false }
@@ -154,7 +154,6 @@ void PlayerComponent::ProcessInput(SDL_Event e)
     //        break;
     //    }
     //}
-
 }
 */
 
