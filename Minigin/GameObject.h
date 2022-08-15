@@ -1,12 +1,12 @@
 #pragma once
-#include "Transform.h"
+//#include "Transform.h"
 #include "SceneObject.h"
 #include "Component.h"
 #include <unordered_map>
 #include <typeinfo>
-#include "RenderComponent.h"
-#include "LivesComponent.h"
-#include "PlayerComponent.h"
+//#include "RenderComponent.h"
+//#include "LivesComponent.h"
+//#include "PlayerComponent.h"
 #include <thread>
 #include <memory>
 

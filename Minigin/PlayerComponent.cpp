@@ -4,7 +4,6 @@
 #include "BulletComponent.h"
 #include "GameObject.h"
 #include "SceneManager.h"
-#include "WallComponent.h"
 #include "CollisionComponent.h"
 #include "RenderComponent.h"
 #include "DeletionComponent.h"
@@ -14,10 +13,10 @@ PlayerComponent::PlayerComponent()
 	: m_XPos{ 0 }
 	, m_YPos{ 0 }
 	, m_MovementSpeed{ 5 }
-    , MovingLeft{false}
-    , MovingRight{false}
-    , MovingUp{false}
-    , MovingDown{false}
+    , MovingLeft{ false }
+    , MovingRight{ false }
+    , MovingUp{ false }
+    , MovingDown{ false }
     , m_MouseX{}
     , m_MouseY{}
     , m_ParentObject{ nullptr }
