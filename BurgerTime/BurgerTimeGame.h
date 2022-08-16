@@ -20,6 +20,8 @@ public:
 	~BurgerTimeGame();
 	void LoadGame() override;
 
+	void Update(float deltaTime) override;
+
 	void ProcessKeyUp(const SDL_KeyboardEvent& e) override;
 	void ProcessKeyDown(const SDL_KeyboardEvent& e) override;
 	void ProcessMouseUp(const SDL_MouseButtonEvent& e) override;

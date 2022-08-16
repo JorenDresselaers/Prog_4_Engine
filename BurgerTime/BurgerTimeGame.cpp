@@ -17,6 +17,8 @@
 #include "FPS.h"
 #include "LivesComponent.h"
 #include "PlayerComponent.h"
+#include "CollisionComponent.h"
+#include "DeletionComponent.h"
 
 using namespace dae;
 
@@ -55,12 +57,12 @@ void BurgerTimeGame::LoadGame()
 	background->AddComponent<RenderComponent>()->SetTexture(backgroundImage);
 	logo->AddComponent<RenderComponent>()->SetTexture(logoImage);
 	
-	fps->AddComponent<FPS>()->SetPosition(100, 100);
+	fps->AddComponent<FPS>()->SetPosition(0, 10);
 	
 	//newScene.Add(background);
 	//newScene.Add(logo);
 	//newScene.Add(text);
-	//newScene.Add(fps);
+	newScene.Add(fps);
 	
 	//Actual game stuff
 	auto tankImage = dae::ResourceManager::GetInstance().LoadTexture("Tank.png");
@@ -69,8 +71,14 @@ void BurgerTimeGame::LoadGame()
 	tank->AddComponent<TextComponent>()->SetText("This is a tank");
 	tank->GetComponent<TextComponent>()->SetPosition(200, 200);
 	tank->AddComponent<RenderComponent>()->SetTexture(tankImage);
-	tank->AddComponent<PlayerComponent>();
-
+	tank->AddComponent<PlayerComponent>()->SetPosition(22,62);
+	tank->AddComponent<CollisionComponent>()->Initialize(0, 0,
+		tank->GetComponent<RenderComponent>()->GetWidth(),
+		tank->GetComponent<RenderComponent>()->GetHeight(),
+		CollisionType::PlayerTank
+	);
+	tank->AddComponent<DeletionComponent>();
+	
 	newScene.Add(tank);
 	
 	//AudioManager::GetInstance().Play("Farewell.wav", 100);
@@ -78,6 +86,50 @@ void BurgerTimeGame::LoadGame()
 	//AudioManager::GetInstance().Play("Greeting1.wav", 100);
 	//AudioManager::GetInstance().Play("Greeting2.wav", 100);
 	m_pTank = tank.get();
+}
+
+void BurgerTimeGame::Update(float deltaTime)
+{
+	(void)deltaTime;
+
+	std::vector<std::shared_ptr<GameObject>> collisionVector = SceneManager::GetInstance().GetCurrentScene().GetObjects();
+
+	for (size_t currentObject{ 0 }; currentObject < collisionVector.size(); ++currentObject)
+	{
+		if (!collisionVector.at(currentObject)->GetComponent<CollisionComponent>())
+		{
+			collisionVector.erase(std::remove(collisionVector.begin(), collisionVector.end(), collisionVector.at(currentObject)), collisionVector.end());
+		}
+	}
+
+	CollisionSide side = CollisionSide::Null;
+
+	for (auto currentObject : collisionVector)
+	{
+		if (currentObject->GetComponent<DeletionComponent>())
+		{
+			for (auto objectToCheck : collisionVector)
+			{
+				auto collisionToCheck = objectToCheck->GetComponent<CollisionComponent>();
+				if (collisionToCheck)
+				{
+					if (currentObject->GetComponent<CollisionComponent>()->isColliding(collisionToCheck, side))
+					{
+						currentObject->GetComponent<CollisionComponent>()->Collide(collisionToCheck, side);
+					}
+				}
+				//if (float(pow((currentObject->GetComponent<CollisionComponent>()->GetX() - objectToCheck->GetComponent<CollisionComponent>()->GetX()), 2)
+				//	+ pow((currentObject->GetComponent<CollisionComponent>()->GetY() - objectToCheck->GetComponent<CollisionComponent>()->GetY()), 2))
+				//	< pow(m_BlockSize * 2, 2))
+				//{
+					//if (currentObject->GetComponent<CollisionComponent>()->isColliding(objectToCheck->GetComponent<CollisionComponent>(), side))
+					//{
+					//	currentObject->GetComponent<CollisionComponent>()->Collide(objectToCheck->GetComponent<CollisionComponent>(), side);
+					//}
+				//}
+			}
+		}
+	}
 }
 
 void BurgerTimeGame::ProcessKeyUp(const SDL_KeyboardEvent& e)

@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "ResourceManager.h"
 #include "Renderer.h"
+#include "SceneManager.h"
 
 void dae::GameObject::SetParent(GameObject* newParent)
 {
@@ -26,6 +27,8 @@ void dae::GameObject::Update(float deltaTime)
 	for (auto& currentComponent : m_Components)
 	{
 		currentComponent->Update(deltaTime, this);
+
+		//dae::SceneManager::GetInstance().GetCurrentScene().
 	}
 }
 

@@ -45,3 +45,8 @@ void Scene::Render() const
 	}
 }
 
+const std::vector<std::shared_ptr<GameObject>>& dae::Scene::GetObjects() const
+{
+	return m_Objects;
+}
+

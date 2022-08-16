@@ -6,6 +6,11 @@ void Game::LoadGame()
 	std::cout << "\nThis game is empty";
 }
 
+void Game::Update(float deltaTime)
+{
+	(void)deltaTime;
+}
+
 void Game::ProcessKeyUp(const SDL_KeyboardEvent& e)
 {
 	(void)e;

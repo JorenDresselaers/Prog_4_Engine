@@ -7,11 +7,12 @@
 #include "RenderComponent.h"
 #include "DeletionComponent.h"
 #include "TextComponent.h"
+#include "AudioManager.h"
 
 PlayerComponent::PlayerComponent()
 	: m_XPos{ 0 }
 	, m_YPos{ 0 }
-	, m_MovementSpeed{ 2 }
+	, m_MovementSpeed{ 100 }
     , MovingLeft{ false }
     , MovingRight{ false }
     , MovingUp{ false }
@@ -28,13 +29,21 @@ PlayerComponent::~PlayerComponent()
 
 void PlayerComponent::Update(float deltaTime, dae::GameObject* parentObject)
 {
-    (void)deltaTime;
+    m_DeltaTime = deltaTime;
     if(m_ParentObject == nullptr) m_ParentObject = parentObject;
 
-    if (MovingLeft) MoveLeft();
-    if (MovingRight) MoveRight();
-    if (MovingDown) MoveDown();
-    if (MovingUp) MoveUp();
+    if (MovingLeft) MoveLeft(deltaTime);
+    if (MovingRight) MoveRight(deltaTime);
+    if (MovingDown) MoveDown(deltaTime);
+    if (MovingUp) MoveUp(deltaTime);
+
+    if (parentObject->GetComponent<CollisionComponent>())
+    {
+        parentObject->GetComponent<CollisionComponent>()->SetPosition(
+            m_XPos,
+            m_YPos
+        );
+    }
 
     //SDL_GetMouseState(&m_MouseX, &m_MouseY);
 
@@ -210,38 +219,32 @@ void PlayerComponent::ProcessMouseDown(const SDL_MouseButtonEvent& e)
 
         auto image = dae::ResourceManager::GetInstance().LoadTexture("bullet.png");
 
-        newBullet->AddComponent<BulletComponent>()->Initialize(m_XPos, m_YPos, float(e.x), float(e.y), 100, 100);
+        newBullet->AddComponent<BulletComponent>()->Initialize(
+            m_XPos + m_ParentObject->GetComponent<dae::RenderComponent>()->GetWidth() / 2,
+            m_YPos + m_ParentObject->GetComponent<dae::RenderComponent>()->GetHeight() / 2,
+            float(e.x), 
+            float(e.y), 
+            100, 
+            100);
         newBullet->AddComponent<dae::RenderComponent>()->SetTexture(image);
 
         newBullet->AddComponent<CollisionComponent>()->Initialize(
-            m_XPos + float(m_ParentObject->GetComponent<dae::RenderComponent>()->GetWidth() / 2),
-            m_YPos - float(m_ParentObject->GetComponent<dae::RenderComponent>()->GetHeight() / 2),
-            newBullet->GetComponent<dae::RenderComponent>()->GetWidth(),
-            newBullet->GetComponent<dae::RenderComponent>()->GetHeight(),
+            0,
+            0,
+            1,
+            1,
             CollisionType::Bullet
         );
 
         newBullet->AddComponent<DeletionComponent>();
 
         dae::SceneManager::GetInstance().GetCurrentScene().Add(newBullet);
+
+        //dae::AudioManager::GetInstance().Play("Fishfight.wav", 1);
     }
     else if (e.button == SDL_BUTTON_RIGHT)
     {
-        auto newWall = std::make_shared<dae::GameObject>();
 
-        auto image = dae::ResourceManager::GetInstance().LoadTexture("wall.png");
-
-        newWall->AddComponent<dae::RenderComponent>()->SetTexture(image);
-        newWall->AddComponent<dae::RenderComponent>()->SetPosition(float(e.x), float(e.y));
-        newWall->AddComponent<CollisionComponent>()->Initialize(
-            float(e.x),
-            float(e.y),
-            newWall->GetComponent<dae::RenderComponent>()->GetWidth(),
-            newWall->GetComponent<dae::RenderComponent>()->GetHeight(),
-            CollisionType::Wall
-        );
-
-        dae::SceneManager::GetInstance().GetCurrentScene().Add(newWall);
     }
 }
 
@@ -271,22 +274,42 @@ void PlayerComponent::SetPosition(float x, float y)
 	m_YPos = y;
 }
 
-void PlayerComponent::MoveLeft()
+void PlayerComponent::MoveLeft(float deltaTime)
 {
-	m_XPos -= m_MovementSpeed;
+	m_XPos -= m_MovementSpeed * deltaTime;
 }
 
-void PlayerComponent::MoveRight()
+void PlayerComponent::MoveRight(float deltaTime)
 {
-	m_XPos += m_MovementSpeed;
+	m_XPos += m_MovementSpeed * deltaTime;
 }
 
-void PlayerComponent::MoveUp()
+void PlayerComponent::MoveUp(float deltaTime)
 {
-	m_YPos -= m_MovementSpeed;
+	m_YPos -= m_MovementSpeed * deltaTime;
 }
 
-void PlayerComponent::MoveDown()
+void PlayerComponent::MoveDown(float deltaTime)
 {
-	m_YPos += m_MovementSpeed;
+	m_YPos += m_MovementSpeed * deltaTime;
+}
+
+void PlayerComponent::CollideUp()
+{
+    m_YPos -= m_MovementSpeed * m_DeltaTime;
+}
+
+void PlayerComponent::CollideDown()
+{
+    m_YPos += m_MovementSpeed * m_DeltaTime;
+}
+
+void PlayerComponent::CollideLeft()
+{
+    m_XPos += m_MovementSpeed * m_DeltaTime;
+}
+
+void PlayerComponent::CollideRight()
+{
+    m_XPos -= m_MovementSpeed * m_DeltaTime;
 }

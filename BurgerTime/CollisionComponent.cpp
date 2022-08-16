@@ -1,4 +1,9 @@
 #include "CollisionComponent.h"
+#include "GameObject.h"
+#include "DeletionComponent.h"
+#include "BulletComponent.h"
+#include "PlayerComponent.h"
+#include <iostream>
 
 CollisionComponent::CollisionComponent()
 	: m_CollisionType{CollisionType::Null}
@@ -7,18 +12,123 @@ CollisionComponent::CollisionComponent()
 	, m_Width{ 0 }
 	, m_Height{ 0 }
 	, m_CollisionRange{ 100 }
+	, m_ParentObject{ nullptr }
 {
 }
 
-//void CollisionComponent::Update(float deltaTime, dae::GameObject* parentObject)
-//{
-//	(void)deltaTime;
-//}
+void CollisionComponent::Update(float deltaTime, dae::GameObject* parentObject)
+{
+	(void)deltaTime;
+	m_ParentObject = parentObject;
+}
 
 void CollisionComponent::SetPosition(float x, float y)
 {
 	m_X = x;
 	m_Y = y;
+}
+
+void CollisionComponent::Collide(std::shared_ptr<CollisionComponent> other, const CollisionSide& side)
+{
+	switch (m_CollisionType)
+	{
+	case CollisionType::Null:
+		break;
+	case CollisionType::Wall:
+		break;
+	case CollisionType::Bullet:
+		switch (other->m_CollisionType)
+		{
+		case CollisionType::Null:
+			break;
+		case CollisionType::Wall:
+			//std::cout << "\nBullet bouncing wall";
+
+			if (m_ParentObject->GetComponent<BulletComponent>()->CanBounce())
+			{
+				switch (side)
+				{
+				case CollisionSide::Right:
+					//m_ParentObject->GetComponent<BulletComponent>()->SetX(other->m_X + other->m_Width);
+					m_ParentObject->GetComponent<BulletComponent>()->BounceY();
+					break;
+				case CollisionSide::Left:
+					//m_ParentObject->GetComponent<BulletComponent>()->SetX(other->m_X);
+					m_ParentObject->GetComponent<BulletComponent>()->BounceY();
+					break;
+				case CollisionSide::Up:
+					//m_ParentObject->GetComponent<BulletComponent>()->SetY(other->m_Y);
+					m_ParentObject->GetComponent<BulletComponent>()->BounceX();
+					break;
+				case CollisionSide::Down:
+					//m_ParentObject->GetComponent<BulletComponent>()->SetY(other->m_Y + other->m_Height);
+					m_ParentObject->GetComponent<BulletComponent>()->BounceX();
+					break;
+				default:
+					break;
+				}
+			}
+			else
+			{
+				m_ParentObject->GetComponent<DeletionComponent>()->SetCanDelete(true);
+			}
+			break;
+		case CollisionType::Bullet:
+			break;
+		case CollisionType::PlayerTank:
+			break;
+		case CollisionType::EnemyTank:
+			break;
+		default:
+			break;
+		}
+		
+		break;
+	case CollisionType::PlayerTank:
+		switch (other->m_CollisionType)
+		{
+		case CollisionType::Null:
+			break;
+		case CollisionType::Wall:
+			switch (side)
+			{
+			case CollisionSide::Right:
+				std::cout << "\nTank colliding right";
+				m_ParentObject->GetComponent<PlayerComponent>()->CollideRight();
+				break;
+			case CollisionSide::Left:
+				std::cout << "\nTank colliding left";
+				m_ParentObject->GetComponent<PlayerComponent>()->CollideLeft();
+				break;
+			case CollisionSide::Up:
+				std::cout << "\nTank colliding up";
+				m_ParentObject->GetComponent<PlayerComponent>()->CollideUp();
+				break;
+			case CollisionSide::Down:
+				std::cout << "\nTank colliding down";
+				m_ParentObject->GetComponent<PlayerComponent>()->CollideDown();
+				break;
+			case CollisionSide::Null:
+				break;
+			default:
+				break;
+			}
+			break;
+		case CollisionType::Bullet:
+			break;
+		case CollisionType::PlayerTank:
+			break;
+		case CollisionType::EnemyTank:
+			break;
+		default:
+			break;
+		}
+		break;
+	case CollisionType::EnemyTank:
+		break;
+	default:
+		break;
+	}
 }
 
 void CollisionComponent::Initialize(float x, float y, float width, float height, CollisionType type)
@@ -60,7 +170,70 @@ bool CollisionComponent::isColliding(float x, float y)
 	return isColliding;
 }
 
+bool CollisionComponent::isColliding(std::shared_ptr<CollisionComponent> other, CollisionSide& side)
+{
+	bool colliding = false;
+
+	if (other->m_X + other->m_Width > m_X &&
+		other->m_X < m_X + m_Width &&
+		other->m_Y + other->m_Height > m_Y &&
+		other->m_Y < m_Y + m_Height)
+	{
+		colliding = true;
+		side = CollisionSide::Up;
+
+		if (other->m_X >= m_X &&
+			other->m_X <= m_X + m_Width &&
+			other->m_Y + other->m_Height >= m_Y &&
+			other->m_Y <= m_Y + m_Height) 
+		{
+			side = CollisionSide::Right;
+		}
+		
+		if (other->m_X + other->m_Width >= m_X &&
+			other->m_X + other->m_Width <= m_X + m_Width &&
+			other->m_Y + other->m_Height >= m_Y &&
+			other->m_Y <= m_Y + m_Height) 
+		{
+			side = CollisionSide::Left;
+		}
+		
+		if (other->m_X + other->m_Width >= m_X &&
+			other->m_X <= m_X + m_Width &&
+			other->m_Y + other->m_Height >= m_Y &&
+			other->m_Y + other->m_Height <= m_Y + m_Height) 
+		{
+			side = CollisionSide::Down;
+		}
+		
+		if (other->m_X + other->m_Width >= m_X &&
+			other->m_X <= m_X + m_Width &&
+			other->m_Y >= m_Y &&
+			other->m_Y <= m_Y + m_Height) 
+		{
+			side = CollisionSide::Up;
+		}
+	}
+
+	return colliding;
+}
+
 CollisionType CollisionComponent::GetType() const
 {
 	return m_CollisionType;
+}
+
+void CollisionComponent::SetType(CollisionType newType)
+{
+	m_CollisionType = newType;
+}
+
+float CollisionComponent::GetX()
+{
+	return m_X;
+}
+
+float CollisionComponent::GetY()
+{
+	return m_Y;
 }

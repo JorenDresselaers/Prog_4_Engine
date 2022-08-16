@@ -16,6 +16,8 @@ namespace dae
 		void Update(float deltaTime);
 		void Render() const;
 
+		const std::vector<std::shared_ptr<GameObject>>& GetObjects() const;
+
 		~Scene();
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;

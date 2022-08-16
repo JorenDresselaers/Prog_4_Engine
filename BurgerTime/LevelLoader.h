@@ -15,6 +15,6 @@ public:
 private:
 	std::ifstream m_LevelFile;
 	int m_LevelSizeX, m_LevelSizeY;
-	int m_BlockSize;
+	int m_BlockSize, m_LevelOffsetY;
 };
 

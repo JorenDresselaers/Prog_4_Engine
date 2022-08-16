@@ -25,10 +25,15 @@ public:
 	void SetKeys(SDL_KeyCode up, SDL_KeyCode down, SDL_KeyCode left, SDL_KeyCode right);
 
 	void SetPosition(float x, float y);
-	void MoveLeft();
-	void MoveRight();
-	void MoveUp();
-	void MoveDown();
+	void MoveLeft(float deltaTime);
+	void MoveRight(float deltaTime);
+	void MoveUp(float deltaTime);
+	void MoveDown(float deltaTime);
+
+	void CollideUp();
+	void CollideDown();
+	void CollideLeft();
+	void CollideRight();
 
 private:
 	float m_XPos;
@@ -48,6 +53,7 @@ private:
 	//int m_MouseY;
 
 	float m_MovementSpeed;
+	float m_DeltaTime;
 
 	dae::GameObject* m_ParentObject;
 };

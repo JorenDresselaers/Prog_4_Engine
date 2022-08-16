@@ -11,10 +11,6 @@
 #include "Scene.h"
 
 #include <chrono>
-//#include "RenderComponent.h"
-//#include "TextComponent.h"
-//#include "FPS.h"
-//#include "LivesComponent.h"
 #include "Game.h"
 
 using namespace std;
@@ -163,6 +159,7 @@ void dae::Minigin::Run()
 
 		sceneManager.Update(deltaTime);
 		renderer.Render();
+		m_Game->Update(deltaTime);
 		sound.ProcessEventQueue();
 
 		const auto sleepTime = start + chrono::milliseconds(MsPerFrame)
