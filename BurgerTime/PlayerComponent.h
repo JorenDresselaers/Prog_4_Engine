@@ -38,6 +38,7 @@ public:
 private:
 	float m_XPos;
 	float m_YPos;
+	float m_MaxCooldown, m_CurrentCooldown;
 
 	bool MovingLeft;
 	bool MovingRight;

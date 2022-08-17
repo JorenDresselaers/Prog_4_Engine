@@ -56,7 +56,7 @@ void BulletComponent::Render() const
 
 bool BulletComponent::CanBounce()
 {
-	if(m_Bounces < m_MaxBounces) return true;
+	if(m_Bounces <= m_MaxBounces) return true;
 	return false;
 }
 

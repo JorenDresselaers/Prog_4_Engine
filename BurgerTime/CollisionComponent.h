@@ -33,11 +33,12 @@ public:
 
 	void Update(float deltaTime, dae::GameObject* parentObject) override;
 	void SetPosition(float x, float y);
-	void Collide(std::shared_ptr<CollisionComponent> other, const CollisionSide& side);
+	void Collide(std::shared_ptr<CollisionComponent> other, const CollisionSide& sideX, const CollisionSide& sideY);
 
 	void Initialize(float x, float y, float width, float height, CollisionType type);
 	bool isColliding(float x, float y, float width, float height);
 	bool isColliding(float x, float y);
+	bool isColliding(std::shared_ptr<CollisionComponent> other, CollisionSide& sideX, CollisionSide& sideY);
 	bool isColliding(std::shared_ptr<CollisionComponent> other, CollisionSide& side);
 
 	CollisionType GetType() const;

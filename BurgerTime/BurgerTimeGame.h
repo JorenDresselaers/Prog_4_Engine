@@ -13,6 +13,13 @@ namespace dae
 	class GameObject;
 }
 
+enum class GameState
+{
+	Menu,
+	Running,
+	End
+};
+
 class BurgerTimeGame final : public Game
 {
 public:
@@ -27,10 +34,11 @@ public:
 	void ProcessMouseUp(const SDL_MouseButtonEvent& e) override;
 	void ProcessMouseDown(const SDL_MouseButtonEvent& e) override;
 
-	void LoadLevel();
+	void LoadLevel(const std::string& levelToLoad = "Level1.txt");
 private:
 	dae::GameObject* m_pTank;
 	LevelLoader m_LevelLoader;
 	int m_BlockSize ;
+	GameState m_State;
 };
 

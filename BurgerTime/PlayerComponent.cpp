@@ -18,6 +18,8 @@ PlayerComponent::PlayerComponent()
     , MovingUp{ false }
     , MovingDown{ false }
     , m_ParentObject{ nullptr }
+    , m_MaxCooldown{ 1 }
+    , m_CurrentCooldown{ m_MaxCooldown }
 {
     SetKeys();
 }
@@ -30,6 +32,8 @@ PlayerComponent::~PlayerComponent()
 void PlayerComponent::Update(float deltaTime, dae::GameObject* parentObject)
 {
     m_DeltaTime = deltaTime;
+    m_CurrentCooldown += deltaTime;
+
     if(m_ParentObject == nullptr) m_ParentObject = parentObject;
 
     if (MovingLeft) MoveLeft(deltaTime);
@@ -215,30 +219,34 @@ void PlayerComponent::ProcessMouseDown(const SDL_MouseButtonEvent& e)
 {
     if (e.button == SDL_BUTTON_LEFT)
     {
-        auto newBullet = std::make_shared<dae::GameObject>();
+        if (m_CurrentCooldown >= m_MaxCooldown)
+        {
+            m_CurrentCooldown = 0;
+            auto newBullet = std::make_shared<dae::GameObject>();
 
-        auto image = dae::ResourceManager::GetInstance().LoadTexture("bullet.png");
+            auto image = dae::ResourceManager::GetInstance().LoadTexture("bullet.png");
 
-        newBullet->AddComponent<BulletComponent>()->Initialize(
-            m_XPos + m_ParentObject->GetComponent<dae::RenderComponent>()->GetWidth() / 2,
-            m_YPos + m_ParentObject->GetComponent<dae::RenderComponent>()->GetHeight() / 2,
-            float(e.x), 
-            float(e.y), 
-            100, 
-            100);
-        newBullet->AddComponent<dae::RenderComponent>()->SetTexture(image);
+            newBullet->AddComponent<BulletComponent>()->Initialize(
+                m_XPos + m_ParentObject->GetComponent<dae::RenderComponent>()->GetWidth() / 2,
+                m_YPos + m_ParentObject->GetComponent<dae::RenderComponent>()->GetHeight() / 2,
+                float(e.x),
+                float(e.y),
+                100,
+                100);
+            newBullet->AddComponent<dae::RenderComponent>()->SetTexture(image);
 
-        newBullet->AddComponent<CollisionComponent>()->Initialize(
-            0,
-            0,
-            1,
-            1,
-            CollisionType::Bullet
-        );
+            newBullet->AddComponent<CollisionComponent>()->Initialize(
+                0,
+                0,
+                1,
+                1,
+                CollisionType::Bullet
+            );
 
-        newBullet->AddComponent<DeletionComponent>();
+            newBullet->AddComponent<DeletionComponent>();
 
-        dae::SceneManager::GetInstance().GetCurrentScene().Add(newBullet);
+            dae::SceneManager::GetInstance().GetCurrentScene().Add(newBullet);
+        }
 
         //dae::AudioManager::GetInstance().Play("Fishfight.wav", 1);
     }

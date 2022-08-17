@@ -19,6 +19,7 @@
 #include "PlayerComponent.h"
 #include "CollisionComponent.h"
 #include "DeletionComponent.h"
+#include "BulletComponent.h"
 
 using namespace dae;
 
@@ -35,28 +36,29 @@ BurgerTimeGame::~BurgerTimeGame()
 
 void BurgerTimeGame::LoadGame()
 {
-	std::cout << "\nLoading Burger Time";
+	std::cout << "\nLoading Tron";
 
+	//Loading the main game
 	auto& newScene = SceneManager::GetInstance().CreateScene("Tron");
 
 	LoadLevel();
-	
-	auto background = std::make_shared<GameObject>();
-	auto logo = std::make_shared<GameObject>();
-	auto text = std::make_shared<GameObject>();
+	//
+	//auto background = std::make_shared<GameObject>();
+	//auto logo = std::make_shared<GameObject>();
+	//auto text = std::make_shared<GameObject>();
 	auto fps = std::make_shared<GameObject>();
-		
-	auto backgroundImage = ResourceManager::GetInstance().LoadTexture("background.jpg");
-	auto logoImage = ResourceManager::GetInstance().LoadTexture("logo.png");
-	auto pepperImage = ResourceManager::GetInstance().LoadTexture("Pepper_PH.png");
-	
-	text->AddComponent<TextComponent>();
-	text->GetComponent<TextComponent>()->SetPosition(50, 100);
-	text->GetComponent<TextComponent>()->SetText("Test!");
-	
-	background->AddComponent<RenderComponent>()->SetTexture(backgroundImage);
-	logo->AddComponent<RenderComponent>()->SetTexture(logoImage);
-	
+	//	
+	//auto backgroundImage = ResourceManager::GetInstance().LoadTexture("background.jpg");
+	//auto logoImage = ResourceManager::GetInstance().LoadTexture("logo.png");
+	//auto pepperImage = ResourceManager::GetInstance().LoadTexture("Pepper_PH.png");
+	//
+	//text->AddComponent<TextComponent>();
+	//text->GetComponent<TextComponent>()->SetPosition(50, 100);
+	//text->GetComponent<TextComponent>()->SetText("Test!");
+	//
+	//background->AddComponent<RenderComponent>()->SetTexture(backgroundImage);
+	//logo->AddComponent<RenderComponent>()->SetTexture(logoImage);
+	//
 	fps->AddComponent<FPS>()->SetPosition(0, 10);
 	
 	//newScene.Add(background);
@@ -80,81 +82,186 @@ void BurgerTimeGame::LoadGame()
 	tank->AddComponent<DeletionComponent>();
 	
 	newScene.Add(tank);
-	
-	//AudioManager::GetInstance().Play("Farewell.wav", 100);
-	//AudioManager::GetInstance().Play("Fishfight.wav", 100);
-	//AudioManager::GetInstance().Play("Greeting1.wav", 100);
-	//AudioManager::GetInstance().Play("Greeting2.wav", 100);
 	m_pTank = tank.get();
+
+	//Loading menu
+	auto& menuScene = SceneManager::GetInstance().CreateScene("Menu");
+
+	auto background = std::make_shared<GameObject>();
+	auto logo = std::make_shared<GameObject>();
+	auto text = std::make_shared<GameObject>();
+	auto menuFPS = std::make_shared<GameObject>();
+
+	auto backgroundImage = ResourceManager::GetInstance().LoadTexture("background.jpg");
+	auto logoImage = ResourceManager::GetInstance().LoadTexture("logo.png");
+
+	text->AddComponent<TextComponent>();
+	text->GetComponent<TextComponent>()->SetPosition(50, 100);
+	text->GetComponent<TextComponent>()->SetText("Test!");
+
+	background->AddComponent<RenderComponent>()->SetTexture(backgroundImage);
+	logo->AddComponent<RenderComponent>()->SetTexture(logoImage);
+
+	menuFPS->AddComponent<FPS>()->SetPosition(0, 10);
+
+	menuScene.Add(background);
+	menuScene.Add(logo);
+	menuScene.Add(text);
+	menuScene.Add(menuFPS);
+	menuScene.Add(tank);
+
+	m_State = GameState::Menu;
 }
 
 void BurgerTimeGame::Update(float deltaTime)
 {
 	(void)deltaTime;
+	std::vector<std::shared_ptr<GameObject>> collisionVector;
 
-	std::vector<std::shared_ptr<GameObject>> collisionVector = SceneManager::GetInstance().GetCurrentScene().GetObjects();
+	CollisionSide sideX = CollisionSide::Null;
+	CollisionSide sideY = CollisionSide::Null;
 
-	for (size_t currentObject{ 0 }; currentObject < collisionVector.size(); ++currentObject)
+	switch (m_State)
 	{
-		if (!collisionVector.at(currentObject)->GetComponent<CollisionComponent>())
-		{
-			collisionVector.erase(std::remove(collisionVector.begin(), collisionVector.end(), collisionVector.at(currentObject)), collisionVector.end());
-		}
-	}
+	case GameState::Menu:
+		break;
+	case GameState::Running:
+		collisionVector = SceneManager::GetInstance().GetCurrentScene().GetObjects();
 
-	CollisionSide side = CollisionSide::Null;
-
-	for (auto currentObject : collisionVector)
-	{
-		if (currentObject->GetComponent<DeletionComponent>())
+		for (size_t currentObject{ 0 }; currentObject < collisionVector.size(); ++currentObject)
 		{
-			for (auto objectToCheck : collisionVector)
+			if (!collisionVector.at(currentObject)->GetComponent<CollisionComponent>())
 			{
-				auto collisionToCheck = objectToCheck->GetComponent<CollisionComponent>();
-				if (collisionToCheck)
-				{
-					if (currentObject->GetComponent<CollisionComponent>()->isColliding(collisionToCheck, side))
-					{
-						currentObject->GetComponent<CollisionComponent>()->Collide(collisionToCheck, side);
-					}
-				}
-				//if (float(pow((currentObject->GetComponent<CollisionComponent>()->GetX() - objectToCheck->GetComponent<CollisionComponent>()->GetX()), 2)
-				//	+ pow((currentObject->GetComponent<CollisionComponent>()->GetY() - objectToCheck->GetComponent<CollisionComponent>()->GetY()), 2))
-				//	< pow(m_BlockSize * 2, 2))
-				//{
-					//if (currentObject->GetComponent<CollisionComponent>()->isColliding(objectToCheck->GetComponent<CollisionComponent>(), side))
-					//{
-					//	currentObject->GetComponent<CollisionComponent>()->Collide(objectToCheck->GetComponent<CollisionComponent>(), side);
-					//}
-				//}
+				collisionVector.erase(std::remove(collisionVector.begin(), collisionVector.end(), collisionVector.at(currentObject)), collisionVector.end());
 			}
 		}
+
+		for (auto currentObject : collisionVector)
+		{
+			if (currentObject->GetComponent<DeletionComponent>())
+			{
+				for (auto objectToCheck : collisionVector)
+				{
+					auto collisionToCheck = objectToCheck->GetComponent<CollisionComponent>();
+					if (collisionToCheck)
+					{
+						if (currentObject != objectToCheck)
+						{
+							sideX = CollisionSide::Null;
+							sideY = CollisionSide::Null;
+
+							if (!currentObject->GetComponent<BulletComponent>())
+							{
+								if (currentObject->GetComponent<CollisionComponent>()->isColliding(collisionToCheck, sideX, sideY))
+								{
+									currentObject->GetComponent<CollisionComponent>()->Collide(collisionToCheck, sideX, sideY);
+								}
+							}
+							else
+							{
+								if (currentObject->GetComponent<CollisionComponent>()->isColliding(collisionToCheck, sideX))
+								{
+									currentObject->GetComponent<CollisionComponent>()->Collide(collisionToCheck, sideX, sideY);
+								}
+							}
+						}
+					}
+					//if (float(pow((currentObject->GetComponent<CollisionComponent>()->GetX() - objectToCheck->GetComponent<CollisionComponent>()->GetX()), 2)
+					//	+ pow((currentObject->GetComponent<CollisionComponent>()->GetY() - objectToCheck->GetComponent<CollisionComponent>()->GetY()), 2))
+					//	< pow(m_BlockSize * 2, 2))
+					//{
+						//if (currentObject->GetComponent<CollisionComponent>()->isColliding(objectToCheck->GetComponent<CollisionComponent>(), side))
+						//{
+						//	currentObject->GetComponent<CollisionComponent>()->Collide(objectToCheck->GetComponent<CollisionComponent>(), side);
+						//}
+					//}
+				}
+			}
+		}
+		break;
+	case GameState::End:
+		break;
+	default:
+		break;
 	}
+
+
 }
 
 void BurgerTimeGame::ProcessKeyUp(const SDL_KeyboardEvent& e)
 {
-	m_pTank->GetComponent<PlayerComponent>()->ProcessKeyUp(e);
+	switch (m_State)
+	{
+	case GameState::Menu:
+		break;
+	case GameState::Running:
+		m_pTank->GetComponent<PlayerComponent>()->ProcessKeyUp(e);
+		break;
+	case GameState::End:
+		break;
+	default:
+		break;
+	}
 }
 
 void BurgerTimeGame::ProcessKeyDown(const SDL_KeyboardEvent& e)
 {
-	m_pTank->GetComponent<PlayerComponent>()->ProcessKeyDown(e);
+	switch (m_State)
+	{
+	case GameState::Menu:
+		m_State = GameState::Running;
+		SceneManager::GetInstance().SetScene("Tron");
+		break;
+	case GameState::Running:
+		if (e.keysym.sym == SDLK_ESCAPE)
+		{
+			m_State = GameState::Menu;
+			SceneManager::GetInstance().SetScene("Menu");
+		}
+		m_pTank->GetComponent<PlayerComponent>()->ProcessKeyDown(e);
+		break;
+	case GameState::End:
+		break;
+	default:
+		break;
+	}
 }
 
 void BurgerTimeGame::ProcessMouseUp(const SDL_MouseButtonEvent& e)
 {
-	m_pTank->GetComponent<PlayerComponent>()->ProcessMouseUp(e);
+	switch (m_State)
+	{
+	case GameState::Menu:
+		break;
+	case GameState::Running:
+		m_pTank->GetComponent<PlayerComponent>()->ProcessMouseUp(e);
+		break;
+	case GameState::End:
+		break;
+	default:
+		break;
+	}
 }
 
 void BurgerTimeGame::ProcessMouseDown(const SDL_MouseButtonEvent& e)
 {
-	m_pTank->GetComponent<PlayerComponent>()->ProcessMouseDown(e);
+	switch (m_State)
+	{
+	case GameState::Menu:
+		break;
+	case GameState::Running:
+		m_pTank->GetComponent<PlayerComponent>()->ProcessMouseDown(e);
+		break;
+	case GameState::End:
+		break;
+	default:
+		break;
+	}
 }
 
-void BurgerTimeGame::LoadLevel()
+void BurgerTimeGame::LoadLevel(const std::string& levelToLoad)
 {
 	m_LevelLoader.SetLevelSize(30, 28);
 	m_LevelLoader.SetBlockSize(m_BlockSize);
-	m_LevelLoader.LoadLevel("Level1.txt", "Tron");
+	m_LevelLoader.LoadLevel(levelToLoad, "Tron");
 }
