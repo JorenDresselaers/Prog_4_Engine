@@ -246,6 +246,7 @@ void PlayerComponent::ProcessMouseDown(const SDL_MouseButtonEvent& e)
             newBullet->AddComponent<DeletionComponent>();
 
             dae::SceneManager::GetInstance().GetCurrentScene().Add(newBullet);
+            dae::AudioManager::GetInstance().Play("Fishfight.wav", 1);
         }
 
         //dae::AudioManager::GetInstance().Play("Fishfight.wav", 1);

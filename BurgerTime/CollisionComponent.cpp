@@ -3,6 +3,7 @@
 #include "DeletionComponent.h"
 #include "BulletComponent.h"
 #include "PlayerComponent.h"
+#include "EnemyComponent.h"
 #include <iostream>
 
 CollisionComponent::CollisionComponent()
@@ -28,6 +29,7 @@ void CollisionComponent::SetPosition(float x, float y)
 	m_Y = y;
 }
 
+//Should probably just call a function in both colliding components, instead of hardcoding stuff here
 void CollisionComponent::Collide(std::shared_ptr<CollisionComponent> other, const CollisionSide& sideX, const CollisionSide& sideY)
 {
 	switch (m_CollisionType)
@@ -102,6 +104,8 @@ void CollisionComponent::Collide(std::shared_ptr<CollisionComponent> other, cons
 		case CollisionType::PlayerTank:
 			break;
 		case CollisionType::EnemyTank:
+			other->m_ParentObject->GetComponent<EnemyComponent>()->GetHit();
+			m_ParentObject->GetComponent<DeletionComponent>()->SetCanDelete(true);
 			break;
 		default:
 			break;

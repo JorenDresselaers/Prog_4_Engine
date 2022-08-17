@@ -20,6 +20,8 @@
 #include "CollisionComponent.h"
 #include "DeletionComponent.h"
 #include "BulletComponent.h"
+#include "ScoreComponent.h"
+#include "EnemyComponent.h"
 
 using namespace dae;
 
@@ -68,6 +70,7 @@ void BurgerTimeGame::LoadGame()
 	
 	//Actual game stuff
 	auto tankImage = dae::ResourceManager::GetInstance().LoadTexture("Tank.png");
+	auto enemyTankImage = dae::ResourceManager::GetInstance().LoadTexture("EnemyTank.png");
 	
 	auto tank = std::make_shared<GameObject>();
 	tank->AddComponent<TextComponent>()->SetText("This is a tank");
@@ -80,8 +83,20 @@ void BurgerTimeGame::LoadGame()
 		CollisionType::PlayerTank
 	);
 	tank->AddComponent<DeletionComponent>();
+
+	auto enemyTank = std::make_shared<GameObject>();
+	enemyTank->AddComponent<RenderComponent>()->SetTexture(enemyTankImage);
+	enemyTank->AddComponent<CollisionComponent>()->Initialize(0, 0,
+		enemyTank->GetComponent<RenderComponent>()->GetWidth(),
+		enemyTank->GetComponent<RenderComponent>()->GetHeight(),
+		CollisionType::EnemyTank
+	);
+	enemyTank->AddComponent<ScoreComponent>()->SetScore(100);
+	enemyTank->AddComponent<DeletionComponent>();
+	enemyTank->AddComponent<EnemyComponent>()->Initialize(200,200, 3);
 	
 	newScene.Add(tank);
+	newScene.Add(enemyTank);
 	m_pTank = tank.get();
 
 	//Loading menu
@@ -108,7 +123,7 @@ void BurgerTimeGame::LoadGame()
 	menuScene.Add(logo);
 	menuScene.Add(text);
 	menuScene.Add(menuFPS);
-	menuScene.Add(tank);
+	//menuScene.Add(tank);
 
 	m_State = GameState::Menu;
 }

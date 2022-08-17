@@ -11,6 +11,7 @@ BulletComponent::BulletComponent()
 	, m_YSpeed{ 0 }
 	, m_Bounces{ 0 }
 	, m_MaxBounces{ 5 }
+	, m_DeltaTime{ 0 }
 {
 	//m_RenderComponent = new dae::RenderComponent();
 

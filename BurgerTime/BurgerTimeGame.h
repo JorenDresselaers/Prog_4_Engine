@@ -41,4 +41,3 @@ private:
 	int m_BlockSize ;
 	GameState m_State;
 };
-

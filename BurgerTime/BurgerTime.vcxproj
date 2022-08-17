@@ -166,6 +166,7 @@
     <ClCompile Include="BurgerTime.cpp" />
     <ClCompile Include="BurgerTimeGame.cpp" />
     <ClCompile Include="CollisionComponent.cpp" />
+    <ClCompile Include="EnemyComponent.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GunComponent.cpp" />
     <ClCompile Include="LevelLoader.cpp" />
@@ -173,11 +174,14 @@
     <ClCompile Include="MapComponent.cpp" />
     <ClCompile Include="PlayerComponent.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
+    <ClCompile Include="ScoreComponent.cpp" />
+    <ClCompile Include="ScoreCounterComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BulletComponent.h" />
     <ClInclude Include="BurgerTimeGame.h" />
     <ClInclude Include="CollisionComponent.h" />
+    <ClInclude Include="EnemyComponent.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GunComponent.h" />
     <ClInclude Include="LevelLoader.h" />
@@ -185,6 +189,8 @@
     <ClInclude Include="MapComponent.h" />
     <ClInclude Include="PlayerComponent.h" />
     <ClInclude Include="RenderComponent.h" />
+    <ClInclude Include="ScoreComponent.h" />
+    <ClInclude Include="ScoreCounterComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

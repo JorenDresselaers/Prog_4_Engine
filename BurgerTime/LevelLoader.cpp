@@ -7,6 +7,9 @@
 #include "ResourceManager.h"
 #include "SceneManager.h"
 #include "PlayerComponent.h"
+#include "EnemyComponent.h"
+#include "DeletionComponent.h"
+#include "ScoreComponent.h"
 
 LevelLoader::LevelLoader()
 	: m_BlockSize{ 20 }
@@ -28,6 +31,7 @@ bool LevelLoader::LoadLevel(std::string levelFile, std::string scene)
 		std::cout << "\nLevel loading";
 
 		auto wallImage = dae::ResourceManager::GetInstance().LoadTexture("wall.png");
+		auto enemyTankImage = dae::ResourceManager::GetInstance().LoadTexture("EnemyTank.png");
 
 		char c{};
 
@@ -41,11 +45,9 @@ bool LevelLoader::LoadLevel(std::string levelFile, std::string scene)
 
 				if (c != 10)
 				{
-					switch (c)
+					if (c == 'X')
 					{
-					case 'X':
-						//std::cout << "\nAdding new wall";
-						auto newObject = std::make_shared<dae::GameObject>();
+						std::shared_ptr<dae::GameObject> newObject = std::make_shared<dae::GameObject>();
 
 						newObject->AddComponent<dae::RenderComponent>()->SetTexture(wallImage);
 						newObject->GetComponent<dae::RenderComponent>()->SetPosition(float(x * m_BlockSize), float(y * m_BlockSize + m_LevelOffsetY));
@@ -53,7 +55,54 @@ bool LevelLoader::LoadLevel(std::string levelFile, std::string scene)
 						newObject->AddComponent<CollisionComponent>()->Initialize(float(x * m_BlockSize), float(y * m_BlockSize + m_LevelOffsetY), float(m_BlockSize), float(m_BlockSize), CollisionType::Wall);
 
 						dae::SceneManager::GetInstance().GetCurrentScene().Add(newObject);
-						break;
+					}
+					else if (c == 'E')
+					{
+						std::shared_ptr<dae::GameObject> enemyTank = std::make_shared<dae::GameObject>();
+						enemyTank->AddComponent<dae::RenderComponent>()->SetTexture(enemyTankImage);
+						enemyTank->AddComponent<CollisionComponent>()->Initialize(0, 0,
+							enemyTank->GetComponent<dae::RenderComponent>()->GetWidth(),
+							enemyTank->GetComponent<dae::RenderComponent>()->GetHeight(),
+							CollisionType::EnemyTank
+						);
+						enemyTank->AddComponent<ScoreComponent>()->SetScore(100);
+						enemyTank->AddComponent<DeletionComponent>();
+
+						//+2.5 is to center the tanks on the blocks they spawn on
+						enemyTank->AddComponent<EnemyComponent>()->Initialize(float(x * m_BlockSize + 2.5), float(y * m_BlockSize + m_LevelOffsetY + 2.5), 3);
+
+						dae::SceneManager::GetInstance().GetCurrentScene().Add(enemyTank);
+					}
+
+
+					//switch (c)
+					//{
+					//case 'X':
+					//	//std::cout << "\nAdding new wall";
+					//	std::shared_ptr<dae::GameObject> newObject = std::make_shared<dae::GameObject>();
+					//
+					//	newObject->AddComponent<dae::RenderComponent>()->SetTexture(wallImage);
+					//	newObject->GetComponent<dae::RenderComponent>()->SetPosition(float(x * m_BlockSize), float(y * m_BlockSize + m_LevelOffsetY));
+					//	newObject->GetComponent<dae::RenderComponent>()->SetDimensions(float(m_BlockSize), float(m_BlockSize));
+					//	newObject->AddComponent<CollisionComponent>()->Initialize(float(x * m_BlockSize), float(y * m_BlockSize + m_LevelOffsetY), float(m_BlockSize), float(m_BlockSize), CollisionType::Wall);
+					//
+					//	dae::SceneManager::GetInstance().GetCurrentScene().Add(newObject);
+					//	break;
+					//case 'E':
+					//
+					//	std::shared_ptr<dae::GameObject> enemyTank = std::make_shared<dae::GameObject>();
+					//	enemyTank->AddComponent<dae::RenderComponent>()->SetTexture(enemyTankImage);
+					//	enemyTank->AddComponent<CollisionComponent>()->Initialize(0, 0,
+					//		enemyTank->GetComponent<dae::RenderComponent>()->GetWidth(),
+					//		enemyTank->GetComponent<dae::RenderComponent>()->GetHeight(),
+					//		CollisionType::EnemyTank
+					//	);
+					//	enemyTank->AddComponent<ScoreComponent>()->SetScore(100);
+					//	enemyTank->AddComponent<DeletionComponent>();
+					//	enemyTank->AddComponent<EnemyComponent>()->Initialize(200, 200, 3);
+					//
+					//	dae::SceneManager::GetInstance().GetCurrentScene().Add(enemyTank);
+					//	break;
 					//case 'P':
 					//	auto tankImage = dae::ResourceManager::GetInstance().LoadTexture("Tank.png");
 					//
@@ -62,7 +111,6 @@ bool LevelLoader::LoadLevel(std::string levelFile, std::string scene)
 					//	newObject->AddComponent<dae::RenderComponent>()->SetTexture(tankImage);
 					//	newObject->AddComponent<PlayerComponent>();
 					//	break;
-					}
 				}
 			}
 		}
