@@ -8,6 +8,8 @@
 #include "DeletionComponent.h"
 #include "TextComponent.h"
 #include "AudioManager.h"
+#include <string>
+#include "ScoreManager.h"
 
 PlayerComponent::PlayerComponent()
 	: m_XPos{ 0 }
@@ -20,6 +22,7 @@ PlayerComponent::PlayerComponent()
     , m_ParentObject{ nullptr }
     , m_MaxCooldown{ 1 }
     , m_CurrentCooldown{ m_MaxCooldown }
+    , m_TotalScore{ 0 }
 {
     SetKeys();
 }
@@ -52,7 +55,8 @@ void PlayerComponent::Update(float deltaTime, dae::GameObject* parentObject)
     //SDL_GetMouseState(&m_MouseX, &m_MouseY);
 
 	parentObject->GetComponent<dae::RenderComponent>()->SetPosition(m_XPos, m_YPos);
-	parentObject->GetComponent<dae::TextComponent>()->SetPosition(m_XPos, m_YPos-20);
+	//parentObject->GetComponent<dae::TextComponent>()->SetPosition(m_XPos, m_YPos-20);
+	parentObject->GetComponent<dae::TextComponent>()->SetText("Score: " + std::to_string(ScoreManager::GetInstance().GetScore()));
 }
 
 void PlayerComponent::Render() const
@@ -341,4 +345,15 @@ void PlayerComponent::CollideLeft()
 void PlayerComponent::CollideRight()
 {
     m_XPos -= m_MovementSpeed * m_DeltaTime;
+}
+
+void PlayerComponent::AddScore(int score)
+{
+    m_TotalScore += score;
+    m_ParentObject->GetComponent<dae::TextComponent>()->SetText("Score:" + m_TotalScore);
+}
+
+int PlayerComponent::GetScore()
+{
+    return m_TotalScore;
 }

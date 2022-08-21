@@ -13,5 +13,7 @@ public:
 private:
 	float m_XPos, m_YPos;
 	int m_Lives;
+
+	dae::GameObject* m_ParentObject;
 };
 

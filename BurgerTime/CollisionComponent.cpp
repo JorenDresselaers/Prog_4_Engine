@@ -7,7 +7,7 @@
 #include <iostream>
 
 CollisionComponent::CollisionComponent()
-	: m_CollisionType{CollisionType::Null}
+	: m_CollisionType{ CollisionType::Null }
 	, m_X{ 0 }
 	, m_Y{ 0 }
 	, m_Width{ 0 }
@@ -41,8 +41,6 @@ void CollisionComponent::Collide(std::shared_ptr<CollisionComponent> other, cons
 	case CollisionType::Bullet:
 		switch (other->m_CollisionType)
 		{
-		case CollisionType::Null:
-			break;
 		case CollisionType::Wall:
 			//std::cout << "\nBullet bouncing wall";
 
@@ -81,16 +79,16 @@ void CollisionComponent::Collide(std::shared_ptr<CollisionComponent> other, cons
 					{
 					case CollisionSide::Right:
 					case CollisionSide::Left:
-						std::cout << "\nBullet bouncing Y";
+						//std::cout << "\nBullet bouncing Y";
 						m_ParentObject->GetComponent<BulletComponent>()->BounceY();
 						break;
 					case CollisionSide::Up:
 					case CollisionSide::Down:
-						std::cout << "\nBullet bouncing X";
+						//std::cout << "\nBullet bouncing X";
 						m_ParentObject->GetComponent<BulletComponent>()->BounceX();
 						break;
 					default:
-						std::cout << "\nBullet didn't bounce";
+						//std::cout << "\nBullet didn't bounce";
 						break;
 					}
 				}
@@ -99,10 +97,6 @@ void CollisionComponent::Collide(std::shared_ptr<CollisionComponent> other, cons
 			{
 				m_ParentObject->GetComponent<DeletionComponent>()->SetCanDelete(true);
 			}
-			break;
-		case CollisionType::Bullet:
-			break;
-		case CollisionType::PlayerTank:
 			break;
 		case CollisionType::EnemyTank:
 			other->m_ParentObject->GetComponent<EnemyComponent>()->GetHit();
@@ -116,8 +110,6 @@ void CollisionComponent::Collide(std::shared_ptr<CollisionComponent> other, cons
 	case CollisionType::PlayerTank:
 		switch (other->m_CollisionType)
 		{
-		case CollisionType::Null:
-			break;
 		case CollisionType::Wall:
 			switch (sideX)
 			{
@@ -152,11 +144,19 @@ void CollisionComponent::Collide(std::shared_ptr<CollisionComponent> other, cons
 			break;
 		case CollisionType::EnemyTank:
 			break;
+		case CollisionType::Crystal:
+			m_ParentObject->GetComponent<PlayerComponent>()->SetPosition(
+				float((rand() % 28 + 1) * 20), 
+				float((rand() % 26 + 1) * 20)
+			);
+			break;
 		default:
 			break;
 		}
 		break;
 	case CollisionType::EnemyTank:
+		break;
+	case CollisionType::Crystal:
 		break;
 	default:
 		break;

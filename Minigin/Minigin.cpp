@@ -11,6 +11,7 @@
 #include "Scene.h"
 
 #include <chrono>
+#include <time.h>
 #include "Game.h"
 
 using namespace std;
@@ -53,50 +54,6 @@ void dae::Minigin::Initialize()
 	Renderer::GetInstance().Init(m_Window);
 }
 
-/*
- * Code constructing the scene world starts here
- */
-void dae::Minigin::LoadGame() const
-{
-	//auto& newScene = SceneManager::GetInstance().CreateScene("Demo");
-	//
-	//auto background = std::make_shared<GameObject>();
-	//auto logo = std::make_shared<GameObject>();
-	//auto text = std::make_shared<GameObject>();
-	//auto fps = std::make_shared<GameObject>();
-	//
-	//auto backgroundImage = ResourceManager::GetInstance().LoadTexture("background.jpg");
-	//auto logoImage = ResourceManager::GetInstance().LoadTexture("logo.png");
-	//
-	//text->AddComponent<TextComponent>();
-	//text->GetComponent<TextComponent>()->SetPosition(50, 100);
-	//text->GetComponent<TextComponent>()->SetText("Test!");
-	//
-	//background->AddComponent<RenderComponent>()->SetTexture(backgroundImage);
-	//logo->AddComponent<RenderComponent>()->SetTexture(logoImage);
-	//
-	//fps->AddComponent<FPS>()->SetPosition(100, 100);
-	//
-	//newScene.Add(background);
-	//newScene.Add(logo);
-	//newScene.Add(text);
-	//newScene.Add(fps);
-	//
-	////Actual game stuff
-	//
-	//auto pepper = std::make_shared<GameObject>();
-	//pepper->AddComponent<TextComponent>()->SetText("This is a pepper");
-	//pepper->GetComponent<TextComponent>()->SetPosition(200, 200);
-	////pepper->AddComponent<LivesComponent>()->SetLives(3);
-	//
-	//newScene.Add(pepper);
-	//
-	//AudioManager::GetInstance().Play("Farewell.wav", 100);
-	//AudioManager::GetInstance().Play("Fishfight.wav", 100);
-	//AudioManager::GetInstance().Play("Greeting1.wav", 100);
-	//AudioManager::GetInstance().Play("Greeting2.wav", 100);
-}
-
 bool dae::Minigin::SetGame(Game* newGame)
 {
 	if (!m_Game)
@@ -119,6 +76,7 @@ void dae::Minigin::Cleanup()
 void dae::Minigin::Run()
 {
 	Initialize();
+	srand(unsigned int(time(NULL)));
 
 	// tell the resource manager where he can find the game data
 	ResourceManager::GetInstance().Init("../Data/");
@@ -157,9 +115,9 @@ void dae::Minigin::Run()
 		//	lag -= MsPerFrame;
 		//}
 
+		m_Game->Update(deltaTime);
 		sceneManager.Update(deltaTime);
 		renderer.Render();
-		m_Game->Update(deltaTime);
 		sound.ProcessEventQueue();
 
 		const auto sleepTime = start + chrono::milliseconds(MsPerFrame)

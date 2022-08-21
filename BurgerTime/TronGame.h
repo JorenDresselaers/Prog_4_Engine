@@ -20,13 +20,12 @@ enum class GameState
 	End
 };
 
-class BurgerTimeGame final : public Game
+class TronGame final : public Game
 {
 public:
-	BurgerTimeGame();
-	~BurgerTimeGame();
+	TronGame();
+	~TronGame();
 	void LoadGame() override;
-
 	void Update(float deltaTime) override;
 
 	void ProcessKeyUp(const SDL_KeyboardEvent& e) override;
@@ -35,6 +34,9 @@ public:
 	void ProcessMouseDown(const SDL_MouseButtonEvent& e) override;
 
 	void LoadLevel(const std::string& levelToLoad = "Level1.txt");
+	void LoadMenuScene();
+	void SetCommands();
+
 private:
 	dae::GameObject* m_pTank;
 	LevelLoader m_LevelLoader;

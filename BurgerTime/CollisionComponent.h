@@ -13,7 +13,8 @@ enum class CollisionType
 	Wall,
 	Bullet,
 	PlayerTank,
-	EnemyTank
+	EnemyTank,
+	Crystal
 };
 
 enum class CollisionSide

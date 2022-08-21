@@ -12,25 +12,25 @@ private:
 
 };
 
-class Fire : public Command
+class DebugFire : public Command
 {
 public:
 	virtual void Execute() override { std::cout << "\nFire!"; }
 };
 
-class Jump : public Command
+class DebugJump : public Command
 {
 public:
 	virtual void Execute() override { std::cout << "\nJump!"; }
 };
 
-class Crouch : public Command
+class DebugCrouch : public Command
 {
 public:
 	virtual void Execute() override { std::cout << "\nCrouch!"; }
 };
 
-class Die : public Command
+class DebugDie : public Command
 {
 public:
 	virtual void Execute() override { std::cout << "\nDie!"; }

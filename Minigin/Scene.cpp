@@ -22,7 +22,6 @@ void Scene::Update(float deltaTime)
 	if (m_Objects.size() > 0)
 	{
 		for (size_t object{}; object < m_Objects.size(); ++object)
-		//for (auto& object : m_Objects)
 		{
 			m_Objects.at(object)->Update(deltaTime);
 

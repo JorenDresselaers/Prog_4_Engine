@@ -1,4 +1,4 @@
-#include "BurgerTimeGame.h"
+#include "TronGame.h"
 
 #include <Windows.h>
 
@@ -27,18 +27,18 @@
 
 using namespace dae;
 
-BurgerTimeGame::BurgerTimeGame()
+TronGame::TronGame()
 	: m_pTank{}
 	, m_BlockSize{ 20 }
 {
 	InputManager::GetInstance().SetGame(this);
 }
 
-BurgerTimeGame::~BurgerTimeGame()
+TronGame::~TronGame()
 {
 }
 
-void BurgerTimeGame::LoadGame()
+void TronGame::LoadGame()
 {
 	std::cout << "\nLoading Tron";
 
@@ -46,28 +46,9 @@ void BurgerTimeGame::LoadGame()
 	auto& newScene = SceneManager::GetInstance().CreateScene("Tron");
 
 	LoadLevel();
-	//
-	//auto background = std::make_shared<GameObject>();
-	//auto logo = std::make_shared<GameObject>();
-	//auto text = std::make_shared<GameObject>();
 	auto fps = std::make_shared<GameObject>();
-	//	
-	//auto backgroundImage = ResourceManager::GetInstance().LoadTexture("background.jpg");
-	//auto logoImage = ResourceManager::GetInstance().LoadTexture("logo.png");
-	//auto pepperImage = ResourceManager::GetInstance().LoadTexture("Pepper_PH.png");
-	//
-	//text->AddComponent<TextComponent>();
-	//text->GetComponent<TextComponent>()->SetPosition(50, 100);
-	//text->GetComponent<TextComponent>()->SetText("Test!");
-	//
-	//background->AddComponent<RenderComponent>()->SetTexture(backgroundImage);
-	//logo->AddComponent<RenderComponent>()->SetTexture(logoImage);
-	//
 	fps->AddComponent<FPS>()->SetPosition(0, 10);
 	
-	//newScene.Add(background);
-	//newScene.Add(logo);
-	//newScene.Add(text);
 	newScene.Add(fps);
 	
 	//Actual game stuff
@@ -76,7 +57,7 @@ void BurgerTimeGame::LoadGame()
 	
 	auto tank = std::make_shared<GameObject>();
 	tank->AddComponent<TextComponent>()->SetText("This is a tank");
-	tank->GetComponent<TextComponent>()->SetPosition(200, 200);
+	tank->GetComponent<TextComponent>()->SetPosition(200, 5);
 	tank->AddComponent<RenderComponent>()->SetTexture(tankImage);
 	tank->AddComponent<PlayerComponent>()->SetPosition(22,62);
 	tank->AddComponent<CollisionComponent>()->Initialize(0, 0,
@@ -85,58 +66,18 @@ void BurgerTimeGame::LoadGame()
 		CollisionType::PlayerTank
 	);
 	tank->AddComponent<DeletionComponent>();
-
-	auto enemyTank = std::make_shared<GameObject>();
-	enemyTank->AddComponent<RenderComponent>()->SetTexture(enemyTankImage);
-	enemyTank->AddComponent<CollisionComponent>()->Initialize(0, 0,
-		enemyTank->GetComponent<RenderComponent>()->GetWidth(),
-		enemyTank->GetComponent<RenderComponent>()->GetHeight(),
-		CollisionType::EnemyTank
-	);
-	enemyTank->AddComponent<ScoreComponent>()->SetScore(100);
-	enemyTank->AddComponent<DeletionComponent>();
-	enemyTank->AddComponent<EnemyComponent>()->Initialize(200,200, 3);
 	
 	newScene.Add(tank);
-	newScene.Add(enemyTank);
 	m_pTank = tank.get();
 
-	//Loading menu
-	auto& menuScene = SceneManager::GetInstance().CreateScene("Menu");
-
-	auto background = std::make_shared<GameObject>();
-	auto logo = std::make_shared<GameObject>();
-	auto text = std::make_shared<GameObject>();
-	auto menuFPS = std::make_shared<GameObject>();
-
-	auto backgroundImage = ResourceManager::GetInstance().LoadTexture("background.jpg");
-	auto logoImage = ResourceManager::GetInstance().LoadTexture("logo.png");
-
-	text->AddComponent<TextComponent>();
-	text->GetComponent<TextComponent>()->SetPosition(50, 100);
-	text->GetComponent<TextComponent>()->SetText("Test!");
-
-	background->AddComponent<RenderComponent>()->SetTexture(backgroundImage);
-	logo->AddComponent<RenderComponent>()->SetTexture(logoImage);
-
-	menuFPS->AddComponent<FPS>()->SetPosition(0, 10);
-
-	menuScene.Add(background);
-	menuScene.Add(logo);
-	menuScene.Add(text);
-	menuScene.Add(menuFPS);
-	//menuScene.Add(tank);
-
+	LoadMenuScene();
 	m_State = GameState::Menu;
-	dae::InputManager::GetInstance().SetCommand(VK_PAD_DPAD_UP, new MoveUp(m_pTank));
-	dae::InputManager::GetInstance().SetCommand(VK_PAD_DPAD_DOWN, new MoveDown(m_pTank));
-	dae::InputManager::GetInstance().SetCommand(VK_PAD_DPAD_LEFT, new MoveLeft(m_pTank));
-	dae::InputManager::GetInstance().SetCommand(VK_PAD_DPAD_RIGHT, new MoveRight(m_pTank));
-	//dae::InputManager::GetInstance().SetCommand(VK_PAD_A, new MoveRight(m_pTank));
-	//dae::InputManager::GetInstance().SetCommand(VK_PAD_B, new MoveLeft(m_pTank));
+
+	SetCommands();
+
 }
 
-void BurgerTimeGame::Update(float deltaTime)
+void TronGame::Update(float deltaTime)
 {
 	(void)deltaTime;
 	std::vector<std::shared_ptr<GameObject>> collisionVector;
@@ -189,16 +130,13 @@ void BurgerTimeGame::Update(float deltaTime)
 							}
 						}
 					}
-					//if (float(pow((currentObject->GetComponent<CollisionComponent>()->GetX() - objectToCheck->GetComponent<CollisionComponent>()->GetX()), 2)
-					//	+ pow((currentObject->GetComponent<CollisionComponent>()->GetY() - objectToCheck->GetComponent<CollisionComponent>()->GetY()), 2))
-					//	< pow(m_BlockSize * 2, 2))
-					//{
-						//if (currentObject->GetComponent<CollisionComponent>()->isColliding(objectToCheck->GetComponent<CollisionComponent>(), side))
-						//{
-						//	currentObject->GetComponent<CollisionComponent>()->Collide(objectToCheck->GetComponent<CollisionComponent>(), side);
-						//}
-					//}
 				}
+
+				//if (currentObject->GetComponent<DeletionComponent>()->GetCanDelete() && currentObject->GetComponent<ScoreComponent>())
+				//{
+				//	std::cout << "\nAdding score";
+				//	m_pTank->GetComponent<PlayerComponent>()->AddScore(currentObject->GetComponent<ScoreComponent>()->GetScore());
+				//}
 			}
 		}
 		break;
@@ -211,7 +149,7 @@ void BurgerTimeGame::Update(float deltaTime)
 
 }
 
-void BurgerTimeGame::ProcessKeyUp(const SDL_KeyboardEvent& e)
+void TronGame::ProcessKeyUp(const SDL_KeyboardEvent& e)
 {
 	switch (m_State)
 	{
@@ -227,7 +165,7 @@ void BurgerTimeGame::ProcessKeyUp(const SDL_KeyboardEvent& e)
 	}
 }
 
-void BurgerTimeGame::ProcessKeyDown(const SDL_KeyboardEvent& e)
+void TronGame::ProcessKeyDown(const SDL_KeyboardEvent& e)
 {
 	switch (m_State)
 	{
@@ -250,7 +188,7 @@ void BurgerTimeGame::ProcessKeyDown(const SDL_KeyboardEvent& e)
 	}
 }
 
-void BurgerTimeGame::ProcessMouseUp(const SDL_MouseButtonEvent& e)
+void TronGame::ProcessMouseUp(const SDL_MouseButtonEvent& e)
 {
 	switch (m_State)
 	{
@@ -266,7 +204,7 @@ void BurgerTimeGame::ProcessMouseUp(const SDL_MouseButtonEvent& e)
 	}
 }
 
-void BurgerTimeGame::ProcessMouseDown(const SDL_MouseButtonEvent& e)
+void TronGame::ProcessMouseDown(const SDL_MouseButtonEvent& e)
 {
 	switch (m_State)
 	{
@@ -282,9 +220,47 @@ void BurgerTimeGame::ProcessMouseDown(const SDL_MouseButtonEvent& e)
 	}
 }
 
-void BurgerTimeGame::LoadLevel(const std::string& levelToLoad)
+void TronGame::LoadLevel(const std::string& levelToLoad)
 {
 	m_LevelLoader.SetLevelSize(30, 28);
 	m_LevelLoader.SetBlockSize(m_BlockSize);
 	m_LevelLoader.LoadLevel(levelToLoad, "Tron");
+}
+
+void TronGame::LoadMenuScene()
+{
+	auto& menuScene = SceneManager::GetInstance().CreateScene("Menu");
+
+	auto background = std::make_shared<GameObject>();
+	auto logo = std::make_shared<GameObject>();
+	auto text = std::make_shared<GameObject>();
+	auto menuFPS = std::make_shared<GameObject>();
+
+	auto backgroundImage = ResourceManager::GetInstance().LoadTexture("tron-main-menu.jpg");
+	auto logoImage = ResourceManager::GetInstance().LoadTexture("logo.png");
+
+	text->AddComponent<TextComponent>();
+	text->GetComponent<TextComponent>()->SetPosition(50, 100);
+	text->GetComponent<TextComponent>()->SetText("Test!");
+
+	background->AddComponent<RenderComponent>()->SetTexture(backgroundImage);
+	background->GetComponent<RenderComponent>()->SetDimensions(float(600), float(600));
+	logo->AddComponent<RenderComponent>()->SetTexture(logoImage);
+
+	menuFPS->AddComponent<FPS>()->SetPosition(0, 10);
+
+	menuScene.Add(background);
+	//menuScene.Add(logo);
+	//menuScene.Add(text);
+	//menuScene.Add(menuFPS);
+}
+
+void TronGame::SetCommands()
+{
+	dae::InputManager::GetInstance().SetCommand(VK_PAD_DPAD_UP, new MoveUp(m_pTank));
+	dae::InputManager::GetInstance().SetCommand(VK_PAD_DPAD_DOWN, new MoveDown(m_pTank));
+	dae::InputManager::GetInstance().SetCommand(VK_PAD_DPAD_LEFT, new MoveLeft(m_pTank));
+	dae::InputManager::GetInstance().SetCommand(VK_PAD_DPAD_RIGHT, new MoveRight(m_pTank));
+	dae::InputManager::GetInstance().SetCommand(VK_PAD_A, new MoveRight(m_pTank));
+	dae::InputManager::GetInstance().SetCommand(VK_PAD_B, new MoveLeft(m_pTank));
 }

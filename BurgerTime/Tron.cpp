@@ -6,12 +6,12 @@
 #endif
 
 #include "Minigin.h"
-#include "BurgerTimeGame.h"
+#include "TronGame.h"
 
 int main(int, char* []) {
 	dae::Minigin engine;
 
-	BurgerTimeGame* newGame = new BurgerTimeGame();
+	TronGame* newGame = new TronGame();
 	engine.SetGame(newGame);
 	engine.Run();
 	delete newGame;

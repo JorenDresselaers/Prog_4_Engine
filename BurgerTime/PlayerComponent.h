@@ -39,6 +39,8 @@ public:
 	void CollideLeft();
 	void CollideRight();
 
+	void AddScore(int score);
+	int GetScore();
 private:
 	float m_XPos;
 	float m_YPos;
@@ -59,6 +61,7 @@ private:
 
 	float m_MovementSpeed;
 	float m_DeltaTime;
+	int m_TotalScore;
 
 	dae::GameObject* m_ParentObject;
 };

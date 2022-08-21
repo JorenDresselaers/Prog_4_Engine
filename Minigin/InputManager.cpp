@@ -37,6 +37,7 @@ struct dae::InputManager::Impl
                 WORD button = currentButton->first;
                 if (IsPressed(button))
                 {
+                    std::cout << "\nExecuting " << button;
                     m_CommandMap[button]->Execute();
                 }
             }
@@ -47,7 +48,7 @@ struct dae::InputManager::Impl
         }
         else
         {
-            std::cout << "\nNo controller connected :(";
+            //std::cout << "\nNo controller connected :(";
         }
 
         //keyboard input
@@ -256,9 +257,10 @@ struct dae::InputManager::Impl
     void SetCommand(WORD button, Command* command)
     {
         m_CommandMap[button] = command;
+        std::cout << "\n" << button << " set as command";
     }
 
-    static const int m_NumberOfButtons{ 14 };
+    //static const int m_NumberOfButtons{ 14 };
     //bool ButtonState[m_NumberOfButtons];
     //bool ButtonPreviousState[m_NumberOfButtons];
 

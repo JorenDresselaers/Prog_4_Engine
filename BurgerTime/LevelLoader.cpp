@@ -32,6 +32,7 @@ bool LevelLoader::LoadLevel(std::string levelFile, std::string scene)
 
 		auto wallImage = dae::ResourceManager::GetInstance().LoadTexture("wall.png");
 		auto enemyTankImage = dae::ResourceManager::GetInstance().LoadTexture("EnemyTank.png");
+		auto crystalImage = dae::ResourceManager::GetInstance().LoadTexture("crystal.png");
 
 		char c{};
 
@@ -72,6 +73,25 @@ bool LevelLoader::LoadLevel(std::string levelFile, std::string scene)
 						enemyTank->AddComponent<EnemyComponent>()->Initialize(float(x * m_BlockSize + 2.5), float(y * m_BlockSize + m_LevelOffsetY + 2.5), 3);
 
 						dae::SceneManager::GetInstance().GetCurrentScene().Add(enemyTank);
+					}
+					else if (c == 'C')
+					{
+						std::shared_ptr<dae::GameObject> crystal = std::make_shared<dae::GameObject>();
+
+						crystal->AddComponent<dae::RenderComponent>()->SetTexture(crystalImage);
+						crystal->GetComponent<dae::RenderComponent>()->SetPosition(
+							float(x * m_BlockSize + 2.5),
+							float(y * m_BlockSize + m_LevelOffsetY + 2.5));
+
+						crystal->AddComponent<CollisionComponent>()->Initialize(
+							float(x * m_BlockSize + 2.5),
+							float(y * m_BlockSize + m_LevelOffsetY + 2.5),
+							crystal->GetComponent<dae::RenderComponent>()->GetWidth(),
+							crystal->GetComponent<dae::RenderComponent>()->GetHeight(),
+							CollisionType::Crystal
+						);
+
+						dae::SceneManager::GetInstance().GetCurrentScene().Add(crystal);
 					}
 
 

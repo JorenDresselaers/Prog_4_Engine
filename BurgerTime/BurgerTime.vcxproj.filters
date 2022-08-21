@@ -18,10 +18,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BurgerTime.cpp">
+    <ClCompile Include="Tron.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BurgerTimeGame.cpp">
+    <ClCompile Include="TronGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GunComponent.cpp">
@@ -60,9 +60,12 @@
     <ClCompile Include="ScoreCounterComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ScoreManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BurgerTimeGame.h">
+    <ClInclude Include="TronGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GunComponent.h">
@@ -102,6 +105,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TronCommands.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
