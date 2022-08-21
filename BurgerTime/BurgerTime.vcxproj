@@ -176,7 +176,6 @@
     <ClCompile Include="PlayerComponent.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
-    <ClCompile Include="ScoreCounterComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BulletComponent.h" />
@@ -192,7 +191,6 @@
     <ClInclude Include="PlayerComponent.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="ScoreComponent.h" />
-    <ClInclude Include="ScoreCounterComponent.h" />
     <ClInclude Include="TronCommands.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

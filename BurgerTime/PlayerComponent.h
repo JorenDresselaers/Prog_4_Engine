@@ -39,17 +39,26 @@ public:
 	void CollideLeft();
 	void CollideRight();
 
+	void GetHit();
+	void SetLives(int newLives);
+	int GetLives();
+	void SetHasDied(bool b);
+	bool GetHasDied();
+
 	void AddScore(int score);
 	int GetScore();
 private:
 	float m_XPos;
 	float m_YPos;
 	float m_MaxCooldown, m_CurrentCooldown;
+	int m_Lives;
 
 	bool MovingLeft;
 	bool MovingRight;
 	bool MovingUp;
 	bool MovingDown;
+
+	bool m_HasDied;
 
 	SDL_KeyCode m_KeyUp;
 	SDL_KeyCode m_KeyDown;

@@ -8,6 +8,7 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include "AudioManager.h"
+#include "ScoreManager.h"
 #include "TextObject.h"
 #include "GameObject.h"
 #include "Scene.h"
@@ -24,6 +25,8 @@
 #include "EnemyComponent.h"
 
 #include "TronCommands.h"
+#include <fstream>
+#include <iostream>
 
 using namespace dae;
 
@@ -43,7 +46,7 @@ void TronGame::LoadGame()
 	std::cout << "\nLoading Tron";
 
 	//Loading the main game
-	auto& newScene = SceneManager::GetInstance().CreateScene("Tron");
+	auto& newScene = SceneManager::GetInstance().CreateScene("Tron1");
 
 	LoadLevel();
 	auto fps = std::make_shared<GameObject>();
@@ -149,12 +152,25 @@ void TronGame::Update(float deltaTime)
 			}
 		}
 
+		if (m_pTank->GetComponent<PlayerComponent>()->GetHasDied())
+		{
+			m_pTank->GetComponent<PlayerComponent>()->SetHasDied(false);
+			m_pTank->GetComponent<PlayerComponent>()->SetPosition(22, 62);
+		}
+
+		if (m_pTank->GetComponent<PlayerComponent>()->GetLives() <= 0)
+		{
+			m_State = GameState::End;
+			LoadEndScene();
+		}
+
 		if (loadNextLevel)
 		{
+			++m_LevelsPassed;
 			std::cout << "\nLoading new level";
-			SceneManager::GetInstance().CreateScene("Tron2");
+			SceneManager::GetInstance().CreateScene("Tron" + std::to_string(m_LevelsPassed + 1));
 			m_LevelLoader.LoadNextLevel(SceneManager::GetInstance().GetCurrentSceneString());
-
+			
 			m_pTank->GetComponent<PlayerComponent>()->SetPosition(22, 62);
 			SceneManager::GetInstance().GetCurrentScene().Add(m_pTank);
 		}
@@ -190,7 +206,7 @@ void TronGame::ProcessKeyDown(const SDL_KeyboardEvent& e)
 	{
 	case GameState::Menu:
 		m_State = GameState::Running;
-		SceneManager::GetInstance().SetScene("Tron");
+		SceneManager::GetInstance().SetScene("Tron" + std::to_string(m_LevelsPassed + 1));
 		break;
 	case GameState::Running:
 		if (e.keysym.sym == SDLK_ESCAPE)
@@ -241,9 +257,10 @@ void TronGame::ProcessMouseDown(const SDL_MouseButtonEvent& e)
 
 void TronGame::LoadLevel(const std::string& levelToLoad)
 {
+	std::cout << "\nLoading scene " << "Tron" + std::to_string(m_LevelsPassed + 1);
 	m_LevelLoader.SetLevelSize(30, 28);
 	m_LevelLoader.SetBlockSize(m_BlockSize);
-	m_LevelLoader.LoadLevel(levelToLoad, "Tron");
+	m_LevelLoader.LoadLevel(levelToLoad, "Tron" + std::to_string(m_LevelsPassed + 1));
 }
 
 void TronGame::LoadMenuScene()
@@ -251,27 +268,139 @@ void TronGame::LoadMenuScene()
 	auto& menuScene = SceneManager::GetInstance().CreateScene("Menu");
 
 	auto background = std::make_shared<GameObject>();
-	auto logo = std::make_shared<GameObject>();
 	auto text = std::make_shared<GameObject>();
-	auto menuFPS = std::make_shared<GameObject>();
 
 	auto backgroundImage = ResourceManager::GetInstance().LoadTexture("tron-main-menu.jpg");
-	auto logoImage = ResourceManager::GetInstance().LoadTexture("logo.png");
 
 	text->AddComponent<TextComponent>();
-	text->GetComponent<TextComponent>()->SetPosition(50, 100);
-	text->GetComponent<TextComponent>()->SetText("Test!");
+	text->GetComponent<TextComponent>()->SetPosition(175, 175);
+	text->GetComponent<TextComponent>()->SetText("Press any key to begin the game!");
 
 	background->AddComponent<RenderComponent>()->SetTexture(backgroundImage);
 	background->GetComponent<RenderComponent>()->SetDimensions(float(600), float(600));
-	logo->AddComponent<RenderComponent>()->SetTexture(logoImage);
-
-	menuFPS->AddComponent<FPS>()->SetPosition(0, 10);
 
 	menuScene.Add(background);
-	//menuScene.Add(logo);
-	//menuScene.Add(text);
-	//menuScene.Add(menuFPS);
+	menuScene.Add(text);
+}
+
+void TronGame::LoadEndScene()
+{
+	auto& menuScene = SceneManager::GetInstance().CreateScene("End");
+
+	auto background = std::make_shared<GameObject>();
+	auto text = std::make_shared<GameObject>();
+
+	auto backgroundImage = ResourceManager::GetInstance().LoadTexture("background.jpg");
+
+	background->AddComponent<RenderComponent>()->SetTexture(backgroundImage);
+	background->GetComponent<RenderComponent>()->SetDimensions(float(600), float(600));
+
+	menuScene.Add(background);
+
+	std::string name;
+	std::cout << "\nPlease enter your name: ";
+	std::getline(std::cin, name);
+
+	//checking high score file
+	std::fstream highscoreFile;
+	highscoreFile.open("../Data/Highscores.txt");
+
+	std::vector<int> highscores;
+	std::vector<std::string> players;
+	int newScore{ ScoreManager::GetInstance().GetScore() };
+	bool addingNewScore{ false };
+	bool addedNewScore{ false };
+	bool fileOpened{ false };
+	int scoresSeen{ 0 };
+
+	if (highscoreFile.is_open())
+	{
+		int nameOrScore{ 0 }; // 1 = score | 0 = name
+		for (std::string line; std::getline(highscoreFile, line); )
+		{
+			++nameOrScore;
+			nameOrScore%=2;
+			if (scoresSeen < 19)
+			{
+				//std::cout << "\n " << scoresSeen;
+				++scoresSeen;
+				if (nameOrScore == 0)
+				{
+					if (addingNewScore && !addedNewScore)
+					{
+						++scoresSeen;
+
+						players.push_back(name);
+						players.push_back(line);
+						std::cout << "Player: " << name << std::endl;
+						addingNewScore = false;
+						addedNewScore = true;
+					}
+					else
+					{
+						std::cout << "Player: " << line << std::endl;
+						players.push_back(line);
+					}
+				}
+				else
+				{
+					int oldScore{ std::stoi(line) };
+					if (newScore > oldScore && !addedNewScore)
+					{
+						highscores.push_back(newScore);
+						highscores.push_back(std::stoi(line));
+						addingNewScore = true;
+						std::cout << "Score: " << newScore << std::endl;
+					}
+					else
+					{
+						std::cout << "Score: " << line << std::endl;
+						highscores.push_back(oldScore);
+					}
+				}
+			}
+		}
+
+		if (scoresSeen < 19 && !addingNewScore && !addedNewScore)
+		{
+			highscores.push_back(newScore);
+			players.push_back(name);
+			std::cout<< "Score: " << newScore << std::endl << "Player: " << name << std::endl;
+		}
+
+		for (int i{ 0 }; i < highscores.size(); ++i)
+		{
+			std::shared_ptr<GameObject> newTextPlayer = std::make_shared<GameObject>();
+			newTextPlayer->AddComponent<TextComponent>()->SetText(players.at(i));
+			newTextPlayer->GetComponent<TextComponent>()->SetPosition(100.f, float(100 + 40 * i));
+
+			std::shared_ptr<GameObject> newTextScore = std::make_shared<GameObject>();
+			newTextScore->AddComponent<TextComponent>()->SetText(std::to_string(highscores.at(i)));
+			newTextScore->GetComponent<TextComponent>()->SetPosition(100.f, float(120 + 40 * i));
+
+			SceneManager::GetInstance().GetCurrentScene().Add(newTextPlayer);
+			SceneManager::GetInstance().GetCurrentScene().Add(newTextScore);
+
+		}
+		highscoreFile.close();
+		fileOpened = true;
+	}
+
+	if (fileOpened)
+	{
+		std::ofstream highscoreFileWrite;
+
+		highscoreFileWrite.open("../Data/Highscores.txt", std::ios::trunc);
+
+		if (highscoreFileWrite.is_open())
+		{
+			for (int i{ 0 }; i < highscores.size(); ++i)
+			{
+				highscoreFileWrite << std::to_string(highscores.at(i)) << std::endl << players.at(i) << std::endl;
+			}
+			highscoreFileWrite.close();
+		}
+	}
 }
 
 void TronGame::SetCommands()

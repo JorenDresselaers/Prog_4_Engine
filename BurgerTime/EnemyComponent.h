@@ -10,9 +10,11 @@ public:
 	void Initialize(float x, float y, int lives);
 
 	void GetHit();
+	void Shoot();
 private:
 	float m_XPos, m_YPos;
 	int m_Lives;
+	float m_ShotCooldown, m_CurrentCooldown;
 
 	dae::GameObject* m_ParentObject;
 };

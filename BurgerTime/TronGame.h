@@ -35,6 +35,7 @@ public:
 
 	void LoadLevel(const std::string& levelToLoad = "Level1.txt");
 	void LoadMenuScene();
+	void LoadEndScene();
 	void SetCommands();
 
 private:
@@ -43,4 +44,5 @@ private:
 	LevelLoader m_LevelLoader;
 	int m_BlockSize ;
 	GameState m_State;
+	int m_LevelsPassed;
 };

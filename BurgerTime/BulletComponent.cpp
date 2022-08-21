@@ -3,6 +3,7 @@
 #include "ResourceManager.h"
 #include "CollisionComponent.h"
 #include "RenderComponent.h"
+#include "DeletionComponent.h"
 
 BulletComponent::BulletComponent()
 	: m_XPos{ 0 }
@@ -12,6 +13,9 @@ BulletComponent::BulletComponent()
 	, m_Bounces{ 0 }
 	, m_MaxBounces{ 5 }
 	, m_DeltaTime{ 0 }
+	, m_IsPlayerBullet{ false }
+	, m_LifeTime{ 0 }
+	, m_MaxLife{ 5 }
 {
 	//m_RenderComponent = new dae::RenderComponent();
 
@@ -28,6 +32,8 @@ BulletComponent::~BulletComponent()
 void BulletComponent::Update(float deltaTime, dae::GameObject* parentObject)
 {
 	m_DeltaTime = deltaTime;
+	m_LifeTime += deltaTime;
+	if (m_LifeTime >= m_MaxLife) parentObject->GetComponent<DeletionComponent>()->SetCanDelete(true);
 	m_XPos += m_XSpeed*deltaTime;
 	m_YPos += m_YSpeed*deltaTime;
 
@@ -101,16 +107,11 @@ void BulletComponent::BounceDown()
 	++m_Bounces;
 }
 
-void BulletComponent::Initialize(float originX, float originY, float targetX, float targetY, float xspeed, float yspeed)
+void BulletComponent::Initialize(float originX, float originY, float targetX, float targetY, float xspeed, float yspeed, bool isPlayerBullet)
 {
-	//int width{};
-	//int height{};
-	//SDL_QueryTexture(m_RenderComponent->GetTexture()->GetSDLTexture(), nullptr, nullptr, &width, &height);
-
+	m_IsPlayerBullet = isPlayerBullet;
 	m_XPos = originX;
 	m_YPos = originY;
-	//m_XPos = originX - m_RenderComponent->GetWidth() / 2;
-	//m_YPos = originY - m_RenderComponent->GetHeight() / 2;
 
 	float distance = sqrt((targetX - originX) * (targetX - originX) + (targetY - originY) * (targetY - originY));
 
@@ -126,6 +127,11 @@ float BulletComponent::GetX() const
 float BulletComponent::GetY() const
 {
 	return m_YPos;
+}
+
+bool BulletComponent::GetIsPlayerBullet()
+{
+	return m_IsPlayerBullet;
 }
 
 void BulletComponent::SetX(float x)

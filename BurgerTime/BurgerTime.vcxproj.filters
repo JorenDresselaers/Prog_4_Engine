@@ -57,9 +57,6 @@
     <ClCompile Include="EnemyComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="ScoreCounterComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ScoreManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -100,9 +97,6 @@
     </ClInclude>
     <ClInclude Include="EnemyComponent.h">
       <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="ScoreCounterComponent.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TronCommands.h">
       <Filter>Header Files</Filter>

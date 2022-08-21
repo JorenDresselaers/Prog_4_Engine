@@ -23,6 +23,8 @@ PlayerComponent::PlayerComponent()
     , m_MaxCooldown{ 1 }
     , m_CurrentCooldown{ m_MaxCooldown }
     , m_TotalScore{ 0 }
+    , m_Lives{ 3 }
+    , m_HasDied{ false }
 {
     SetKeys();
 }
@@ -69,111 +71,6 @@ std::string PlayerComponent::GetName() const
 	return "PlayerComponent";
 }
 
-/*
-void PlayerComponent::ProcessInput(SDL_Event e)
-{
-    //if (e.type == SDL_KEYDOWN)
-    //{
-    //    auto keyPressed = e.key.keysym.sym;
-    //    if (keyPressed == m_KeyLeft)
-    //    {
-    //        MovingLeft = true;
-    //    }
-    //    else if (keyPressed == m_KeyRight)
-    //    {
-    //        MovingRight = true;
-    //    }
-    //    else if (keyPressed == m_KeyUp)
-    //    {
-    //        MovingUp = true;
-    //    }
-    //    else if (keyPressed == m_KeyDown)
-    //    {
-    //        MovingDown = true;
-    //    }
-    //}
-
-    //if (e.type == SDL_KEYUP)
-    //{
-    //    auto keyPressed = e.key.keysym.sym;
-    //    if (keyPressed == m_KeyLeft)
-    //    {
-    //        MovingLeft = false;
-    //    }
-    //    else if (keyPressed == m_KeyRight)
-    //    {
-    //        MovingRight = false;
-    //    }
-    //    else if (keyPressed == m_KeyUp)
-    //    {
-    //        MovingUp = false;
-    //    }
-    //    else if (keyPressed == m_KeyDown)
-    //    {
-    //        MovingDown = false;
-    //    }
-    //}
-
-    //if (e.type == SDL_MOUSEBUTTONDOWN)
-    //{
-    //    switch (e.button.button)
-    //    {
-    //    case SDL_BUTTON_LEFT:
-    //        if (m_MouseX && m_MouseY)
-    //        {
-    //            auto newBullet = std::make_shared<dae::GameObject>();
-    //
-    //            auto image = dae::ResourceManager::GetInstance().LoadTexture("bullet.png");
-    //
-    //            newBullet->AddComponent<BulletComponent>()->Initialize(m_XPos, m_YPos, float(m_MouseX), float(m_MouseY), 100, 100);
-    //            newBullet->AddComponent<dae::RenderComponent>()->SetTexture(image);
-    //
-    //            newBullet->AddComponent<CollisionComponent>()->Initialize(
-    //                m_XPos + float(m_ParentObject->GetComponent<dae::RenderComponent>()->GetWidth() / 2),
-    //                m_YPos - float(m_ParentObject->GetComponent<dae::RenderComponent>()->GetHeight() / 2),
-    //                newBullet->GetComponent<dae::RenderComponent>()->GetWidth(),
-    //                newBullet->GetComponent<dae::RenderComponent>()->GetHeight(),
-    //                CollisionType::Bullet
-    //            );
-    //
-    //            newBullet->AddComponent<DeletionComponent>();
-    //
-    //            dae::SceneManager::GetInstance().GetCurrentScene().Add(newBullet);
-    //        }
-    //        else
-    //        {
-    //            std::cout << "\nMouse position not found";
-    //        }
-    //        break;
-    //    case SDL_BUTTON_RIGHT:
-    //        if (m_MouseX && m_MouseY)
-    //        {
-    //            auto newWall= std::make_shared<dae::GameObject>();
-    //
-    //            auto image = dae::ResourceManager::GetInstance().LoadTexture("wall.png");
-    //
-    //            newWall->AddComponent<dae::RenderComponent>()->SetTexture(image);
-    //            newWall->AddComponent<dae::RenderComponent>()->SetPosition(float(m_MouseX), float(m_MouseY));
-    //            newWall->AddComponent<CollisionComponent>()->Initialize(
-    //                float(m_MouseX),
-    //                float(m_MouseY),
-    //                newWall->GetComponent<dae::RenderComponent>()->GetWidth(),
-    //                newWall->GetComponent<dae::RenderComponent>()->GetHeight(),
-    //                CollisionType::Wall
-    //            );
-    //            
-    //            dae::SceneManager::GetInstance().GetCurrentScene().Add(newWall);
-    //        }
-    //        else
-    //        {
-    //            std::cout << "\nMouse position not found";
-    //        }
-    //        break;
-    //    }
-    //}
-}
-*/
-
 void PlayerComponent::ProcessKeyUp(const SDL_KeyboardEvent& e)
 {
     if (e.keysym.sym == m_KeyLeft)
@@ -212,6 +109,14 @@ void PlayerComponent::ProcessKeyDown(const SDL_KeyboardEvent& e)
     {
         MovingDown = true;
     }
+    else if (e.keysym.sym == 'q')
+    {
+        GetHit();
+    }
+    else if (e.keysym.sym == 'h')
+    {
+        ScoreManager::GetInstance().AddScore(500);
+    }
 }
 
 void PlayerComponent::ProcessMouseUp(const SDL_MouseButtonEvent& e)
@@ -236,7 +141,9 @@ void PlayerComponent::ProcessMouseDown(const SDL_MouseButtonEvent& e)
                 float(e.x),
                 float(e.y),
                 200,
-                200);
+                200,
+                true
+            );
             newBullet->AddComponent<dae::RenderComponent>()->SetTexture(image);
 
             newBullet->AddComponent<CollisionComponent>()->Initialize(
@@ -345,6 +252,32 @@ void PlayerComponent::CollideLeft()
 void PlayerComponent::CollideRight()
 {
     m_XPos -= m_MovementSpeed * m_DeltaTime;
+}
+
+void PlayerComponent::GetHit()
+{
+    --m_Lives;
+    SetHasDied(true);
+}
+
+void PlayerComponent::SetLives(int newLives)
+{
+    m_Lives = newLives;
+}
+
+int PlayerComponent::GetLives()
+{
+    return m_Lives;
+}
+
+void PlayerComponent::SetHasDied(bool b)
+{
+    m_HasDied = b;
+}
+
+bool PlayerComponent::GetHasDied()
+{
+    return m_HasDied;
 }
 
 void PlayerComponent::AddScore(int score)

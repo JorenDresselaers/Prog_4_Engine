@@ -99,8 +99,18 @@ void CollisionComponent::Collide(std::shared_ptr<CollisionComponent> other, cons
 			}
 			break;
 		case CollisionType::EnemyTank:
-			other->m_ParentObject->GetComponent<EnemyComponent>()->GetHit();
-			m_ParentObject->GetComponent<DeletionComponent>()->SetCanDelete(true);
+			if (m_ParentObject->GetComponent<BulletComponent>()->GetIsPlayerBullet())
+			{
+				other->m_ParentObject->GetComponent<EnemyComponent>()->GetHit();
+				m_ParentObject->GetComponent<DeletionComponent>()->SetCanDelete(true);
+			}
+			break;
+		case CollisionType::PlayerTank:
+			if (!m_ParentObject->GetComponent<BulletComponent>()->GetIsPlayerBullet())
+			{
+				other->m_ParentObject->GetComponent<PlayerComponent>()->GetHit();
+				m_ParentObject->GetComponent<DeletionComponent>()->SetCanDelete(true);
+			}
 			break;
 		default:
 			break;
