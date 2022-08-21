@@ -101,5 +101,8 @@
     <ClInclude Include="ScoreCounterComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TronCommands.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

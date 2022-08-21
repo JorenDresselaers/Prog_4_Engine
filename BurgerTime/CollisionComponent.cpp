@@ -81,15 +81,16 @@ void CollisionComponent::Collide(std::shared_ptr<CollisionComponent> other, cons
 					{
 					case CollisionSide::Right:
 					case CollisionSide::Left:
-						//std::cout << "\nBullet bouncing Y";
+						std::cout << "\nBullet bouncing Y";
 						m_ParentObject->GetComponent<BulletComponent>()->BounceY();
 						break;
 					case CollisionSide::Up:
 					case CollisionSide::Down:
-						//std::cout << "\nBullet bouncing X";
+						std::cout << "\nBullet bouncing X";
 						m_ParentObject->GetComponent<BulletComponent>()->BounceX();
 						break;
 					default:
+						std::cout << "\nBullet didn't bounce";
 						break;
 					}
 				}
@@ -274,7 +275,7 @@ bool CollisionComponent::isColliding(std::shared_ptr<CollisionComponent> other, 
 			side = CollisionSide::Right;
 		}
 
-		if (other->m_X + other->m_Width >= m_X &&
+		else if (other->m_X + other->m_Width >= m_X &&
 			other->m_X + other->m_Width <= m_X + m_Width &&
 			other->m_Y + other->m_Height >= m_Y &&
 			other->m_Y <= m_Y + m_Height)
@@ -292,7 +293,7 @@ bool CollisionComponent::isColliding(std::shared_ptr<CollisionComponent> other, 
 			side = CollisionSide::Down;
 		}
 
-		if (other->m_X + other->m_Width >= m_X &&
+		else if (other->m_X + other->m_Width >= m_X &&
 			other->m_X <= m_X + m_Width &&
 			other->m_Y >= m_Y &&
 			other->m_Y <= m_Y + m_Height)

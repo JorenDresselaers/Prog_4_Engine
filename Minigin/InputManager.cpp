@@ -5,16 +5,16 @@
 struct dae::InputManager::Impl
 {
     Impl()
-        : ButtonState{ false }
-        , ButtonPreviousState{ false }
+        : game{ nullptr }
     {}
 
     ~Impl()
     {
-        delete ButtonA;
-        delete ButtonB;
-        delete ButtonX;
-        delete ButtonY;
+        for (auto currentCommand : m_CommandMap)
+        {
+            delete currentCommand.second;
+            currentCommand.second = nullptr;
+        }
     }
 
     void SetGame(Game* newGame)
@@ -28,19 +28,29 @@ struct dae::InputManager::Impl
         XINPUT_STATE state;
         ZeroMemory(&state, sizeof(XINPUT_STATE));
 
+        //controller input
         dwResult = XInputGetState(0, &state);
         if (dwResult == ERROR_SUCCESS)
         {
-            if (IsPressed(dae::ControllerButton::ButtonA)) ButtonA->Execute();
-            if (IsPressed(dae::ControllerButton::ButtonB)) ButtonB->Execute();
-            if (IsPressed(dae::ControllerButton::ButtonX)) ButtonX->Execute();
-            if (IsPressed(dae::ControllerButton::ButtonY)) ButtonY->Execute();
+            for (auto currentButton = m_CommandMap.begin(); currentButton != m_CommandMap.end(); ++currentButton)
+            {
+                WORD button = currentButton->first;
+                if (IsPressed(button))
+                {
+                    m_CommandMap[button]->Execute();
+                }
+            }
+            //if (IsPressed(dae::ControllerButton::ButtonA)) ButtonA->Execute();
+            //if (IsPressed(dae::ControllerButton::ButtonB)) ButtonB->Execute();
+            //if (IsPressed(dae::ControllerButton::ButtonX)) ButtonX->Execute();
+            //if (IsPressed(dae::ControllerButton::ButtonY)) ButtonY->Execute();
         }
         else
         {
-            //std::cout << "\nNo controller connected :(";
+            std::cout << "\nNo controller connected :(";
         }
 
+        //keyboard input
         SDL_Event e{};
         while (SDL_PollEvent(&e)) 
         {
@@ -71,34 +81,23 @@ struct dae::InputManager::Impl
         return true;
     }
 
-    bool IsPressed(ControllerButton button)
+    //https://stackoverflow.com/questions/38863451/xbox-button-pressed-in-c
+    bool IsPressed(WORD button)
     {
-        bool boolToReturn{ false };
-        ButtonPreviousState[int(button)] = ButtonState[int(button)];
-        ButtonState[int(button)] = false;
+        //bool boolToReturn{ false };
+        //ButtonPreviousState[int(button)] = ButtonState[int(button)];
+        //ButtonState[int(button)] = false;
 
         DWORD dwResult;
         XINPUT_STATE state;
         ZeroMemory(&state, sizeof(XINPUT_STATE));
 
-        //SDL_Event e;
-        //while (SDL_PollEvent(&e)) {
-        //    if (e.type == SDL_QUIT) {
-        //        boolToReturn = false;
-        //    }
-        //    if (e.type == SDL_KEYDOWN) {
-        //
-        //    }
-        //    if (e.type == SDL_MOUSEBUTTONDOWN) {
-        //
-        //    }
-        //}
-
-
-
         dwResult = XInputGetState(0, &state);
         if (dwResult == ERROR_SUCCESS)
         {
+            return (state.Gamepad.wButtons & button) != 0;
+
+            /*
             if (state.Gamepad.wButtons)
             {
                 switch (button)
@@ -248,24 +247,32 @@ struct dae::InputManager::Impl
                     break;
                 }
             }
+            */
         }
 
-        return boolToReturn;
+        return false;
+    }
+
+    void SetCommand(WORD button, Command* command)
+    {
+        m_CommandMap[button] = command;
     }
 
     static const int m_NumberOfButtons{ 14 };
-    bool ButtonState[m_NumberOfButtons];
-    bool ButtonPreviousState[m_NumberOfButtons];
+    //bool ButtonState[m_NumberOfButtons];
+    //bool ButtonPreviousState[m_NumberOfButtons];
 
-    Command* ButtonA = new Fire();
-    Command* ButtonB = new Jump();
-    Command* ButtonX = new Crouch();
-    Command* ButtonY = new Die();
+    //Command* ButtonA = new Fire();
+    //Command* ButtonB = new Jump();
+    //Command* ButtonX = new Crouch();
+    //Command* ButtonY = new Die();
 
     Game* game;
 
     //std::shared_ptr<PlayerComponent> player;
     //std::shared_ptr<PlayerComponent> playerTwo;
+
+    std::map<WORD, Command*> m_CommandMap;
 };
 
 dae::InputManager::InputManager()
@@ -278,7 +285,7 @@ bool dae::InputManager::ProcessInput()
     return pimpl->ProcessInput();
 }
 
-bool dae::InputManager::IsPressed(ControllerButton button)
+bool dae::InputManager::IsPressed(WORD button)
 {
     return pimpl->IsPressed(button);
 }
@@ -286,6 +293,11 @@ bool dae::InputManager::IsPressed(ControllerButton button)
 void dae::InputManager::SetGame(Game* newGame)
 {
     pimpl->SetGame(newGame);
+}
+
+void dae::InputManager::SetCommand(WORD button, Command* command)
+{
+    pimpl->SetCommand(button, command);
 }
 
 dae::InputManager::~InputManager()

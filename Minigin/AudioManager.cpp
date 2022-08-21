@@ -6,7 +6,7 @@ dae::AudioManager::AudioManager()
 	, m_DataPath{"../Data/"}
 	, m_CurrentThreadCount{ 0 }
 {
-	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
+	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096);
 }
 
 dae::AudioManager::~AudioManager()

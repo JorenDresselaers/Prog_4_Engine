@@ -29,6 +29,10 @@ public:
 	void MoveRight(float deltaTime);
 	void MoveUp(float deltaTime);
 	void MoveDown(float deltaTime);
+	void MoveLeft();
+	void MoveRight();
+	void MoveUp();
+	void MoveDown();
 
 	void CollideUp();
 	void CollideDown();

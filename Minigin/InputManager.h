@@ -4,6 +4,8 @@
 #include "Command.h"
 #include "Game.h"
 
+#include <map>
+
 namespace dae
 {
 	enum class ControllerButton
@@ -33,8 +35,10 @@ namespace dae
 		InputManager& operator=(InputManager rhs) = delete;
 
 		bool ProcessInput();
-		bool IsPressed(ControllerButton button);
+		bool IsPressed(WORD button);
 		void SetGame(Game* newGame);
+
+		void SetCommand(WORD button, Command* command);
 	private:
 		XINPUT_STATE m_CurrentState{};
 		struct Impl;

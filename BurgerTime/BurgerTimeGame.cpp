@@ -23,6 +23,8 @@
 #include "ScoreComponent.h"
 #include "EnemyComponent.h"
 
+#include "TronCommands.h"
+
 using namespace dae;
 
 BurgerTimeGame::BurgerTimeGame()
@@ -126,6 +128,12 @@ void BurgerTimeGame::LoadGame()
 	//menuScene.Add(tank);
 
 	m_State = GameState::Menu;
+	dae::InputManager::GetInstance().SetCommand(VK_PAD_DPAD_UP, new MoveUp(m_pTank));
+	dae::InputManager::GetInstance().SetCommand(VK_PAD_DPAD_DOWN, new MoveDown(m_pTank));
+	dae::InputManager::GetInstance().SetCommand(VK_PAD_DPAD_LEFT, new MoveLeft(m_pTank));
+	dae::InputManager::GetInstance().SetCommand(VK_PAD_DPAD_RIGHT, new MoveRight(m_pTank));
+	//dae::InputManager::GetInstance().SetCommand(VK_PAD_A, new MoveRight(m_pTank));
+	//dae::InputManager::GetInstance().SetCommand(VK_PAD_B, new MoveLeft(m_pTank));
 }
 
 void BurgerTimeGame::Update(float deltaTime)
@@ -157,14 +165,14 @@ void BurgerTimeGame::Update(float deltaTime)
 			{
 				for (auto objectToCheck : collisionVector)
 				{
+					sideX = CollisionSide::Null;
+					sideY = CollisionSide::Null;
+
 					auto collisionToCheck = objectToCheck->GetComponent<CollisionComponent>();
 					if (collisionToCheck)
 					{
 						if (currentObject != objectToCheck)
 						{
-							sideX = CollisionSide::Null;
-							sideY = CollisionSide::Null;
-
 							if (!currentObject->GetComponent<BulletComponent>())
 							{
 								if (currentObject->GetComponent<CollisionComponent>()->isColliding(collisionToCheck, sideX, sideY))

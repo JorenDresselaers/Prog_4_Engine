@@ -231,8 +231,8 @@ void PlayerComponent::ProcessMouseDown(const SDL_MouseButtonEvent& e)
                 m_YPos + m_ParentObject->GetComponent<dae::RenderComponent>()->GetHeight() / 2,
                 float(e.x),
                 float(e.y),
-                100,
-                100);
+                200,
+                200);
             newBullet->AddComponent<dae::RenderComponent>()->SetTexture(image);
 
             newBullet->AddComponent<CollisionComponent>()->Initialize(
@@ -246,7 +246,7 @@ void PlayerComponent::ProcessMouseDown(const SDL_MouseButtonEvent& e)
             newBullet->AddComponent<DeletionComponent>();
 
             dae::SceneManager::GetInstance().GetCurrentScene().Add(newBullet);
-            dae::AudioManager::GetInstance().Play("Fishfight.wav", 1);
+            //dae::AudioManager::GetInstance().Play("Fishfight.mp3", 1);
         }
 
         //dae::AudioManager::GetInstance().Play("Fishfight.wav", 1);
@@ -301,6 +301,26 @@ void PlayerComponent::MoveUp(float deltaTime)
 void PlayerComponent::MoveDown(float deltaTime)
 {
 	m_YPos += m_MovementSpeed * deltaTime;
+}
+
+void PlayerComponent::MoveLeft()
+{
+	m_XPos -= m_MovementSpeed * m_DeltaTime;
+}
+
+void PlayerComponent::MoveRight()
+{
+	m_XPos += m_MovementSpeed * m_DeltaTime;
+}
+
+void PlayerComponent::MoveUp()
+{
+	m_YPos -= m_MovementSpeed * m_DeltaTime;
+}
+
+void PlayerComponent::MoveDown()
+{
+	m_YPos += m_MovementSpeed * m_DeltaTime;
 }
 
 void PlayerComponent::CollideUp()
