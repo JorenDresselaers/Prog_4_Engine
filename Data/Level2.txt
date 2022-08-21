@@ -1,0 +1,29 @@
+Level3.txt
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+X             X            C X
+X             X              X
+X  XXXXXX  XXXXXX  XXXXXX  XXX
+X  XE                        X
+X  X                         X
+X  X  XXX    XXXX      XXXX  X
+X                            X
+X                            X
+X  XXXXXXXX  XXXXXX  XXXX  XXX
+X  XE        X          X    X
+X  X         X          X    X
+X            X               X
+X            XXXXXX          X
+X    X                  X    X
+X    X                  X    X
+XXXXXXXX      X              X
+X             X              X
+X             X          E   X
+X             X              X
+X    XXXXXXX  XXXX  XXX  XXXXX
+X    X                       X
+X    X                       X
+X                         X  X
+XXXXXXXXX  XXXXXX         X  X
+XC    E    XE             XC X
+X          X              X  X
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX

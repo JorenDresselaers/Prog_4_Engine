@@ -40,3 +40,8 @@ dae::Scene& dae::SceneManager::GetCurrentScene()
 {
 	return *m_CurrentScene;
 }
+
+std::string dae::SceneManager::GetCurrentSceneString()
+{
+	return m_CurrentScene->GetName();
+}

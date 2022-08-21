@@ -38,7 +38,8 @@ public:
 	void SetCommands();
 
 private:
-	dae::GameObject* m_pTank;
+	//dae::GameObject* m_pTank;
+	std::shared_ptr<dae::GameObject> m_pTank;
 	LevelLoader m_LevelLoader;
 	int m_BlockSize ;
 	GameState m_State;

@@ -57,7 +57,7 @@ void TronGame::LoadGame()
 	
 	auto tank = std::make_shared<GameObject>();
 	tank->AddComponent<TextComponent>()->SetText("This is a tank");
-	tank->GetComponent<TextComponent>()->SetPosition(200, 5);
+	tank->GetComponent<TextComponent>()->SetPosition(200, 10);
 	tank->AddComponent<RenderComponent>()->SetTexture(tankImage);
 	tank->AddComponent<PlayerComponent>()->SetPosition(22,62);
 	tank->AddComponent<CollisionComponent>()->Initialize(0, 0,
@@ -68,7 +68,7 @@ void TronGame::LoadGame()
 	tank->AddComponent<DeletionComponent>();
 	
 	newScene.Add(tank);
-	m_pTank = tank.get();
+	m_pTank = tank;
 
 	LoadMenuScene();
 	m_State = GameState::Menu;
@@ -84,6 +84,7 @@ void TronGame::Update(float deltaTime)
 
 	CollisionSide sideX = CollisionSide::Null;
 	CollisionSide sideY = CollisionSide::Null;
+	bool loadNextLevel{ false };
 
 	switch (m_State)
 	{
@@ -91,6 +92,7 @@ void TronGame::Update(float deltaTime)
 		break;
 	case GameState::Running:
 		collisionVector = SceneManager::GetInstance().GetCurrentScene().GetObjects();
+		loadNextLevel = true;
 
 		for (size_t currentObject{ 0 }; currentObject < collisionVector.size(); ++currentObject)
 		{
@@ -104,6 +106,7 @@ void TronGame::Update(float deltaTime)
 		{
 			if (currentObject->GetComponent<DeletionComponent>())
 			{
+				//handling collision
 				for (auto objectToCheck : collisionVector)
 				{
 					sideX = CollisionSide::Null;
@@ -132,12 +135,28 @@ void TronGame::Update(float deltaTime)
 					}
 				}
 
+				//handling enemies and progressing through levels
+				if (currentObject->GetComponent<EnemyComponent>())
+				{
+					loadNextLevel = false;
+				}
+
 				//if (currentObject->GetComponent<DeletionComponent>()->GetCanDelete() && currentObject->GetComponent<ScoreComponent>())
 				//{
 				//	std::cout << "\nAdding score";
 				//	m_pTank->GetComponent<PlayerComponent>()->AddScore(currentObject->GetComponent<ScoreComponent>()->GetScore());
 				//}
 			}
+		}
+
+		if (loadNextLevel)
+		{
+			std::cout << "\nLoading new level";
+			SceneManager::GetInstance().CreateScene("Tron2");
+			m_LevelLoader.LoadNextLevel(SceneManager::GetInstance().GetCurrentSceneString());
+
+			m_pTank->GetComponent<PlayerComponent>()->SetPosition(22, 62);
+			SceneManager::GetInstance().GetCurrentScene().Add(m_pTank);
 		}
 		break;
 	case GameState::End:
@@ -257,10 +276,10 @@ void TronGame::LoadMenuScene()
 
 void TronGame::SetCommands()
 {
-	dae::InputManager::GetInstance().SetCommand(VK_PAD_DPAD_UP, new MoveUp(m_pTank));
-	dae::InputManager::GetInstance().SetCommand(VK_PAD_DPAD_DOWN, new MoveDown(m_pTank));
-	dae::InputManager::GetInstance().SetCommand(VK_PAD_DPAD_LEFT, new MoveLeft(m_pTank));
-	dae::InputManager::GetInstance().SetCommand(VK_PAD_DPAD_RIGHT, new MoveRight(m_pTank));
-	dae::InputManager::GetInstance().SetCommand(VK_PAD_A, new MoveRight(m_pTank));
-	dae::InputManager::GetInstance().SetCommand(VK_PAD_B, new MoveLeft(m_pTank));
+	dae::InputManager::GetInstance().SetCommand(VK_PAD_DPAD_UP, new MoveUp(m_pTank.get()));
+	dae::InputManager::GetInstance().SetCommand(VK_PAD_DPAD_DOWN, new MoveDown(m_pTank.get()));
+	dae::InputManager::GetInstance().SetCommand(VK_PAD_DPAD_LEFT, new MoveLeft(m_pTank.get()));
+	dae::InputManager::GetInstance().SetCommand(VK_PAD_DPAD_RIGHT, new MoveRight(m_pTank.get()));
+	dae::InputManager::GetInstance().SetCommand(VK_PAD_A, new MoveRight(m_pTank.get()));
+	dae::InputManager::GetInstance().SetCommand(VK_PAD_B, new MoveLeft(m_pTank.get()));
 }

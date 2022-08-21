@@ -28,13 +28,16 @@ bool LevelLoader::LoadLevel(std::string levelFile, std::string scene)
 	std::cout << "\nLoading level " << levelFile;
 	m_LevelFile.open("../Data/" + levelFile);
 	if (m_LevelFile.is_open()) {
-		std::cout << "\nLevel loading";
+		//std::cout << "\nLevel loading";
 
 		auto wallImage = dae::ResourceManager::GetInstance().LoadTexture("wall.png");
 		auto enemyTankImage = dae::ResourceManager::GetInstance().LoadTexture("EnemyTank.png");
 		auto crystalImage = dae::ResourceManager::GetInstance().LoadTexture("crystal.png");
 
 		char c{};
+		std::string firstLine;
+		std::getline(m_LevelFile, firstLine);
+		m_NextLevel = firstLine;
 
 		for (int y{ 0 }; y <= m_LevelSizeY; ++y)
 		{
@@ -134,9 +137,15 @@ bool LevelLoader::LoadLevel(std::string levelFile, std::string scene)
 				}
 			}
 		}
+		m_LevelFile.close();
 		return true;
 	}
 	return false;
+}
+
+bool LevelLoader::LoadNextLevel(std::string scene)
+{
+	return LoadLevel(m_NextLevel, scene);
 }
 
 void LevelLoader::SetLevelSize(int x, int y)
