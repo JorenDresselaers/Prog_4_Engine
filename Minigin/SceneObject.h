@@ -1,7 +1,7 @@
 #pragma once
 namespace dae
 {
-	class SceneObject
+	class SceneObject final
 	{
 	public:
 		virtual void Update() = 0;

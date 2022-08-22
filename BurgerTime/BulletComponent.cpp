@@ -17,16 +17,10 @@ BulletComponent::BulletComponent()
 	, m_LifeTime{ 0 }
 	, m_MaxLife{ 5 }
 {
-	//m_RenderComponent = new dae::RenderComponent();
-
-	//auto image = dae::ResourceManager::GetInstance().LoadTexture("wall.png");
-	//m_RenderComponent->SetTexture(image);
 }
 
 BulletComponent::~BulletComponent()
 {
-	//delete m_RenderComponent;
-	//m_RenderComponent = nullptr;
 }
 
 void BulletComponent::Update(float deltaTime, dae::GameObject* parentObject)
@@ -53,15 +47,13 @@ void BulletComponent::Update(float deltaTime, dae::GameObject* parentObject)
 		);
 	}
 
-	//m_RenderComponent->SetPosition(m_XPos, m_YPos);
 }
 
 void BulletComponent::Render() const
 {
-	//m_RenderComponent->Render();
 }
 
-bool BulletComponent::CanBounce()
+bool BulletComponent::CanBounce() const
 {
 	if(m_Bounces <= m_MaxBounces) return true;
 	return false;
@@ -129,7 +121,7 @@ float BulletComponent::GetY() const
 	return m_YPos;
 }
 
-bool BulletComponent::GetIsPlayerBullet()
+bool BulletComponent::GetIsPlayerBullet() const
 {
 	return m_IsPlayerBullet;
 }

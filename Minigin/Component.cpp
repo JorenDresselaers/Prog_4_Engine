@@ -24,8 +24,3 @@ void Component::Update(float deltaTime, dae::GameObject* parentObject)
 void Component::Render() const
 {
 }
-
-std::string Component::GetName() const
-{
-	return m_Name;
-}

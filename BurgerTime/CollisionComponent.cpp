@@ -157,7 +157,7 @@ void CollisionComponent::Collide(std::shared_ptr<CollisionComponent> other, cons
 		case CollisionType::Crystal:
 			m_ParentObject->GetComponent<PlayerComponent>()->SetPosition(
 				float((rand() % 28 + 1) * 20), 
-				float((rand() % 26 + 1) * 20)
+				float((rand() % 25 + 1) * 20)
 			);
 			break;
 		default:
@@ -274,7 +274,7 @@ bool CollisionComponent::isColliding(std::shared_ptr<CollisionComponent> other, 
 		other->m_Y < m_Y + m_Height)
 	{
 		colliding = true;
-		//side = CollisionSide::Up;
+		//side = CollisionSide::Up; //duct-tape fix to collision not working perfectly
 
 		if (other->m_X >= m_X &&
 			other->m_X <= m_X + m_Width &&
@@ -326,12 +326,12 @@ void CollisionComponent::SetType(CollisionType newType)
 	m_CollisionType = newType;
 }
 
-float CollisionComponent::GetX()
+float CollisionComponent::GetX() const
 {
 	return m_X;
 }
 
-float CollisionComponent::GetY()
+float CollisionComponent::GetY() const
 {
 	return m_Y;
 }

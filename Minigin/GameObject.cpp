@@ -6,7 +6,6 @@
 
 void dae::GameObject::SetParent(GameObject* newParent)
 {
-	//m_Parent->RemoveChild(0);
 	m_Parent = newParent;
 }
 
@@ -27,8 +26,6 @@ void dae::GameObject::Update(float deltaTime)
 	for (auto& currentComponent : m_Components)
 	{
 		currentComponent->Update(deltaTime, this);
-
-		//dae::SceneManager::GetInstance().GetCurrentScene().
 	}
 }
 

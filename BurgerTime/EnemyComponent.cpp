@@ -66,7 +66,6 @@ void EnemyComponent::GetHit()
 void EnemyComponent::Shoot()
 {
     int shotDirection = rand() % 4;
-    //std::cout << "\n"  << shotDirection;
     float shotXPos{ 0 }, shotYPos{ 0 };
     switch (shotDirection)
     {
@@ -94,8 +93,8 @@ void EnemyComponent::Shoot()
         m_YPos + m_ParentObject->GetComponent<dae::RenderComponent>()->GetHeight() / 2,
         m_XPos + m_ParentObject->GetComponent<dae::RenderComponent>()->GetWidth() / 2 + shotXPos,
         m_YPos + m_ParentObject->GetComponent<dae::RenderComponent>()->GetHeight() / 2 + shotYPos,
-        200,
-        200);
+        100,
+        100);
     newBullet->AddComponent<dae::RenderComponent>()->SetTexture(image);
 
     newBullet->AddComponent<CollisionComponent>()->Initialize(

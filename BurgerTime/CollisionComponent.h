@@ -45,8 +45,8 @@ public:
 	CollisionType GetType() const;
 	void SetType(CollisionType newType);
 
-	float GetX();
-	float GetY();
+	float GetX() const;
+	float GetY() const ;
 
 private:
 	float m_X, m_Y, m_Width, m_Height;

@@ -4,7 +4,7 @@ class GameObject;
 class Game;
 namespace dae
 {
-	class Minigin
+	class Minigin final
 	{
 	public:
 		void Initialize();

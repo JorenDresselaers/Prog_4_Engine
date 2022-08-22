@@ -14,7 +14,7 @@ void ScoreManager::AddScore(int scoreToAdd)
 	m_Score += scoreToAdd;
 }
 
-int ScoreManager::GetScore()
+int ScoreManager::GetScore() const
 {
 	return m_Score;
 }

@@ -45,18 +45,16 @@ void TronGame::LoadGame()
 {
 	std::cout << "\nLoading Tron";
 
+	std::cout << "\n==| Instructions |==\n\nWASD to move the tank\nClick to shoot"
+		<< "\n\n =| Debug |=\n\nQ to lose a life\nH to gain 500 score\nP to play a sound\n";
+
 	//Loading the main game
 	auto& newScene = SceneManager::GetInstance().CreateScene("Tron1");
 
 	LoadLevel();
-	auto fps = std::make_shared<GameObject>();
-	fps->AddComponent<FPS>()->SetPosition(0, 10);
-	
-	newScene.Add(fps);
 	
 	//Actual game stuff
 	auto tankImage = dae::ResourceManager::GetInstance().LoadTexture("Tank.png");
-	auto enemyTankImage = dae::ResourceManager::GetInstance().LoadTexture("EnemyTank.png");
 	
 	auto tank = std::make_shared<GameObject>();
 	tank->AddComponent<TextComponent>()->SetText("This is a tank");
@@ -77,7 +75,6 @@ void TronGame::LoadGame()
 	m_State = GameState::Menu;
 
 	SetCommands();
-
 }
 
 void TronGame::Update(float deltaTime)
@@ -166,13 +163,7 @@ void TronGame::Update(float deltaTime)
 
 		if (loadNextLevel)
 		{
-			++m_LevelsPassed;
-			std::cout << "\nLoading new level";
-			SceneManager::GetInstance().CreateScene("Tron" + std::to_string(m_LevelsPassed + 1));
-			m_LevelLoader.LoadNextLevel(SceneManager::GetInstance().GetCurrentSceneString());
-			
-			m_pTank->GetComponent<PlayerComponent>()->SetPosition(22, 62);
-			SceneManager::GetInstance().GetCurrentScene().Add(m_pTank);
+			LoadNextLevel();
 		}
 		break;
 	case GameState::End:
@@ -180,8 +171,6 @@ void TronGame::Update(float deltaTime)
 	default:
 		break;
 	}
-
-
 }
 
 void TronGame::ProcessKeyUp(const SDL_KeyboardEvent& e)
@@ -213,6 +202,10 @@ void TronGame::ProcessKeyDown(const SDL_KeyboardEvent& e)
 		{
 			m_State = GameState::Menu;
 			SceneManager::GetInstance().SetScene("Menu");
+		}
+		else if (e.keysym.sym == 'e' || e.keysym.sym == 'E')
+		{
+			LoadNextLevel();
 		}
 		m_pTank->GetComponent<PlayerComponent>()->ProcessKeyDown(e);
 		break;
@@ -261,6 +254,20 @@ void TronGame::LoadLevel(const std::string& levelToLoad)
 	m_LevelLoader.SetLevelSize(30, 28);
 	m_LevelLoader.SetBlockSize(m_BlockSize);
 	m_LevelLoader.LoadLevel(levelToLoad, "Tron" + std::to_string(m_LevelsPassed + 1));
+
+}
+
+void TronGame::LoadNextLevel()
+{
+	++m_LevelsPassed;
+	std::cout << "\nLoading new level";
+	SceneManager::GetInstance().CreateScene("Tron" + std::to_string(m_LevelsPassed + 1));
+	m_LevelLoader.LoadNextLevel(SceneManager::GetInstance().GetCurrentSceneString());
+
+	m_pTank->GetComponent<PlayerComponent>()->SetPosition(22, 62);
+	SceneManager::GetInstance().GetCurrentScene().Add(m_pTank);
+
+	SceneManager::GetInstance().DeleteScene("Tron" + std::to_string(m_LevelsPassed));
 }
 
 void TronGame::LoadMenuScene()
@@ -368,7 +375,7 @@ void TronGame::LoadEndScene()
 			std::cout<< "Score: " << newScore << std::endl << "Player: " << name << std::endl;
 		}
 
-		for (int i{ 0 }; i < highscores.size(); ++i)
+		for (size_t i{ 0 }; i < players.size(); ++i)
 		{
 			std::shared_ptr<GameObject> newTextPlayer = std::make_shared<GameObject>();
 			newTextPlayer->AddComponent<TextComponent>()->SetText(players.at(i));
@@ -380,7 +387,6 @@ void TronGame::LoadEndScene()
 
 			SceneManager::GetInstance().GetCurrentScene().Add(newTextPlayer);
 			SceneManager::GetInstance().GetCurrentScene().Add(newTextScore);
-
 		}
 		highscoreFile.close();
 		fileOpened = true;
@@ -394,7 +400,7 @@ void TronGame::LoadEndScene()
 
 		if (highscoreFileWrite.is_open())
 		{
-			for (int i{ 0 }; i < highscores.size(); ++i)
+			for (size_t i{ 0 }; i < players.size(); ++i)
 			{
 				highscoreFileWrite << std::to_string(highscores.at(i)) << std::endl << players.at(i) << std::endl;
 			}

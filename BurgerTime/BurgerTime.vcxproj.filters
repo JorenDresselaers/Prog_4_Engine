@@ -24,12 +24,6 @@
     <ClCompile Include="TronGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GunComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="MapComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="CollisionComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -64,12 +58,6 @@
   <ItemGroup>
     <ClInclude Include="TronGame.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GunComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="MapComponent.h">
-      <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="RenderComponent.h">
       <Filter>Components</Filter>

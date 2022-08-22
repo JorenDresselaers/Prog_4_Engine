@@ -58,17 +58,15 @@ void PlayerComponent::Update(float deltaTime, dae::GameObject* parentObject)
 
 	parentObject->GetComponent<dae::RenderComponent>()->SetPosition(m_XPos, m_YPos);
 	//parentObject->GetComponent<dae::TextComponent>()->SetPosition(m_XPos, m_YPos-20);
-	parentObject->GetComponent<dae::TextComponent>()->SetText("Score: " + std::to_string(ScoreManager::GetInstance().GetScore()));
+    parentObject->GetComponent<dae::TextComponent>()->SetText(
+        "Lives: " + std::to_string(m_Lives) +
+        "  |  Score: " + std::to_string(ScoreManager::GetInstance().GetScore())
+    );
 }
 
 void PlayerComponent::Render() const
 {
 	//m_RenderComponent->Render();
-}
-
-std::string PlayerComponent::GetName() const
-{
-	return "PlayerComponent";
 }
 
 void PlayerComponent::ProcessKeyUp(const SDL_KeyboardEvent& e)
@@ -88,6 +86,10 @@ void PlayerComponent::ProcessKeyUp(const SDL_KeyboardEvent& e)
     else if (e.keysym.sym == m_KeyDown)
     {
         MovingDown = false;
+    }
+    else if (e.keysym.sym == 'p' || e.keysym.sym == 'P')
+    {
+        dae::AudioManager::GetInstance().Play("Fishfight.wav", 100);
     }
 }
 
@@ -140,8 +142,8 @@ void PlayerComponent::ProcessMouseDown(const SDL_MouseButtonEvent& e)
                 m_YPos + m_ParentObject->GetComponent<dae::RenderComponent>()->GetHeight() / 2,
                 float(e.x),
                 float(e.y),
-                200,
-                200,
+                100,
+                100,
                 true
             );
             newBullet->AddComponent<dae::RenderComponent>()->SetTexture(image);
@@ -265,7 +267,7 @@ void PlayerComponent::SetLives(int newLives)
     m_Lives = newLives;
 }
 
-int PlayerComponent::GetLives()
+int PlayerComponent::GetLives() const
 {
     return m_Lives;
 }
@@ -275,7 +277,7 @@ void PlayerComponent::SetHasDied(bool b)
     m_HasDied = b;
 }
 
-bool PlayerComponent::GetHasDied()
+bool PlayerComponent::GetHasDied() const
 {
     return m_HasDied;
 }
@@ -286,7 +288,7 @@ void PlayerComponent::AddScore(int score)
     m_ParentObject->GetComponent<dae::TextComponent>()->SetText("Score:" + m_TotalScore);
 }
 
-int PlayerComponent::GetScore()
+int PlayerComponent::GetScore() const
 {
     return m_TotalScore;
 }

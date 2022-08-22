@@ -12,9 +12,6 @@ public:
 
 	void Update(float deltaTime, dae::GameObject* parentObject) override;
 	void Render() const override;
-	std::string GetName() const override;
-
-	//void ProcessInput(SDL_Event e);
 
 	void ProcessKeyUp(const SDL_KeyboardEvent& e);
 	void ProcessKeyDown(const SDL_KeyboardEvent& e);
@@ -41,12 +38,12 @@ public:
 
 	void GetHit();
 	void SetLives(int newLives);
-	int GetLives();
+	int GetLives() const;
 	void SetHasDied(bool b);
-	bool GetHasDied();
+	bool GetHasDied() const;
 
 	void AddScore(int score);
-	int GetScore();
+	int GetScore() const;
 private:
 	float m_XPos;
 	float m_YPos;

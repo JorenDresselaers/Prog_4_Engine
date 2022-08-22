@@ -1,6 +1,5 @@
 #pragma once
 #include "Component.h"
-//#include "RenderComponent.h"
 
 class BulletComponent final : public Component
 {
@@ -11,7 +10,7 @@ public:
 	void Update(float deltaTime, dae::GameObject* parentObject) override;
 	void Render() const override;
 
-	bool CanBounce();
+	bool CanBounce() const;
 	void BounceY();
 	void BounceX();
 	void BounceLeft();
@@ -22,7 +21,7 @@ public:
 	void Initialize(float originX, float originY, float targetX, float targetY, float xspeed, float yspeed, bool isPlayerBullet = false);
 	float GetX() const;
 	float GetY() const;
-	bool GetIsPlayerBullet();
+	bool GetIsPlayerBullet() const;
 	void SetX(float x);
 	void SetY(float y);
 
@@ -32,8 +31,5 @@ private:
 	float m_DeltaTime, m_LifeTime, m_MaxLife;
 	int m_Bounces, m_MaxBounces;
 	bool m_IsPlayerBullet;
-
-	//dae::RenderComponent* m_RenderComponent;
-
 };
 

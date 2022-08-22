@@ -6,7 +6,7 @@
 
 namespace dae
 {
-	class TextComponent : public Component
+	class TextComponent final : public Component
 	{
 	public:
 		TextComponent();

@@ -32,7 +32,10 @@ namespace dae
 		InputManager();
 		~InputManager();
 		InputManager(const InputManager& other) = delete;
-		InputManager& operator=(InputManager rhs) = delete;
+		InputManager(InputManager&& other) = delete;
+		InputManager& operator=(const InputManager& other) = delete;
+		InputManager& operator=(InputManager&& other) = delete;
+
 
 		bool ProcessInput();
 		bool IsPressed(WORD button);

@@ -6,24 +6,24 @@ X  XXXXXX  XXXXXX  XXXXXX  XXX
 X  X                         X
 X  X                         X
 X  X  XXX    XXXX      XXXX  X
-X                            X
+X     R                      X
 X                            X
 X  XXXXXXXX  XXXXXX  XXXX  XXX
-X  X         X          X    X
+X  X         XR         X  R X
 X  X         X          X    X
 X            X               X
 X            XXXXXX          X
 X    X                  X    X
 X    X                  X    X
-XXXXXXXX      X              X
+XXXXXXXX      XR             X
 X             X              X
 X             X              X
 X             X              X
 X    XXXXXXX  XXXX  XXX  XXXXX
-X    X                       X
+X    XR                      X
 X    X                       X
 X                         X  X
 XXXXXXXXX  XXXXXX         X  X
-XC         X              XC X
+XC         X   R          XC X
 X          X              X  X
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX

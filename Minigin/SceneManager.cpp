@@ -23,6 +23,17 @@ dae::Scene& SceneManager::CreateScene(const std::string& name)
 	return *scene;
 }
 
+void dae::SceneManager::DeleteScene(const std::string& name)
+{
+	for (size_t currentScene{ 0 }; currentScene < m_Scenes.size(); ++currentScene)
+	{
+		if (m_Scenes.at(currentScene)->m_Name == name)
+		{
+			m_Scenes.erase(std::remove(m_Scenes.begin(), m_Scenes.end(), m_Scenes.at(currentScene)), m_Scenes.end());
+		}
+	}
+}
+
 bool dae::SceneManager::SetScene(const std::string& name)
 {
 	for (auto currentScene : m_Scenes)

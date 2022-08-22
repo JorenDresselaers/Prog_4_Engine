@@ -34,12 +34,12 @@ public:
 	void ProcessMouseDown(const SDL_MouseButtonEvent& e) override;
 
 	void LoadLevel(const std::string& levelToLoad = "Level1.txt");
+	void LoadNextLevel();
 	void LoadMenuScene();
 	void LoadEndScene();
 	void SetCommands();
 
 private:
-	//dae::GameObject* m_pTank;
 	std::shared_ptr<dae::GameObject> m_pTank;
 	LevelLoader m_LevelLoader;
 	int m_BlockSize ;

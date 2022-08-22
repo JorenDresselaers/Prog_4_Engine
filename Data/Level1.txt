@@ -1,6 +1,6 @@
 Level2.txt
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-XP                        X  X
+XP                    R   X  X
 X                         X  X
 X  X  XXXX  X  X  XXXXXX  X  X
 X  X     XE                  X

@@ -10,6 +10,7 @@
 #include "EnemyComponent.h"
 #include "DeletionComponent.h"
 #include "ScoreComponent.h"
+#include "FPS.h"
 
 LevelLoader::LevelLoader()
 	: m_BlockSize{ 20 }
@@ -25,6 +26,10 @@ LevelLoader::~LevelLoader()
 
 bool LevelLoader::LoadLevel(std::string levelFile, std::string scene)
 {
+	auto fps = std::make_shared<dae::GameObject>();
+	fps->AddComponent<dae::FPS>()->SetPosition(0, 10);
+
+	dae::SceneManager::GetInstance().GetCurrentScene().Add(fps);
 	std::cout << "\nLoading level " << levelFile;
 	m_LevelFile.open("../Data/" + levelFile);
 	if (m_LevelFile.is_open()) {
@@ -33,6 +38,7 @@ bool LevelLoader::LoadLevel(std::string levelFile, std::string scene)
 		auto wallImage = dae::ResourceManager::GetInstance().LoadTexture("wall.png");
 		auto enemyTankImage = dae::ResourceManager::GetInstance().LoadTexture("EnemyTank.png");
 		auto crystalImage = dae::ResourceManager::GetInstance().LoadTexture("crystal.png");
+		auto recogniserImage = dae::ResourceManager::GetInstance().LoadTexture("Recogniser.png");
 
 		char c{};
 		std::string firstLine;
@@ -95,6 +101,23 @@ bool LevelLoader::LoadLevel(std::string levelFile, std::string scene)
 						);
 
 						dae::SceneManager::GetInstance().GetCurrentScene().Add(crystal);
+					}
+					else if (c == 'R')
+					{
+						std::shared_ptr<dae::GameObject> Recogniser = std::make_shared<dae::GameObject>();
+						Recogniser->AddComponent<dae::RenderComponent>()->SetTexture(recogniserImage);
+						Recogniser->AddComponent<CollisionComponent>()->Initialize(0, 0,
+							Recogniser->GetComponent<dae::RenderComponent>()->GetWidth(),
+							Recogniser->GetComponent<dae::RenderComponent>()->GetHeight(),
+							CollisionType::EnemyTank
+						);
+						Recogniser->AddComponent<ScoreComponent>()->SetScore(250);
+						Recogniser->AddComponent<DeletionComponent>();
+
+						//+2.5 is to center the tanks on the blocks they spawn on
+						Recogniser->AddComponent<EnemyComponent>()->Initialize(float(x * m_BlockSize + 2.5), float(y * m_BlockSize + m_LevelOffsetY + 2.5), 3);
+
+						dae::SceneManager::GetInstance().GetCurrentScene().Add(Recogniser);
 					}
 
 

@@ -10,7 +10,7 @@ void ScoreComponent::SetScore(int newScore)
 	m_Score = newScore;
 }
 
-int ScoreComponent::GetScore()
+int ScoreComponent::GetScore() const
 {
 	return m_Score;
 }
