@@ -41,10 +41,6 @@ struct dae::InputManager::Impl
                     m_CommandMap[button]->Execute();
                 }
             }
-            //if (IsPressed(dae::ControllerButton::ButtonA)) ButtonA->Execute();
-            //if (IsPressed(dae::ControllerButton::ButtonB)) ButtonB->Execute();
-            //if (IsPressed(dae::ControllerButton::ButtonX)) ButtonX->Execute();
-            //if (IsPressed(dae::ControllerButton::ButtonY)) ButtonY->Execute();
         }
         else
         {
@@ -85,10 +81,6 @@ struct dae::InputManager::Impl
     //https://stackoverflow.com/questions/38863451/xbox-button-pressed-in-c
     bool IsPressed(WORD button)
     {
-        //bool boolToReturn{ false };
-        //ButtonPreviousState[int(button)] = ButtonState[int(button)];
-        //ButtonState[int(button)] = false;
-
         DWORD dwResult;
         XINPUT_STATE state;
         ZeroMemory(&state, sizeof(XINPUT_STATE));
@@ -257,22 +249,9 @@ struct dae::InputManager::Impl
     void SetCommand(WORD button, Command* command)
     {
         m_CommandMap[button] = command;
-        std::cout << "\n" << button << " set as command";
     }
 
-    //static const int m_NumberOfButtons{ 14 };
-    //bool ButtonState[m_NumberOfButtons];
-    //bool ButtonPreviousState[m_NumberOfButtons];
-
-    //Command* ButtonA = new Fire();
-    //Command* ButtonB = new Jump();
-    //Command* ButtonX = new Crouch();
-    //Command* ButtonY = new Die();
-
     Game* game;
-
-    //std::shared_ptr<PlayerComponent> player;
-    //std::shared_ptr<PlayerComponent> playerTwo;
 
     std::map<WORD, Command*> m_CommandMap;
 };

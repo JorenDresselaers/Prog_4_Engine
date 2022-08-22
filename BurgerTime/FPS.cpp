@@ -27,13 +27,12 @@ void dae::FPS::Update(float deltaTime, dae::GameObject* parentObject)
 
 	++m_Frames;
 	m_TimePassed += deltaTime;
-	//m_Text->SetText("Toodles");
 
 	if (m_TimePassed >= 1.f)
 	{
 		std::string framesPerSecond{ std::to_string(m_Frames) + " FPS"};
 		m_Text->SetText(framesPerSecond);
-		std::cout << "\nOutput: " << framesPerSecond;
+		//std::cout << "\nOutput: " << framesPerSecond;
 		m_TimePassed = 0;
 		m_Frames = 0;
 	}

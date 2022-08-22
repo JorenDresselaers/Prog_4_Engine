@@ -46,7 +46,7 @@ void TronGame::LoadGame()
 	std::cout << "\nLoading Tron";
 
 	std::cout << "\n==| Instructions |==\n\nWASD to move the tank\nClick to shoot"
-		<< "\n\n =| Debug |=\n\nQ to lose a life\nH to gain 500 score\nP to play a sound\n";
+		<< "\n\n =| Debug |=\n\nQ to lose a life\nH to gain 500 score\nP to play a sound\nE to skip a level\n";
 
 	//Loading the main game
 	auto& newScene = SceneManager::GetInstance().CreateScene("Tron1");
@@ -415,6 +415,6 @@ void TronGame::SetCommands()
 	dae::InputManager::GetInstance().SetCommand(VK_PAD_DPAD_DOWN, new MoveDown(m_pTank.get()));
 	dae::InputManager::GetInstance().SetCommand(VK_PAD_DPAD_LEFT, new MoveLeft(m_pTank.get()));
 	dae::InputManager::GetInstance().SetCommand(VK_PAD_DPAD_RIGHT, new MoveRight(m_pTank.get()));
-	dae::InputManager::GetInstance().SetCommand(VK_PAD_A, new MoveRight(m_pTank.get()));
-	dae::InputManager::GetInstance().SetCommand(VK_PAD_B, new MoveLeft(m_pTank.get()));
+	//dae::InputManager::GetInstance().SetCommand(VK_PAD_A, new MoveRight(m_pTank.get()));
+	//dae::InputManager::GetInstance().SetCommand(VK_PAD_B, new MoveLeft(m_pTank.get()));
 }
